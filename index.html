@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Politeknik Negeri Malang</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <img src="logo.png" alt="Logo Politeknik Negeri Malang" class="logo">
+            <h1>Politeknik Negeri Malang</h1>
+            <p>Sistem Informasi Bebas Tanggungan</p>
+            <form action="login.php" method="POST">
+                <label for="nim">NIM</label>
+                <input type="text" id="nim" name="nim" placeholder="Username" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+            <a href="#" class="forgot-password">Lupa Password?</a>
+            <footer>2024 Sistem Informasi Bebas Tanggungan</footer>
+        </div>
+    </div>
+</body>
+</html>
