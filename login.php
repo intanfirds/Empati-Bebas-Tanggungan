@@ -26,16 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Redirect ke laman sesuai role admin
         switch ($admin['role']) {
             case 'Jurusan':
-                header("Location: /PBL/jurusan/index.html");
+                header("Location: /Empati-Bebas-Tanggungan/jurusan/index.html");
                 break;
             case 'Bebas Tanggungan':
-                header("Location: /PBL/bestang/index.html");
+                header("Location: /Empati-Bebas-Tanggungan/bebas_tanggungan/index.html");
                 break;
             case 'Akademik':
-                header("Location: /PBL/akademik/index.html");
+                header("Location: /Empati-Bebas-Tanggungan/akademik/index.html");
                 break;
             case 'Perpustakaan':
-                header("Location: /PBL/perpustakaan/index.html");
+                header("Location: /Empati-Bebas-Tanggungan/perpustakaan/index.html");
                 break;
             default:
                 echo "<script>alert('Role tidak dikenali!'); window.location.href='index.html';</script>";
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['mahasiswa_id'] = $mahasiswa['id'];
 
         // Redirect ke laman mahasiswa
-        header("Location: mahasiswa_dashboard.php");
+        header("Location: /Empati-Bebas-Tanggungan/mahasiswa/index.html");
         exit;
     }
 
