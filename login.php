@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header("Location: /Empati-Bebas-Tanggungan/jurusan/index.html");
                 break;
             case 'Bebas Tanggungan':
-                header("Location: /Empati-Bebas-Tanggungan/bebas_tanggungan/index.html");
+                header("Location: /Empati-Bebas-Tanggungan/bestang/index.html");
                 break;
             case 'Akademik':
                 header("Location: /Empati-Bebas-Tanggungan/akademik/index.html");
