@@ -103,7 +103,7 @@ header .user-info span {
 
 .card {
     background: white;
-    padding: 20px;
+    padding: 50px;
     flex: 1;
     border-radius: 8px;
     text-align: center;
@@ -123,10 +123,18 @@ header .user-info span {
     color: black;
 }
 
+/* Menambahkan kotak dengan border kotak di sekitar ikon */
 .card h1 i {
     margin-left: 10px;
     font-size: 20px; /* Ukuran ikon */
-    color: #e0e0e0; /* Ubah warna ikon menjadi abu-abu atau warna lain yang kontras */
+    color: white; /* Mengubah warna ikon menjadi putih */
+    background-color: #e0e0e0; /* Menambahkan latar belakang abu-abu di dalam kotak */
+    border: 2px solid #e0e0e0; /* Menambahkan border abu-abu di sekitar ikon */
+    border-radius: 5px; /* Membuat sudut border kotak sedikit melengkung */
+    padding: 8px; /* Memberikan ruang di sekitar ikon */
+    display: inline-flex; /* Mengatur ikon agar tetap sejajar dengan teks */
+    justify-content: center;
+    align-items: center;
 }
 
 .card.green {
