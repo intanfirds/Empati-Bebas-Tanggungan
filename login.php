@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['mahasiswa_id'] = $mahasiswa['id'];
 
         // Redirect ke laman mahasiswa
-        header("Location: /Empati-Bebas-Tanggungan/mahasiswa/index.html");
+        header("Location: /Empati-Bebas-Tanggungan/mahasiswa/index.php");
         exit;
     }
 
