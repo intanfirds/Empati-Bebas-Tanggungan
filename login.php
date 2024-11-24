@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['username'] = $admin['username'];
         $_SESSION['role'] = $admin['role'];
         $_SESSION['admin_id'] = $admin['id'];
+       
 
         // Redirect ke laman sesuai role admin
         switch ($admin['role']) {
@@ -32,7 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header("Location: /Empati-Bebas-Tanggungan/bestang/index.html");
                 break;
             case 'Akademik':
-                header("Location: /Empati-Bebas-Tanggungan/akademik/index.html");
+                $row = sqlsrv_fecth_array($stmtAdmin, SQLSRV_FETCH_ASSOC);
+                $_SESSION['nama_admin'] = $row['nama'];
+                header("Location: /Empati-Bebas-Tanggungan/akademik/index.php");
                 break;
             case 'Perpustakaan':
                 header("Location: /Empati-Bebas-Tanggungan/perpustakaan/index.html");
