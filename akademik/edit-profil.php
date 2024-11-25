@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <?php
 session_start();
 ?>
-
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,7 +35,7 @@ session_start();
     <div id="wrapper">
       <!-- Sidebar -->
       <ul
-        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion bg-sidebar"
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
         id="accordionSidebar"
       >
         <!-- Sidebar - Brand -->
@@ -275,87 +273,22 @@ session_start();
           <!-- Begin Page Content -->
           <div class="container-fluid">
             <!-- Page Heading -->
-            <div
-              class="d-sm-flex align-items-center justify-content-between mb-4"
-            >
-              <h1 class="h3 mb-0 text-gray-800">Welcome, <?php echo htmlspecialchars($_SESSION['nama_admin']); ?></h1>
+            <div class="container mt-5">
+                <h2 class="text-center mb-4">Edit Profil Admin</h2>
+                <form action="proses-ubah.php?aksi=ubah" method="post" class="border p-4 rounded shadow">
+                    <input type="hidden" name="role" value="<?php echo htmlspecialchars($_SESSION['role']); ?>">
+                    <div class="form-group">
+                        <label for="nama_admin">Nama :</label>
+                        <input type="text" class="form-control" name="nama_admin" value="<?php echo htmlspecialchars($_SESSION['nama_admin']); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nip_admin">NIP :</label>
+                        <input type="text" class="form-control" name="nip_admin" value="<?php echo htmlspecialchars($_SESSION['nip_admin']); ?>" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Simpan</button>
+                </form>
             </div>
-
-            <!-- Content Row -->
-            <div class="row">
-              <!-- Earnings (Monthly) Card Example -->
-              <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="h5 mb-0 font-weight-bold text-primary">
-                          3
-                        </div>
-                        <div class="text-xs font-weight-bold mb-1">
-                          Jumlah Mahasiswa yang telah mengirim bukti pembayaran
-                          UKT
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <i
-                          class="fas fa-clipboard-list fa-2x text-gray-300"
-                        ></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Earnings (Monthly) Card Example -->
-              <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="h5 text-info mb-0 font-weight-bold">3</div>
-                        <div class="text-xs font-weight-bold mb-1">
-                          Jumlah Mahasiswa yang telah mengirim bukti pelunasan
-                          UKT
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <i
-                          class="fas fa-clipboard-list fa-2x text-gray-300"
-                        ></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pending Requests Card Example -->
-              <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div
-                          class="text-warning h5 text-info mb-0 font-weight-bold"
-                        >
-                          18
-                        </div>
-                        <div class="text-xs font-weight-bold mb-1">
-                          Mahasiswa yang sudah menyelesaikan Bebas Tanggungan
-                          Akademik Jurusan
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <i
-                          class="fas fa-clipboard-list fa-2x text-gray-300"
-                        ></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
           <!-- End of Main Content -->
 
           <!-- Footer -->
