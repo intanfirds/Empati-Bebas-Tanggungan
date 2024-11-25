@@ -22,24 +22,24 @@ if (sqlsrv_execute($stmt)) {
 
         switch ($row['role']) {
             case 'Jurusan':
-                header("Location: /Empati-Bebas-Tanggungan/jurusan/index.html");
+                header("Location: /Empati-Bebas-Tanggungan/jurusan/index.php");
                 break;
             case 'Bebas Tanggungan':
-                header("Location: /Empati-Bebas-Tanggungan/bestang/index.html");
+                header("Location: /Empati-Bebas-Tanggungan/bestang/index.php");
                 break;
             case 'Akademik':
                 header("Location: /Empati-Bebas-Tanggungan/akademik/index.php");
                 break;
             case 'Perpustakaan':
-                header("Location: /Empati-Bebas-Tanggungan/perpustakaan/index.html");
+                header("Location: /Empati-Bebas-Tanggungan/perpustakaan/index.php");
                 break;
             default:
-                echo "<script>alert('Role tidak dikenali!'); window.location.href='index.html';</script>";
+                echo "<script>alert('Role tidak dikenali!'); window.location.href='index-admin.html';</script>";
                 break;
         }
     } else {
         // Jika login gagal
-        echo "<script>alert('NIM atau Password salah!'); window.location.href='index-mahasiswa.html';</script>";
+        echo "<script>alert('NIM atau Password salah!'); window.location.href='index-admin.html';</script>";
         exit;
     }
 } else {
