@@ -3,6 +3,33 @@
 
 <?php
 session_start();
+include 'koneksi.php';
+
+if (!isset($_SESSION['role'])) {
+    die("Anda tidak memiliki akses.");
+}
+
+$role = $_SESSION['role']; // Ambil role dari session (sesuaikan dengan session yang digunakan)
+$sql = "SELECT nama, nip FROM Admin WHERE role = ?";
+$params = [$role];
+$stmt = sqlsrv_query($conn, $sql, $params);
+
+// Periksa apakah query berhasil
+if ($stmt === false) {
+    die(print_r(sqlsrv_errors(), true));
+}
+
+// Ambil data admin
+$data_admin = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+// Jika data tidak ditemukan
+if ($data_admin === null) {
+    die("Data admin tidak ditemukan.");
+}
+
+// Simpan data admin ke dalam session (jika diperlukan)
+$_SESSION['nama_admin'] = $data_admin['nama'];
+$_SESSION['nip_admin'] = $data_admin['nip'];
 ?>
 
   <head>

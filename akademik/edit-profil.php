@@ -275,7 +275,7 @@ session_start();
             <!-- Page Heading -->
             <div class="container mt-5">
                 <h2 class="text-center mb-4">Edit Profil Admin</h2>
-                <form action="proses-ubah.php?aksi=ubah" method="post" class="border p-4 rounded shadow">
+                <form action="proses-ubah.php?aksi=update_admin" method="post" class="border p-4 rounded shadow">
                     <input type="hidden" name="role" value="<?php echo htmlspecialchars($_SESSION['role']); ?>">
                     <div class="form-group">
                         <label for="nama_admin">Nama :</label>
