@@ -13,4 +13,7 @@
 
 - Administrator Jurusan
 - Administrator Bebas Tanggungan
+- Administrator Perpustakaan 
+- Administrator Prodi
+- Administrator Akademik
 - Mahasiswa
