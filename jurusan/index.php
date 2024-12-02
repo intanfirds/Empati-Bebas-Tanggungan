@@ -223,7 +223,7 @@ session_start();
                     <div class="card-body">
                       <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                          <div class="h5 mb-0 font-weight-bold text-primary">5</div>
+                          <div class="h5 mb-0 font-weight-bold text-primary"></div>
                           <div class="text-xs font-weight-bold mb-1">
                             Jumlah Mahasiswa yang sudah mengupload File Program Aplikasi
                           </div>
@@ -242,7 +242,7 @@ session_start();
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
                           <div class="col mr-2">
-                            <div class="h5 text-info mb-0 font-weight-bold">7</div>
+                            <div class="h5 text-info mb-0 font-weight-bold"></div>
                             <div class="text-xs font-weight-bold mb-1">
                               Jumlah Mahasiswa yang sudah mengupload File Laporan Skripsi
                             </div>
@@ -263,7 +263,7 @@ session_start();
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
                           <div class="col mr-2">
-                            <div class="h5 text-success mb-0 font-weight-bold">2</div>
+                            <div class="h5 text-success mb-0 font-weight-bold"></div>
                             <div class="text-xs font-weight-bold mb-1">
                             Jumlah Mahasiswa yang sudah mengupload File Surat Pernyataan Publikasi Jurnal
                             </div>
@@ -359,6 +359,28 @@ session_start();
       <!-- Page level custom scripts -->
       <script src="js/demo/chart-area-demo.js"></script>
       <script src="js/demo/chart-pie-demo.js"></script>
+      <script>
+function updateCardData() {
+    $.ajax({
+        url: 'get_data.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Update jumlah di card
+            $('.card .text-primary').text(data.jumlah_bukti_publikasi);
+            $('.card .text-info').text(data.jumlah_skripsi);
+            $('.card .text-success').text(data.jumlah_hasil_akhir);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+// Panggil fungsi updateCardData setiap 5 detik
+setInterval(updateCardData, 5000);
+</script>
+<script src="vendor/jquery/jquery.min.js"></script>
     </div>
   </body>
 </html>
