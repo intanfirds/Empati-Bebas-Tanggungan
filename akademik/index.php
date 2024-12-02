@@ -3,6 +3,33 @@
 
 <?php
 session_start();
+include 'koneksi.php';
+
+if (!isset($_SESSION['role'])) {
+    die("Anda tidak memiliki akses.");
+}
+
+$role = $_SESSION['role']; // Ambil role dari session (sesuaikan dengan session yang digunakan)
+$sql = "SELECT nama, nip FROM Admin WHERE role = ?";
+$params = [$role];
+$stmt = sqlsrv_query($conn, $sql, $params);
+
+// Periksa apakah query berhasil
+if ($stmt === false) {
+    die(print_r(sqlsrv_errors(), true));
+}
+
+// Ambil data admin
+$data_admin = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+// Jika data tidak ditemukan
+if ($data_admin === null) {
+    die("Data admin tidak ditemukan.");
+}
+
+// Simpan data admin ke dalam session (jika diperlukan)
+$_SESSION['nama_admin'] = $data_admin['nama'];
+$_SESSION['nip_admin'] = $data_admin['nip'];
 ?>
 
   <head>
@@ -67,68 +94,32 @@ session_start();
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseSIB"
-            aria-expanded="true"
-            aria-controls="collapsePages"
-          >
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Sistem Informasi Bisnis</span>
-          </a>
-          <div
-            id="collapseSIB"
-            class="collapse"
-            aria-labelledby="headingPages"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">List Kelas:</h6>
-              <a class="collapse-item" href="#">SIB - 4A</a>
-              <a class="collapse-item" href="#">SIB - 4B</a>
-              <a class="collapse-item" href="#">SIB - 4C</a>
-              <a class="collapse-item" href="#">SIB - 4D</a>
-              <a class="collapse-item" href="#">SIB - 4E</a>
-              <a class="collapse-item" href="#">SIB - 4F</a>
-              <a class="collapse-item" href="#">SIB - 4G</a>
+            <a
+                class="nav-link collapsed"
+                href="#"
+                data-toggle="collapse"
+                data-target="#collapseSIB"
+                aria-expanded="true"
+                aria-controls="collapsePages"
+            >
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Angkatan</span>
+            </a>    
+            <div
+                id="collapseSIB"
+                class="collapse"
+                aria-labelledby="headingPages"
+                data-parent="#accordionSidebar"
+            >
+                <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">List Angkatan:</h6>
+                <a class="collapse-item" href="tables.php?angkatan=2021">2021</a>
+                <a class="collapse-item" href="tables.php?angkatan=2020">2020</a>
+                <a class="collapse-item" href="tables.php?angkatan=2019">2019</a>
+                <a class="collapse-item" href="tables.php?angkatan=2018">2018</a>
+                <a class="collapse-item" href="tables.php?angkatan=2017">2017</a>
+                </div>
             </div>
-          </div>
-        </li>
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
-        <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseTI"
-            aria-expanded="true"
-            aria-controls="collapsePages"
-          >
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Teknik Informatika</span>
-          </a>
-          <div
-            id="collapseTI"
-            class="collapse"
-            aria-labelledby="headingPages"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">List Kelas:</h6>
-              <a class="collapse-item" href="#">TI - 4A</a>
-              <a class="collapse-item" href="#">TI - 4B</a>
-              <a class="collapse-item" href="#">TI - 4C</a>
-              <a class="collapse-item" href="#">TI - 4D</a>
-              <a class="collapse-item" href="#">TI - 4E</a>
-              <a class="collapse-item" href="#">TI - 4F</a>
-              <a class="collapse-item" href="#">TI - 4G</a>
-              <a class="collapse-item" href="#">TI - 4H</a>
-              <a class="collapse-item" href="#">TI - 4I</a>
-            </div>
-          </div>
         </li>
 
         <!-- Divider -->
