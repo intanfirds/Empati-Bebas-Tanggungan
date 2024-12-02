@@ -9,7 +9,8 @@ $username = $_POST['username']; // Misalnya NIM atau username
 $password = $_POST['password']; // Kata sandi
 
 // Query untuk mengambil nama mahasiswa berdasarkan username
-$query = "SELECT * FROM mahasiswa WHERE username = ? AND password = ?";
+$query = "SELECT nama, nim, ipk FROM mahasiswa WHERE username = ? AND password = ?";
+
 
 
 // Menyiapkan statement
@@ -23,6 +24,8 @@ if (sqlsrv_execute($stmt)) {
         // Simpan nama mahasiswa di session
         $_SESSION['nama_mahasiswa'] = $row['nama'];
         $_SESSION['nim_mahasiswa'] = $row['nim'];
+        $_SESSION['ipk_mahasiswa'] = isset($row['ipk']) ? floatval($row['ipk']) : null;
+
 
         // Redirect ke halaman dashboard atau halaman lain setelah login sukses
         header("Location: /Empati-Bebas-Tanggungan/mahasiswa/index.php");
