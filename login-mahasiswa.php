@@ -9,7 +9,10 @@ $username = $_POST['username']; // Misalnya NIM atau username
 $password = $_POST['password']; // Kata sandi
 
 // Query untuk mengambil nama mahasiswa berdasarkan username
-$query = "SELECT nama, nim, ipk FROM mahasiswa WHERE username = ? AND password = ?";
+$query = "SELECT m.*, a.angkatan
+        FROM mahasiswa m
+        INNER JOIN angkatan a ON m.id_angkatan = a.id
+        WHERE m.username = ? AND m.password = ?";
 
 
 
@@ -25,6 +28,12 @@ if (sqlsrv_execute($stmt)) {
         $_SESSION['nama_mahasiswa'] = $row['nama'];
         $_SESSION['nim_mahasiswa'] = $row['nim'];
         $_SESSION['ipk_mahasiswa'] = isset($row['ipk']) ? floatval($row['ipk']) : null;
+        $_SESSION['jurusan_mahasiswa'] = $row['jurusan'];
+        $_SESSION['prodi_mahasiswa'] = $row['prodi'];
+        $_SESSION['email_mahasiswa'] = $row['email'];
+        $_SESSION['no_telp_mahasiswa'] = $row['no_telp'];
+        $_SESSION['angkatan_mahasiswa'] = $row['angkatan'];
+        
 
 
         // Redirect ke halaman dashboard atau halaman lain setelah login sukses
