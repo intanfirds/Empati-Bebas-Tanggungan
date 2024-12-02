@@ -9,7 +9,7 @@ $username = $_POST['username']; // Misalnya NIM atau username
 $password = $_POST['password']; // Kata sandi
 
 // Query untuk mengambil nama mahasiswa berdasarkan username
-$query = "SELECT nama, nim FROM mahasiswa WHERE username = ? AND password = ?";
+$query = "SELECT * FROM mahasiswa WHERE username = ? AND password = ?";
 
 
 // Menyiapkan statement
