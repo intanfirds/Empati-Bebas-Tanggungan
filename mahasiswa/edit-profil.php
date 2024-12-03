@@ -257,14 +257,20 @@ session_start();
                                                 <!-- Profile Picture -->
                                                 <img src="img/undraw_profile.svg" alt="Foto Profil"
                                                     id="profileImagePreview" class="img-fluid rounded-circle mb-4"
-                                                    style="width: 175px; height: 175px; object-fit: cover;">
-                                                <!-- Choose File Input -->
-                                                <input type="file" name="foto_profil" id="fotoProfil"
-                                                    class="form-control mb-4" accept=".jpg, .jpeg, .png, .gif"
-                                                    onchange="previewImage()" required>
-                                                <button type="submit" class="btn btn-primary">Upload</button>
+                                                    style="width: 150px; height: 150px; object-fit: cover;">
+
+                                                <!-- Custom File Input -->
+                                                <div class="file-input-wrapper mb-3">
+                                                    <input type="file" name="foto_profil" id="fotoProfil"
+                                                        class="file-input" accept=".jpg, .jpeg, .png, .gif"
+                                                        onchange="previewImage()" required>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary mt-3">Upload</button>
                                             </form>
                                         </div>
+
+
 
                                         <!-- Profile Form -->
                                         <div class="col-md-8">
@@ -398,19 +404,25 @@ session_start();
     <script src="js/demo/chart-pie-demo.js"></script>
 
     <script>
-    function previewImage() {
-        const file = document.getElementById('fotoProfil').files[0];
-        const reader = new FileReader();
+        document.getElementById('fotoProfil').addEventListener('change', function () {
+            const fileName = this.files[0] ? this.files[0].name : 'Choose file';
+            const nextSibling = this.nextElementSibling;
+            nextSibling.innerText = fileName;
+        });
 
-        reader.onload = function (e) {
-            document.getElementById('profileImagePreview').src = e.target.result;
-        }
+        function previewImage() {
+            const file = document.getElementById('fotoProfil').files[0];
+            const reader = new FileReader();
 
-        if (file) {
-            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                document.getElementById('profileImagePreview').src = e.target.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
 
