@@ -397,6 +397,21 @@ session_start();
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
 
+    <script>
+    function previewImage() {
+        const file = document.getElementById('fotoProfil').files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            document.getElementById('profileImagePreview').src = e.target.result;
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
 </body>
 
 </html>
