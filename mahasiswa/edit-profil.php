@@ -236,84 +236,98 @@ session_start();
                 <div class="container-fluid">
 
                     <!-- Content Row for Profile -->
-<div class="row">
+                    <div class="row">
 
-    <!-- Profile Card Example -->
-    <div class="col-xl-9 col-lg-7 mx-auto">
-        <div class="card shadow mb-4">
-            <!-- Card Header -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Profile Mahasiswa</h6>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
-                <div class="row">
-                    <!-- Profile Picture and Name -->
-                    <div class="col-md-4 d-flex flex-column align-items-center text-center">
-                        <form action="update-profile.php" method="POST" enctype="multipart/form-data" id="profileForm">
-                            <!-- Profile Picture -->
-                            <img src="img/undraw_profile.svg" alt="Foto Profil" id="profileImagePreview"
-                                class="img-fluid rounded-circle mb-4" style="width: 175px; height: 175px; object-fit: cover;">
-                            <!-- Choose File Input -->
-                            <input type="file" name="foto_profil" id="fotoProfil" class="form-control mb-4"
-                                accept="image/*" onchange="previewImage()" required>
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </form>
+                        <!-- Profile Card Example -->
+                        <div class="col-xl-9 col-lg-7 mx-auto">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Profile Mahasiswa</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Profile Picture and Name -->
+                                        <div class="col-md-4 d-flex flex-column align-items-center text-center">
+                                            <form action="update-profile.php" method="POST"
+                                                enctype="multipart/form-data" id="profileForm"
+                                                style="padding-top: 40px">
+                                                <!-- Profile Picture -->
+                                                <img src="img/undraw_profile.svg" alt="Foto Profil"
+                                                    id="profileImagePreview" class="img-fluid rounded-circle mb-4"
+                                                    style="width: 175px; height: 175px; object-fit: cover;">
+                                                <!-- Choose File Input -->
+                                                <input type="file" name="foto_profil" id="fotoProfil"
+                                                    class="form-control mb-4" accept=".jpg, .jpeg, .png, .gif"
+                                                    onchange="previewImage()" required>
+                                                <button type="submit" class="btn btn-primary">Upload</button>
+                                            </form>
+                                        </div>
+
+                                        <!-- Profile Form -->
+                                        <div class="col-md-8">
+                                            <form action="update-profile.php" method="POST"
+                                                enctype="multipart/form-data">
+                                                <table class="table table-bordered">
+                                                    <tr>
+                                                        <th>NIM</th>
+                                                        <td class="readonly">
+                                                            <?php echo htmlspecialchars($_SESSION['nim_mahasiswa']); ?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Nama</th>
+                                                        <td class="readonly">
+                                                            <?php echo htmlspecialchars($_SESSION['nama_mahasiswa']); ?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Angkatan</th>
+                                                        <td class="readonly">
+                                                            <?php echo htmlspecialchars($_SESSION['angkatan_mahasiswa']); ?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Jurusan</th>
+                                                        <td class="readonly">
+                                                            <?php echo htmlspecialchars($_SESSION['jurusan_mahasiswa']); ?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Program Studi</th>
+                                                        <td class="readonly">
+                                                            <?php echo htmlspecialchars($_SESSION['prodi_mahasiswa']); ?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Email</th>
+                                                        <td>
+                                                            <input type="email" name="email" class="form-control"
+                                                                value="<?php echo htmlspecialchars($_SESSION['email_mahasiswa']); ?>"
+                                                                required>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>No. Telepon</th>
+                                                        <td>
+                                                            <input type="text" name="no_telp" class="form-control"
+                                                                value="<?php echo htmlspecialchars($_SESSION['no_telp_mahasiswa']); ?>"
+                                                                required>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- Save Changes Button -->
+                                                <button type="submit" class="btn btn-success">Save Changes</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-
-                    <!-- Profile Form -->
-                    <div class="col-md-8">
-                        <form action="update-profile.php" method="POST" enctype="multipart/form-data">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>NIM</th>
-                                    <td class="readonly">
-                                        <?php echo htmlspecialchars($_SESSION['nim_mahasiswa']); ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Angkatan</th>
-                                    <td class="readonly">
-                                        <?php echo htmlspecialchars($_SESSION['angkatan_mahasiswa']); ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Jurusan</th>
-                                    <td class="readonly">
-                                        <?php echo htmlspecialchars($_SESSION['jurusan_mahasiswa']); ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Program Studi</th>
-                                    <td class="readonly">
-                                        <?php echo htmlspecialchars($_SESSION['prodi_mahasiswa']); ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Email</th>
-                                    <td>
-                                        <input type="email" name="email" class="form-control"
-                                            value="<?php echo htmlspecialchars($_SESSION['email_mahasiswa']); ?>" required>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>No. Telepon</th>
-                                    <td>
-                                        <input type="text" name="no_telp" class="form-control"
-                                            value="<?php echo htmlspecialchars($_SESSION['no_telp_mahasiswa']); ?>" required>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!-- Save Changes Button -->
-                            <button type="submit" class="btn btn-success">Save Changes</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
 
                     <!-- End Content Row -->
 
@@ -335,7 +349,7 @@ session_start();
             </footer>
             <!-- End of Footer -->
 
-        </div>  
+        </div>
         <!-- End of Content Wrapper -->
 
     </div>
