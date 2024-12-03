@@ -53,40 +53,41 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <script>
-    // Filter Functionality
     document.addEventListener("DOMContentLoaded", function () {
-        const table = document.getElementById('dataTable');
-        const rows = table.querySelectorAll('tbody tr');
-            
+        const table = $('#dataTable').DataTable({
+            pageLength: 25 // Mengatur panjang halaman default
+        });
+
         document.getElementById('filterProdi').addEventListener('change', filterTable);
         document.getElementById('filterAngkatan').addEventListener('change', filterTable);
         document.getElementById('filterStatus').addEventListener('change', filterTable);
 
-            function filterTable() {
-                const prodiFilter = document.getElementById('filterProdi').value.toLowerCase();
-                const angkatanFilter = document.getElementById('filterAngkatan').value;
-                const statusFilter = document.getElementById('filterStatus').value.toLowerCase();
+        function filterTable() {
+            const prodiFilter = document.getElementById('filterProdi').value.toLowerCase();
+            const angkatanFilter = document.getElementById('filterAngkatan').value;
+            const statusFilter = document.getElementById('filterStatus').value.toLowerCase();
 
-                rows.forEach(row => {
-                    const prodi = row.cells[2].textContent.toLowerCase();
-                    const angkatan = row.cells[4].textContent;
-                    const status = row.cells[5].textContent.toLowerCase();
+            // Menggunakan DataTables API untuk filter
+            table.column(2).search(prodiFilter, true, false); // Prodi
+            table.column(3).search(angkatanFilter, true, false); // Angkatan
+            table.column(4).search(statusFilter, true, false); // Status
 
-                    // Filter logic
-                    const prodiMatch = !prodiFilter || prodi.includes(prodiFilter);
-                    const angkatanMatch = !angkatanFilter || angkatan === angkatanFilter;
-                    const statusMatch = !statusFilter || status.includes(statusFilter);
-
-                    if (prodiMatch && angkatanMatch && statusMatch) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-            }
-        });
+            table.draw(); // Memperbarui tabel
+        }
+    });
     </script>
-
+    <script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable(); // Inisialisasi DataTable
+    });
+    $(document).ready(function() {
+    var table = $('#dataTable').DataTable({
+        // Opsi tambahan jika diperlukan
+        // Misalnya, jika Anda ingin mengatur panjang halaman default
+        pageLength: 25
+        });
+    });
+    </script>
 </head>
 
 <body id="page-top">
@@ -122,34 +123,17 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 
-        <!-- Nav Item - Pages Collapse Menu -->
+        <!-- Nav Item - Pages Mahasiswa -->
         <li class="nav-item">
-            <a
-                class="nav-link collapsed"
-                href="#"
-                data-toggle="collapse"
-                data-target="#collapseSIB"
-                aria-expanded="true"
-                aria-controls="collapsePages"
-            >
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Angkatan</span>
-            </a>    
-            <div
-                id="collapseSIB"
-                class="collapse"
-                aria-labelledby="headingPages"
-                data-parent="#accordionSidebar"
-            >
-                <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">List Angkatan:</h6>
-                <a class="collapse-item" href="tables.php?angkatan=2021">2021</a>
-                <a class="collapse-item" href="tables.php?angkatan=2020">2020</a>
-                <a class="collapse-item" href="tables.php?angkatan=2019">2019</a>
-                <a class="collapse-item" href="tables.php?angkatan=2018">2018</a>
-                <a class="collapse-item" href="tables.php?angkatan=2017">2017</a>
-                </div>
-            </div>
+          <a
+            class="nav-link collapsed"
+            href="tabel.php"
+          >
+            <i class="fas fa-fw fa-folder"></i>
+            <span>
+              Mahasiswa
+            </span>
+          </a>
         </li>
 
         <!-- Divider -->
@@ -221,82 +205,92 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                         <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa</h6>
                     </div>
                     <div class="card-body">
-                        <div class="mb-3">
+                    <div class="mb-3">
+                        <div class="row">
                             <!-- Filter Prodi -->
-                            <label for="filterProdi" class="form-label">Filter Prodi</label>
-                            <select id="filterProdi" class="form-select">
-                                <option value="">Semua Prodi</option>
-                                <option value="Teknik Informatika">Teknik Informatika</option>
-                                <option value="Sistem Informasi Bisnis">Sistem Informasi Bisnis</option>
-                            </select>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="filterProdi" class="form-label">Filter Prodi</label>
+                                    <select id="filterProdi" class="form-control">
+                                        <option value="">Semua Prodi</option>
+                                        <option value="Teknik Informatika">Teknik Informatika</option>
+                                        <option value="Sistem Informasi Bisnis">Sistem Informasi Bisnis</option>
+                                    </select>
+                                </div>
+                            </div>
 
                             <!-- Filter Angkatan -->
-                            <label for="filterAngkatan" class="form-label mt-3">Filter Angkatan</label>
-                            <select id="filterAngkatan" class="form-select">
-                                <option value="">Semua Angkatan</option>
-                                <!-- Anda bisa menambahkan tahun angkatan secara dinamis -->
-                                <?php
-                                for ($year = date('Y'); $year >= 2000; $year--) {
-                                    echo "<option value='$year'>$year</option>";
-                                }
-                                ?>
-                            </select>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="filterAngkatan" class="form-label">Filter Angkatan</label>
+                                    <select id="filterAngkatan" class="form-control">
+                                        <option value="">Semua Angkatan</option>
+                                        <?php
+                                        for ($year = date('Y'); $year >= 2000; $year--) {
+                                            echo "<option value='$year'>$year</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
 
                             <!-- Filter Status -->
-                            <label for="filterStatus" class="form-label mt-3">Filter Status</label>
-                            <select id="filterStatus" class="form-select">
-                                <option value="">Semua Status</option>
-                                <option value="Selesai">Selesai</option>
-                                <option value="Tidak Sesuai">Tidak Sesuai</option>
-                                <option value="Menunggu">Menunggu</option>
-                            </select>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="filterStatus" class="form-label">Filter Status</label>
+                                    <select id="filterStatus" class="form-control">
+                                        <option value="">Semua Status</option>
+                                        <option value="Selesai">Selesai</option>
+                                        <option value="Tidak Sesuai">Tidak Sesuai</option>
+                                        <option value="Menunggu">Menunggu</option>
+                                        <option value="Belum Mengisi">Belum Mengisi</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        
+                    </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>NIM</th>
                                         <th>Nama</th>
                                         <th>Prodi</th>
-                                        <th>NIM</th>
                                         <th>Angkatan</th>
                                         <th>Status</th>
+                                        <th>Berkas</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     include 'koneksi.php';
-                                    $id = $_GET['id'] ?? null; // Menggunakan null coalescing operator untuk menghindari undefined index
-                                    if ($id === null) {
-                                        die("Angkatan tidak ditentukan.");
-                                    }
 
-                                    $query = "SELECT m.nama, m.prodi, m.nim, a.angkatan, k.status 
+                                    $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, k.status 
                                             FROM Mahasiswa m 
                                             LEFT JOIN pengajuan_akademik p ON m.id = p.id_mahasiswa
                                             LEFT JOIN konfirmasi_akademik k ON p.id = k.id_pengajuan
                                             LEFT JOIN Angkatan a ON m.id_angkatan = a.id
-                                            WHERE a.angkatan = ?";
-                                    $params = [$id];
+                                            order by m.nim asc";
                                     $stmt = sqlsrv_query($conn, $query, $params);
-
-                                    function getNextId() {
-                                        static $last_id = 0; // Variabel statis
-                                        $last_id++; // Tambah 1 setiap kali fungsi dipanggil
-                                        return $last_id; // Kembalikan ID yang baru
-                                    }
-
-                                    $current_id = getNextId();
 
                                     while ($data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                                         echo "<tr>";
-                                        echo "<td>" . $current_id . "</td>";
-                                        echo "<td>" . $data['nama'] . "</td>";
-                                        echo "<td>" . $data['prodi'] . "</td>";
-                                        echo "<td>" . $data['nim'] . "</td>";
-                                        echo "<td>" . $data['angkatan'] . "</td>";
-                                        echo "<td>" . $data['status'] . "</td>";
+                                        echo "<td>" . htmlspecialchars($data['nim']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($data['nama']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($data['prodi']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($data['angkatan']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($data['status']?? 'Belum Mengisi') . "</td>";
+                                        echo "<td>";
+
+                                        // Ubah kondisi tombol pratinjau
+                                        $status = strtolower(trim($data['status']?? 'Belum Mengisi')); // Normalisasi data status
+                                        if (in_array($status, ['selesai', 'tidak sesuai', 'menunggu'])) {
+                                            echo "<a href='pratinjau.php?nim=" . htmlspecialchars($data['nim']) . "' class='btn btn-primary btn-sm'>Pratinjau</a>";
+                                        } else {
+                                            echo "-"; // Tampilkan tanda kosong untuk status lainnya
+                                        }
+
+                                        echo "</td>";
                                         echo "</tr>";
                                     }
                                     ?>

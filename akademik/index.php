@@ -92,34 +92,17 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 
-        <!-- Nav Item - Pages Collapse Menu -->
+        <!-- Nav Item - Pages Mahasiswa -->
         <li class="nav-item">
-            <a
-                class="nav-link collapsed"
-                href="#"
-                data-toggle="collapse"
-                data-target="#collapseSIB"
-                aria-expanded="true"
-                aria-controls="collapsePages"
-            >
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Angkatan</span>
-            </a>    
-            <div
-                id="collapseSIB"
-                class="collapse"
-                aria-labelledby="headingPages"
-                data-parent="#accordionSidebar"
-            >
-                <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">List Angkatan:</h6>
-                <a class="collapse-item" href="tables.php?angkatan=2021">2021</a>
-                <a class="collapse-item" href="tables.php?angkatan=2020">2020</a>
-                <a class="collapse-item" href="tables.php?angkatan=2019">2019</a>
-                <a class="collapse-item" href="tables.php?angkatan=2018">2018</a>
-                <a class="collapse-item" href="tables.php?angkatan=2017">2017</a>
-                </div>
-            </div>
+          <a
+            class="nav-link collapsed"
+            href="tabel.php"
+          >
+            <i class="fas fa-fw fa-folder"></i>
+            <span>
+              Mahasiswa
+            </span>
+          </a>
         </li>
 
         <!-- Divider -->

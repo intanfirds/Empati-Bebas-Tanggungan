@@ -182,27 +182,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </nav>
           <!-- End of Topbar -->
 
-          <!-- Begin Page Content -->
-          <div class="container-fluid">
-            <!-- Page Heading -->
-            <div class="container">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Profil Admin</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="text-center">
-                            <img src="img/undraw_profile_3.svg" alt="Foto Profil" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
-                        </div>
-                        <h3 class="text-center"><?php echo htmlspecialchars($_SESSION['nama_admin']); ?></h3>
-                        <p class="text-center">NIP : <?php echo htmlspecialchars($_SESSION['nip_admin']); ?></p>
-                        <div class="text-center">
-                            <a href="edit-profil.php" class="btn btn-primary">Edit Profile</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
+          <!-- Main Content -->
+          
           <!-- End of Main Content -->
 
           <!-- Footer -->
