@@ -5,16 +5,14 @@ session_start(); // Memulai session
 include('koneksi.php'); // Atau sesuaikan dengan file koneksi Anda
 
 // Ambil data dari form login
-$username = $_POST['username']; // Misalnya NIM atau username
-$password = $_POST['password']; // Kata sandi
+$username = htmlspecialchars($_POST['username']);
+$password = htmlspecialchars($_POST['password']);
 
 // Query untuk mengambil nama mahasiswa berdasarkan username
 $query = "SELECT m.*, a.angkatan
-        FROM mahasiswa m
-        INNER JOIN angkatan a ON m.id_angkatan = a.id
-        WHERE m.username = ? AND m.password = ?";
-
-
+          FROM mahasiswa m
+          INNER JOIN angkatan a ON m.id_angkatan = a.id
+          WHERE m.username = ? AND m.password = ?";
 
 // Menyiapkan statement
 $params = array($username, $password);
@@ -24,7 +22,8 @@ $stmt = sqlsrv_prepare($conn, $query, $params);
 if (sqlsrv_execute($stmt)) {
     // Jika data ditemukan
     if ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-        // Simpan nama mahasiswa di session
+        // Simpan data mahasiswa di session
+        $_SESSION['id_mahasiswa'] = $row['id']; // Simpan ID mahasiswa
         $_SESSION['nama_mahasiswa'] = $row['nama'];
         $_SESSION['nim_mahasiswa'] = $row['nim'];
         $_SESSION['ipk_mahasiswa'] = isset($row['ipk']) ? floatval($row['ipk']) : null;
@@ -33,8 +32,7 @@ if (sqlsrv_execute($stmt)) {
         $_SESSION['email_mahasiswa'] = $row['email'];
         $_SESSION['no_telp_mahasiswa'] = $row['no_telp'];
         $_SESSION['angkatan_mahasiswa'] = $row['angkatan'];
-        
-
+        $_SESSION['foto_profil'] = $row['foto_profil'];
 
         // Redirect ke halaman dashboard atau halaman lain setelah login sukses
         header("Location: /Empati-Bebas-Tanggungan/mahasiswa/index.php");

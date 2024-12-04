@@ -2,9 +2,20 @@
 <html lang="en">
 
 <?php
+// Ambil file yang sudah diunggah dari database
 session_start();
+include_once '../koneksi.php';
+$idMahasiswa = $_SESSION['id_mahasiswa']; // Ambil id_mahasiswa dari session
+$query = "SELECT bukti_pelunasan_ukt, bukti_pengisian_data_alumni FROM pengajuan_akademik WHERE id_mahasiswa = ?";
+$params = array($idMahasiswa);
+$stmt = sqlsrv_query($conn, $query, $params);
 
+$uploadedFiles = null;
+if ($stmt && sqlsrv_has_rows($stmt)) {
+    $uploadedFiles = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+}
 ?>
+
 
 <head>
 
@@ -82,7 +93,7 @@ session_start();
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="admin-akademik.php">
+                <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Admin Akademik</span></a>
             </li>
@@ -115,8 +126,6 @@ session_start();
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
@@ -227,84 +236,73 @@ session_start();
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-
-
                     <!-- Content Row for Profile -->
                     <div class="row">
 
                         <!-- Profile Card Example -->
                         <div class="col-xl-9 col-lg-7 mx-auto">
                             <div class="card shadow mb-4">
-                                <!-- Card Header -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Profile Mahasiswa</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Admin Akademik</h6>
                                 </div>
-                                <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="row">
-                                        <!-- Profile Picture and Name -->
-                                        <div class="col-md-4 d-flex flex-column align-items-center text-center">
-                                        <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>" alt="Foto Profil" class="img-fluid rounded-circle" style="width: 175px; height: 200px;">
+                                        <!-- Profile Form -->
+                                        <div class="col-md-12">
+                                            <div class="col-xl-12 mx-auto">
+                                                <div class="card-body">
+                                                    <form id="uploadForm" action="update-dokumen-akademik.php"
+                                                        method="POST" enctype="multipart/form-data">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>File</th>
+                                                                    <th>Choose File</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Bukti Pelunasan UKT</td>
+                                                                    <td>
+                                                                        <?php if ($uploadedFiles && $uploadedFiles['bukti_pelunasan_ukt']): ?>
+                                                                            <p><a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['bukti_pelunasan_ukt']); ?>"
+                                                                                    target="_blank">
+                                                                                    <?php echo htmlspecialchars($uploadedFiles['bukti_pelunasan_ukt']); ?>
+                                                                                </a></p>
+                                                                        <?php endif; ?>
+                                                                        <input type="file" name="dokumen1"
+                                                                            class="file-input" accept=".pdf, .docx">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Bukti Pengisian Data Alumni</td>
+                                                                    <td>
+                                                                        <?php if ($uploadedFiles && $uploadedFiles['bukti_pengisian_data_alumni']): ?>
+                                                                            <p><a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['bukti_pengisian_data_alumni']); ?>"
+                                                                                    target="_blank">
+                                                                                    <?php echo htmlspecialchars($uploadedFiles['bukti_pengisian_data_alumni']); ?>
+                                                                                </a></p>
+                                                                        <?php endif; ?>
+                                                                        <input type="file" name="dokumen2"
+                                                                            class="file-input" accept=".pdf, .docx">
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
 
-                                            <!-- Name Below Profile Picture -->
-                                            <h5 class="mt-3 font-weight-bold text-primary">
-                                                <?php echo htmlspecialchars($_SESSION['nama_mahasiswa']); ?>
-                                            </h5>
-                                            <!-- Edit Profile Button -->
-                                            <a href="edit-profil.php" class="btn btn-primary mt-2">
-                                                <i class="fas fa-pencil-alt"></i> Edit Profil
-                                            </a>
-
-                                        </div>
-
-                                        <!-- Profile Table -->
-                                        <div class="col-md-8">
-                                            <table class="table table-bordered">
-                                                <tr>
-                                                    <th>NIM</th>
-                                                    <td><?php echo htmlspecialchars($_SESSION['nim_mahasiswa']); ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Angkatan</th>
-                                                    <td><?php echo htmlspecialchars($_SESSION['angkatan_mahasiswa']); ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Jurusan</th>
-                                                    <td><?php echo htmlspecialchars($_SESSION['jurusan_mahasiswa']); ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Program Studi</th>
-                                                    <td><?php echo htmlspecialchars($_SESSION['prodi_mahasiswa']); ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Email</th>
-                                                    <td><?php echo htmlspecialchars($_SESSION['email_mahasiswa']); ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th>No. Telepon</th>
-                                                    <td><?php echo htmlspecialchars($_SESSION['no_telp_mahasiswa']); ?>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                                        </table>
+                                                        <button type="submit" class="btn btn-success mt-2"
+                                                            id="uploadButton" disabled>Upload Dokumen</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
-
-
                     </div>
                     <!-- End Content Row -->
-
-
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -368,6 +366,20 @@ session_start();
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+        const uploadButton = document.getElementById('uploadButton');
+        const fileInputs = uploadForm.querySelectorAll('input[type="file"]');
+
+        fileInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                // Check if both file inputs have a value
+                const allFilled = Array.from(fileInputs).every(fileInput => fileInput.files.length > 0);
+                uploadButton.disabled = !allFilled; // Enable or disable the button
+            });
+        });
+    </script>
 
 </body>
 

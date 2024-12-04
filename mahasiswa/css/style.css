@@ -4,3 +4,13 @@
     font-style: italic; /* Teks miring untuk memberi kesan tidak bisa diubah */
 }
 
+.sticky-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffffff; /* Anda bisa mengubah warna sesuai kebutuhan */
+    text-align: center;
+    padding: 10px 0; /* Menambahkan padding jika diperlukan */
+    z-index: 1000; /* Memastikan footer tetap di atas konten */
+}

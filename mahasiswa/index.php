@@ -82,7 +82,7 @@ session_start();
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="admin-akademik.php">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Admin Akademik</span></a>
             </li>
@@ -211,14 +211,6 @@ session_start();
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -325,7 +317,7 @@ session_start();
                     <div class="row">
 
                         <!-- Kalender Akademik -->
-                        <div class="col-xl-8 col-lg-7 mx-auto">
+                        <div class="col-xl-10 col-lg-7 mx-auto">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
