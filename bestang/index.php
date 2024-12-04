@@ -204,9 +204,9 @@ session_start();
                     <div class="card-body">
                       <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                          <div class="h5 mb-0 font-weight-bold text-primary">5</div>
+                          <div class="h5 mb-0 font-weight-bold text-primary jumlah_file_skripsi"> </div>
                           <div class="text-xs font-weight-bold mb-1">
-                            Jumlah Mahasiswa yang sudah mengupload File Laporan PKL
+                            Jumlah Mahasiswa yang sudah mengupload File Laporan Skripsi
                           </div>
                         </div>
                         <div class="col-auto">
@@ -223,9 +223,9 @@ session_start();
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
                           <div class="col mr-2">
-                            <div class="h5 text-info mb-0 font-weight-bold">7</div>
+                            <div class="h5 text-info mb-0 font-weight-bold jumlah_file_magang"> </div>
                             <div class="text-xs font-weight-bold mb-1">
-                              Jumlah Mahasiswa yang sudah mengupload File Laporan Skripsi
+                              Jumlah Mahasiswa yang sudah mengupload File Laporan Magang
                             </div>
                           </div>
                           <div class="col-auto">
@@ -242,9 +242,9 @@ session_start();
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
                           <div class="col mr-2">
-                            <div class="text-warning h5 text-info mb-0 font-weight-bold">18</div>
+                            <div class="text-warning h5 text-info mb-0 font-weight-bold jumlah_file_kompensasi"> </div>
                             <div class="text-xs font-weight-bold mb-1">
-                              Jumlah Mahasiswa yang sudah mengupload File Bebas Kompen
+                              Jumlah Mahasiswa yang sudah mengupload File Bebas Kompensasi
                             </div>
                           </div>
                           <div class="col-auto">
@@ -261,7 +261,7 @@ session_start();
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
                           <div class="col mr-2">
-                            <div class="h5 text-success mb-0 font-weight-bold">2</div>
+                            <div class="h5 text-success mb-0 font-weight-bold jumlah_file_TOEIC"> </div>
                             <div class="text-xs font-weight-bold mb-1">
                               Jumlah Mahasiswa yang sudah mengupload Scan TOEIC (min skor 450)
                             </div>
@@ -357,6 +357,33 @@ session_start();
       <!-- Page level custom scripts -->
       <script src="js/demo/chart-area-demo.js"></script>
       <script src="js/demo/chart-pie-demo.js"></script>
+
+      <script>
+function updateCardData() {
+    $.ajax({
+        url: 'get_data.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Update jumlah di card (Card 1: Laporan PKL, Card 2: Skripsi, Card 3: Bebas Kompen, Card 4: TOEIC)
+            $('.jumlah_file_skripsi').text(data.jumlah_laporan_magang);
+            $('.jumlah_file_magang').text(data.jumlah_laporan_skripsi);
+            $('.jumlah_file_kompensasi').text(data.jumlah_bebas_kompensasi);
+            $('.jumlah_file_TOEIC').text(data.jumlah_toeic);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+// Panggil fungsi updateCardData setiap 5 detik
+setInterval(updateCardData, 5000);
+
+
+              </script>
+
+        <script src="vendor/jquery/jquery.min.js"></script>
     </div>
   </body>
 </html>

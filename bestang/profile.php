@@ -3,7 +3,33 @@
 
 <?php
 session_start();
+include 'koneksi.php';
 
+if (!isset($_SESSION['role'])) {
+    die("Anda tidak memiliki akses.");
+}
+
+$role = $_SESSION['role']; // Ambil role dari session (sesuaikan dengan session yang digunakan)
+$sql = "SELECT nama, nip FROM Admin WHERE role = ?";
+$params = [$role];
+$stmt = sqlsrv_query($conn, $sql, $params);
+
+// Periksa apakah query berhasil
+if ($stmt === false) {
+    die(print_r(sqlsrv_errors(), true));
+}
+
+// Ambil data admin
+$data_admin = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+// Jika data tidak ditemukan
+if ($data_admin === null) {
+    die("Data admin tidak ditemukan.");
+}
+
+// Simpan data admin ke dalam session (jika diperlukan)
+$_SESSION['nama_admin'] = $data_admin['nama'];
+$_SESSION['nip_admin'] = $data_admin['nip'];
 ?>
 
   <head>
@@ -16,7 +42,7 @@ session_start();
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Bebas Tanggungan </title>
+    <title>SiBeTa - Akademik</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -66,10 +92,6 @@ session_start();
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
-
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
           <a
@@ -81,10 +103,42 @@ session_start();
             aria-controls="collapsePages"
           >
             <i class="fas fa-fw fa-folder"></i>
-            <span>Teknik Informatika</span>
+            <span>Sistem Informasi Bisnis</span>
           </a>
           <div
             id="collapseSIB"
+            class="collapse"
+            aria-labelledby="headingPages"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">List Kelas:</h6>
+              <a class="collapse-item" href="#">SIB - 4A</a>
+              <a class="collapse-item" href="#">SIB - 4B</a>
+              <a class="collapse-item" href="#">SIB - 4C</a>
+              <a class="collapse-item" href="#">SIB - 4D</a>
+              <a class="collapse-item" href="#">SIB - 4E</a>
+              <a class="collapse-item" href="#">SIB - 4F</a>
+              <a class="collapse-item" href="#">SIB - 4G</a>
+            </div>
+          </div>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#collapseTI"
+            aria-expanded="true"
+            aria-controls="collapsePages"
+          >
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Teknik Informatika</span>
+          </a>
+          <div
+            id="collapseTI"
             class="collapse"
             aria-labelledby="headingPages"
             data-parent="#accordionSidebar"
@@ -98,6 +152,7 @@ session_start();
               <a class="collapse-item" href="#">TI - 4E</a>
               <a class="collapse-item" href="#">TI - 4F</a>
               <a class="collapse-item" href="#">TI - 4G</a>
+              <a class="collapse-item" href="#">TI - 4H</a>
               <a class="collapse-item" href="#">TI - 4I</a>
             </div>
           </div>
@@ -131,7 +186,7 @@ session_start();
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
-             
+              
               <div class="topbar-divider d-none d-sm-block"></div>
 
               <!-- Nav Item - User Information -->
@@ -158,17 +213,9 @@ session_start();
                   class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                   aria-labelledby="userDropdown"
                 >
-                  <a class="dropdown-item" href="#">
+                  <a class="dropdown-item" href="profile.php">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
-                  </a>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
-                  </a>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
                   </a>
                   <div class="dropdown-divider"></div>
                   <a
@@ -191,110 +238,46 @@ session_start();
           <!-- Begin Page Content -->
           <div class="container-fluid">
             <!-- Page Heading -->
-            <div
-              class="d-sm-flex align-items-center justify-content-between mb-4"
-            >
-              <h1 class="h3 mb-0 text-gray-800">Welcome, <?php echo htmlspecialchars($_SESSION['nama_admin']); ?></h1>
-            </div>
-
-            <!-- Content Row -->
-            <div class="row">
-              <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-4 col-md-6 mb-4">
-                  <div class="card border-left-primary shadow h-100 py-2">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Profil Admin</h2>
+                    </div>
                     <div class="card-body">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="h5 mb-0 font-weight-bold text-primary">10</div>
-                          <div class="text-xs font-weight-bold mb-1">
-                            Jumlah Mahasiswa yang sudah mengupload File Laporan PKL
-                          </div>
+                        <div class="text-center">
+                            <img src="img/undraw_profile_3.svg" alt="Foto Profil" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
                         </div>
-                        <div class="col-auto">
-                          <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        <h3 class="text-center"><?php echo htmlspecialchars($_SESSION['nama_admin']); ?></h3>
+                        <p class="text-center">NIP : <?php echo htmlspecialchars($_SESSION['nip_admin']); ?></p>
+                        <div class="text-center">
+                            <a href="edit-profil.php" class="btn btn-primary">Edit Profile</a>
                         </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
+            </div>
+          </div>
+          <!-- End of Main Content -->
 
-                  <!-- Earnings (Monthly) Card Example -->
-                  <div class="col-xl-4 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2">
-                      <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                          <div class="col mr-2">
-                            <div class="h5 text-info mb-0 font-weight-bold">5</div>
-                            <div class="text-xs font-weight-bold mb-1">
-                              Jumlah Mahasiswa yang sudah mengupload File Laporan Skripsi
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Pending Requests Card Example -->
-                  <div class="col-xl-4 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
-                      <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                          <div class="col mr-2">
-                            <div class="text-warning h5 text-info mb-0 font-weight-bold">20</div>
-                            <div class="text-xs font-weight-bold mb-1">
-                              Jumlah Mahasiswa yang sudah mengupload File Bebas Kompen
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Additional Card -->
-                  <div class="col-xl-4 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                      <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                          <div class="col mr-2">
-                            <div class="h5 text-success mb-0 font-weight-bold">11</div>
-                            <div class="text-xs font-weight-bold mb-1">
-                              Jumlah Mahasiswa yang sudah mengupload Scan TOEIC (min skor 450)
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                  <!-- Footer -->
-                  <footer class="sticky-footer bg-white fixed-bottom" style= "padding: 5px 0 ;">
-                    <div class="container my-auto">
-                      <div class="copyright text-center my-auto">
-                        <span
-                          >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
-                        >
-                      </div>
-                    </div>
-                  </footer>
-                  <!-- End of Footer -->
-                </div>
-                <!-- End of Content Wrapper -->
+          <!-- Footer -->
+          <footer class="sticky-footer bg-white fixed-bottom" style="padding: 10px 0;">
+            <div class="container my-auto">
+              <div class="copyright text-center my-auto">
+                <span
+                  >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
+                >
               </div>
+            </div>
+          </footer>
+          <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+      </div>
       <!-- End of Page Wrapper -->
 
-            <!-- Scroll to Top Button-->
-            <a class="scroll-to-top rounded" href="#page-top">
-              <i class="fas fa-angle-up"></i>
-            </a>
+      <!-- Scroll to Top Button-->
+      <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+      </a>
 
       <!-- Logout Modal-->
       <div
