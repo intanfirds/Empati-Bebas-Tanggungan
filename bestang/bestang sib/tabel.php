@@ -38,7 +38,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SiBeta - Akademik</title>
+    <title>SiBeta - Bestang</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -250,15 +250,18 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                 <tbody>
                                     <?php
                                     include 'koneksi.php';
+                                    $program = 'Sistem Informasi Bisnis'; // Can be changed in one place
 
                                     $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, k.status 
-                                            FROM Mahasiswa m 
-                                            LEFT JOIN pengajuan_akademik p ON m.id = p.id_mahasiswa
-                                            LEFT JOIN konfirmasi_akademik k ON p.id = k.id_pengajuan
-                                            LEFT JOIN Angkatan a ON m.id_angkatan = a.id
-                                            order by m.nim asc";
+                                    FROM Mahasiswa m 
+                                    LEFT JOIN pengajuan_akademik p ON m.id = p.id_mahasiswa
+                                    LEFT JOIN konfirmasi_akademik k ON p.id = k.id_pengajuan
+                                    LEFT JOIN Angkatan a ON m.id_angkatan = a.id
+                                    WHERE m.prodi = ? 
+                                    ORDER BY m.nim ASC";
+                                    
+                                    $params = [$program]; // Bind the program name to the query
                                     $stmt = sqlsrv_query($conn, $query, $params);
-
                                     while ($data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                                         echo "<tr>";
                                         echo "<td>" . htmlspecialchars($data['nim']) . "</td>";
