@@ -202,22 +202,11 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa Prodi D - IV Sistem Informasi Bisnis </h6>
                     </div>
                     <div class="card-body">
                     <div class="mb-3">
                         <div class="row">
-                            <!-- Filter Prodi -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="filterProdi" class="form-label">Filter Prodi</label>
-                                    <select id="filterProdi" class="form-control">
-                                        <option value="">Semua Prodi</option>
-                                        <option value="Teknik Informatika">Teknik Informatika</option>
-                                        <option value="Sistem Informasi Bisnis">Sistem Informasi Bisnis</option>
-                                    </select>
-                                </div>
-                            </div>
 
                             <!-- Filter Angkatan -->
                             <div class="col-md-4">

@@ -62,44 +62,22 @@ session_start();
             <span>Beranda</span></a
           >
         </li>
-
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
-
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
-
-        <!-- Nav Item - Pages Collapse Menu -->
+      
+           <!-- Nav Item - Pages Mahasiswa -->
         <li class="nav-item">
           <a
             class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseSIB"
-            aria-expanded="true"
-            aria-controls="collapsePages"
+            href="tabel.php"
           >
             <i class="fas fa-fw fa-folder"></i>
-            <span>Sistem Informasi Bisnis</span>
+            <span>
+              Mahasiswa
+            </span>
           </a>
-          <div
-            id="collapseSIB"
-            class="collapse"
-            aria-labelledby="headingPages"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">List Kelas:</h6>
-              <a class="collapse-item" href="#">SIB - 4A</a>
-              <a class="collapse-item" href="#">SIB - 4B</a>
-              <a class="collapse-item" href="#">SIB - 4C</a>
-              <a class="collapse-item" href="#">SIB - 4D</a>
-              <a class="collapse-item" href="#">SIB - 4E</a>
-              <a class="collapse-item" href="#">SIB - 4F</a>
-              <a class="collapse-item" href="#">SIB - 4G</a>
-            </div>
-          </div>
+        </li>
+           
         </li>
 
         <!-- Divider -->
@@ -377,8 +355,8 @@ function updateCardData() {
     });
 }
 
-// Panggil fungsi updateCardData setiap 5 detik
-setInterval(updateCardData, 5000);
+        // Panggil fungsi updateCardData setiap 1000 detik
+        setInterval(updateCardData, 1000);
 
 
               </script>
