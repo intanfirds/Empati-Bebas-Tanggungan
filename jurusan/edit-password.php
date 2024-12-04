@@ -23,22 +23,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
         if ($data) {
-            // Debugging
-            echo "Password dari database: " . htmlspecialchars($data['password']) . "<br>";
-            echo "Password lama yang dimasukkan: " . htmlspecialchars($old_password) . "<br>";
+            // Debugging sementara
+            // echo "Password dari database: " . htmlspecialchars($data['password']) . "<br>";
+            // echo "Password lama yang dimasukkan: " . htmlspecialchars($old_password) . "<br>";
+            echo "Password dari database (asli): " . htmlspecialchars($data['password']) . "<br>";
 
             // Verifikasi password lama
-            if (password_verify($old_password, $data['password'])) {
-                // Update password baru
+            if ($old_password === $data['password']) {
+                // Hash dan simpan password baru
                 $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
                 $update_sql = "UPDATE [dbo].[Admin] SET password = ? WHERE nip = ?";
                 $update_params = [$hashed_password, $nip_admin];
                 $update_stmt = sqlsrv_query($conn, $update_sql, $update_params);
-
+        
                 if ($update_stmt) {
                     $success = "Password berhasil diubah.";
                 } else {
-                    $error = "Gagal mengubah password.";
+                    $error = "Gagal mengubah password: " . print_r(sqlsrv_errors(), true);
                 }
             } else {
                 $error = "Password lama salah.";
@@ -46,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $error = "Data admin tidak ditemukan.";
         }
+        
     }
 }
 ?>
@@ -61,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="container">
         <h2>Edit Password</h2>
- ```php
         <?php if (isset($error)): ?>
             <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
