@@ -58,17 +58,14 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
             pageLength: 25 // Mengatur panjang halaman default
         });
 
-        document.getElementById('filterProdi').addEventListener('change', filterTable);
         document.getElementById('filterAngkatan').addEventListener('change', filterTable);
         document.getElementById('filterStatus').addEventListener('change', filterTable);
 
         function filterTable() {
-            const prodiFilter = document.getElementById('filterProdi').value.toLowerCase();
             const angkatanFilter = document.getElementById('filterAngkatan').value;
             const statusFilter = document.getElementById('filterStatus').value.toLowerCase();
 
             // Menggunakan DataTables API untuk filter
-            table.column(2).search(prodiFilter, true, false); // Prodi
             table.column(3).search(angkatanFilter, true, false); // Angkatan
             table.column(4).search(statusFilter, true, false); // Status
 
@@ -202,7 +199,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa Prodi D - IV Sistem Informasi Bisnis </h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa Prodi D - IV Sistem Informasi Bisnis</h6>
                     </div>
                     <div class="card-body">
                     <div class="mb-3">
