@@ -191,9 +191,11 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                   <?php
                   $nim_mahasiswa = $_GET['nim'];
                   $query_files = "SELECT m.nama, m.nim, m.prodi, m.jurusan, p.bukti_pelunasan_ukt, 
-                                  p.bukti_pengisian_data_alumni, p.last_modified, p.path1, p.path2
+                                  p.bukti_pengisian_data_alumni, p.last_modified, p.path1, p.path2,
+                                  k.status
                                   FROM Mahasiswa m
                                   JOIN pengajuan_akademik p ON p.id_mahasiswa = m.id
+                                  JOIN konfirmasi_akademik k ON k.id_pengajuan = p.id 
                                   WHERE m.nim = ?";
                   $params_nim = [$nim_mahasiswa];
                   $stmt_files = sqlsrv_query($conn, $query_files, $params_nim);
@@ -264,21 +266,33 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       echo '<div class="card shadow-sm">';
                       echo '<div class="card-body">';
                       echo '<h5 class="card-title">Konfirmasi dan Komentar</h5>';
-                      echo '<form method="post" action="proses_konfirmasi.php">';
+                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '">';
                       echo '<div class="form-group">';
-                      echo '<label>Status Konfirmasi:</label>';
+                      echo '<label>Status Konfirmasi :</label>';
                       echo '<div class="form-check">';
-                      echo '<input class="form-check-input" type="radio" name="status" id="status_sesuai" value="sesuai" required>';
+                      echo '<input class="form-check-input" type="radio" name="status" id="status_sesuai" value="sesuai" ' . 
+                          (($data_mahasiswa['status'] === 'selesai') ? 'checked' : '') . '>';
                       echo '<label class="form-check-label" for="status_sesuai">Sesuai</label>';
                       echo '</div>';
                       echo '<div class="form-check">';
-                      echo '<input class="form-check-input" type="radio" name="status" id="status_tidak_sesuai" value="tidak_sesuai">';
+                      echo '<input class="form-check-input" type="radio" name="status" id="status_tidak_sesuai" value="tidak_sesuai" ' . 
+                          (($data_mahasiswa['status'] === 'Tidak Sesuai') ? 'checked' : '') . '>';
                       echo '<label class="form-check-label" for="status_tidak_sesuai">Tidak Sesuai</label>';
                       echo '</div>';
                       echo '</div>';
                       echo '<div class="form-group">';
-                      echo '<label for="komentar">Komentar:</label>';
-                      echo '<textarea class="form-control" id="komentar" name="komentar" rows="4" required></textarea>';
+                      $sql_komentar = "select k.komentar
+                                      FROM konfirmasi_akademik k
+                                      JOIN pengajuan_akademik p ON p.id = k.id_pengajuan
+                                      JOIN Mahasiswa m ON m.id = p.id_mahasiswa
+                                      WHERE m.nim = ?";
+                      $stmt_komentar = sqlsrv_query($conn, $sql_komentar, $params_nim);
+                      if ($stmt_komentar === false) {
+                          die(print_r(sqlsrv_errors(), true));
+                      }
+                      $data_komentar = sqlsrv_fetch_array($stmt_komentar, SQLSRV_FETCH_ASSOC);
+                      echo '<label for="komentar">Komentar :</label>';
+                      echo '<textarea class="form-control" id="komentar" name="komentar" rows="4">' . htmlspecialchars($data_komentar['komentar'] ?? '') . '</textarea>';
                       echo '</div>';
                       echo '<button type="submit" class="btn btn-success btn-block">Konfirmasi</button>';
                       echo '</form>';
@@ -293,8 +307,12 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </div>
           <!-- End of Main Content -->
 
-          <!-- Footer -->
-          <footer class="sticky-footer bg-white fixed-bottom" style="padding: 10px 0;">
+          
+          <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+         <!-- Footer -->
+          <footer class="sticky-footer bg-white">
             <div class="container my-auto">
               <div class="copyright text-center my-auto">
                 <span
@@ -303,9 +321,6 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
               </div>
             </div>
           </footer>
-          <!-- End of Footer -->
-        </div>
-        <!-- End of Content Wrapper -->
       </div>
       <!-- End of Page Wrapper -->
 

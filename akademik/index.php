@@ -252,22 +252,22 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </div>
           <!-- End of Main Content -->
 
-          <!-- Footer -->
-          <footer class="sticky-footer bg-white fixed-bottom" style="padding: 10px 0;">
-            <div class="container my-auto">
-              <div class="copyright text-center my-auto">
-                <span
-                  >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
-                >
-              </div>
-            </div>
-          </footer>
+          
           <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
+         <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                  <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                      <span
+                        >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
+                      >
+                    </div>
+                  </div>
+                </footer>
       </div>
       <!-- End of Page Wrapper -->
-
       <!-- Scroll to Top Button-->
       <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
