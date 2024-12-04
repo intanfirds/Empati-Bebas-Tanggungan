@@ -192,77 +192,62 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
             <!-- Content Row -->
             <div class="row">
-              <!-- Earnings (Monthly) Card Example -->
+              <!-- Card Mahasiswa yang telah mengirim bukti pembayaran UKT -->
               <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="h5 mb-0 font-weight-bold text-primary">
-                          3
+                  <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="h5 mb-0 font-weight-bold text-primary jumlah_bukti_pelunasan"></div>
+                          <div class="text-xs font-weight-bold mb-1">
+                            Jumlah Mahasiswa yang sudah mengupload File Bukti Pembayaran UKT
+                          </div>
                         </div>
-                        <div class="text-xs font-weight-bold mb-1">
-                          Jumlah Mahasiswa yang telah mengirim bukti pembayaran
-                          UKT
+                        <div class="col-auto">
+                          <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                         </div>
-                      </div>
-                      <div class="col-auto">
-                        <i
-                          class="fas fa-clipboard-list fa-2x text-gray-300"
-                        ></i>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Earnings (Monthly) Card Example -->
+              <!-- Card Mahasiswa yang telah mengirim bukti pengisian data alumni -->
               <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="h5 text-info mb-0 font-weight-bold">3</div>
-                        <div class="text-xs font-weight-bold mb-1">
-                          Jumlah Mahasiswa yang telah mengirim bukti pelunasan
-                          UKT
+                  <div class="card border-left-info shadow h-100 py-2">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="h5 text-info mb-0 font-weight-bold jumlah_bukti_pengisian"></div>
+                            <div class="text-xs font-weight-bold mb-1">
+                              Jumlah Mahasiswa yang sudah mengupload File Bukti Pengisian Data Alumni
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                          </div>
                         </div>
                       </div>
-                      <div class="col-auto">
-                        <i
-                          class="fas fa-clipboard-list fa-2x text-gray-300"
-                        ></i>
-                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
+                  </div>  
 
-              <!-- Pending Requests Card Example -->
+              <!-- Card Mahasiswa yang telah menyelesaikan Bebas Tanggungan Akademik -->
               <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div
-                          class="text-warning h5 text-info mb-0 font-weight-bold"
-                        >
-                          18
+                  <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="h5 text-success mb-0 font-weight-bold jumlah_selesai"></div>
+                          <div class="text-xs font-weight-bold mb-1">
+                          Jumlah Mahasiswa yang sudah menyelesaikan Bebas Tanggungan Akademik
+                          </div>
                         </div>
-                        <div class="text-xs font-weight-bold mb-1">
-                          Mahasiswa yang sudah menyelesaikan Bebas Tanggungan
-                          Akademik Jurusan
+                        <div class="col-auto">
+                          <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                         </div>
-                      </div>
-                      <div class="col-auto">
-                        <i
-                          class="fas fa-clipboard-list fa-2x text-gray-300"
-                        ></i>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </div>  
             </div>
           </div>
           <!-- End of Main Content -->
@@ -333,7 +318,28 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </div>
         </div>
       </div>
+      <script>
+      function updateCardData() {
+          $.ajax({
+              url: 'get_data.php',
+              method: 'GET',
+              dataType: 'json',
+              success: function(data) {
+                  // Update jumlah di card
+                  console.log(data);
+                  $('.jumlah_bukti_pelunasan').text(data.jumlah_bukti_pelunasan);
+                  $('.jumlah_bukti_pengisian').text(data.jumlah_bukti_pengisian);
+                  $('.jumlah_selesai').text(data.jumlah_selesai);
+              },
+              error: function(xhr, status, error) {
+                  console.error('Error fetching data:', error);
+              }
+          });
+      }
 
+      // Panggil fungsi updateCardData setiap 5 detik
+      setInterval(updateCardData, 1000);
+      </script>
       <!-- Bootstrap core JavaScript-->
       <script src="vendor/jquery/jquery.min.js"></script>
       <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

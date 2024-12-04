@@ -24,8 +24,11 @@ if (sqlsrv_execute($stmt)) {
             case 'Jurusan':
                 header("Location: /Empati-Bebas-Tanggungan/jurusan/index.php");
                 break;
-            case 'Bebas Tanggungan':
-                header("Location: /Empati-Bebas-Tanggungan/bestang/index.php");
+            case 'Admin TI':
+                header("Location: /Empati-Bebas-Tanggungan/bestang/bestang ti/index.php");
+                break;
+            case 'Admin SIB':
+                header("Location: /Empati-Bebas-Tanggungan/bestang/bestang sib/index.php");
                 break;
             case 'Akademik':
                 header("Location: /Empati-Bebas-Tanggungan/akademik/index.php");

@@ -285,7 +285,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                         // Ubah kondisi tombol pratinjau
                                         $status = strtolower(trim($data['status']?? 'Belum Mengisi')); // Normalisasi data status
                                         if (in_array($status, ['selesai', 'tidak sesuai', 'menunggu'])) {
-                                            echo "<a href='pratinjau.php?nim=" . htmlspecialchars($data['nim']) . "' class='btn btn-primary btn-sm'>Pratinjau</a>";
+                                            echo "<a href='pratinjau.php?nim=" . htmlspecialchars($data['nim']) . "' class='btn btn-primary'>Pratinjau</a>";
                                         } else {
                                             echo "-"; // Tampilkan tanda kosong untuk status lainnya
                                         }

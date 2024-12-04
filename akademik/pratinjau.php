@@ -183,7 +183,70 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           <!-- End of Topbar -->
 
           <!-- Main Content -->
-          
+          <div class="wrapper" style="padding-bottom: 60px;">
+            <div class="container">
+                <h1 class="h3 mb-4 text-gray-800 text-center">Pratinjau File Mahasiswa</h1>
+                <?php
+                $nim_mahasiswa = $_GET['nim'];
+                $query_files = "SELECT m.nama,m.nim, p.bukti_pelunasan_ukt, p.bukti_pengisian_data_alumni,
+                                p.last_modified, p.path1, p.path2
+                                FROM Mahasiswa m
+                                JOIN pengajuan_akademik p ON p.id_mahasiswa = m.id
+                                WHERE m.nim = ?";
+                $params_nim = [$nim_mahasiswa];
+                $stmt_files = sqlsrv_query($conn, $query_files, $params_nim);
+
+                if ($stmt_files === false) {
+                    die(print_r(sqlsrv_errors(), true));
+                }
+
+                // Tampilkan file jika ada
+                $files_exist = false;
+                while ($row = sqlsrv_fetch_array($stmt_files, SQLSRV_FETCH_ASSOC)) {
+                    $files_exist = true;
+                    echo '<div class="card mb-4 shadow-sm">';
+                    echo '<div class="card-body">';
+                    echo '<p class="card-text text-muted">' . htmlspecialchars($row['nama']) .' | '.htmlspecialchars($row['nim']). '</p>';
+                    echo '<hr>';
+                    echo '<p class="card-text text-muted">File yang diunggah : ' . htmlspecialchars($row['bukti_pelunasan_ukt']) . '</p>';
+                    echo '<a href="' . htmlspecialchars($row['path1']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
+                    echo '<hr>';
+                    echo '<p class="card-text text-muted">File yang diunggah : ' . htmlspecialchars($row['bukti_pengisian_data_alumni']) . '</p>';
+                    echo '<a href="' . htmlspecialchars($row['path2']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
+                    echo '<hr>';
+                    echo '<p class="card-text text-muted">Terakhir Dirubah: ' . 
+                        ($row['last_modified'] instanceof DateTime
+                        ? $row['last_modified']->format('d-m-Y')
+                        : 'Tanggal tidak valid') . '</p>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+
+                if (!$files_exist) {
+                    echo '<p class="text-center text-danger">Tidak ada file yang diunggah oleh mahasiswa ini.</p>';
+                }
+                ?>
+
+                <form method="post" action="proses_konfirmasi.php" class="mt-4">
+                    <div class="form-group">
+                        <label>Status Konfirmasi:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="status" id="status_sesuai" value="sesuai" required>
+                            <label class="form-check-label" for="status_sesuai">Sesuai</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="status" id="status_tidak_sesuai" value="tidak_sesuai">
+                            <label class="form-check-label" for="status_tidak_sesuai">Tidak Sesuai</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="komentar">Komentar:</label>
+                        <textarea class="form-control" id="komentar" name="komentar" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Konfirmasi</button>
+                </form>
+            </div>
+          </div>
           <!-- End of Main Content -->
 
           <!-- Footer -->
