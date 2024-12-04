@@ -65,70 +65,18 @@ session_start();
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseSIB"
-            aria-expanded="true"
-            aria-controls="collapsePages"
-          >
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Sistem Informasi Bisnis</span>
-          </a>
-          <div
-            id="collapseSIB"
-            class="collapse"
-            aria-labelledby="headingPages"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">List Kelas:</h6>
-              <a class="collapse-item" href="#">SIB - 4A</a>
-              <a class="collapse-item" href="#">SIB - 4B</a>
-              <a class="collapse-item" href="#">SIB - 4C</a>
-              <a class="collapse-item" href="#">SIB - 4D</a>
-              <a class="collapse-item" href="#">SIB - 4E</a>
-              <a class="collapse-item" href="#">SIB - 4F</a>
-              <a class="collapse-item" href="#">SIB - 4G</a>
-            </div>
-          </div>
-        </li>
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
+        <!-- Nav Item - Pages Mahasiswa -->
         <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseTI"
-            aria-expanded="true"
-            aria-controls="collapsePages"
-          >
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Teknik Informatika</span>
-          </a>
-          <div
-            id="collapseTI"
-            class="collapse"
-            aria-labelledby="headingPages"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">List Kelas:</h6>
-              <a class="collapse-item" href="#">TI - 4A</a>
-              <a class="collapse-item" href="#">TI - 4B</a>
-              <a class="collapse-item" href="#">TI - 4C</a>
-              <a class="collapse-item" href="#">TI - 4D</a>
-              <a class="collapse-item" href="#">TI - 4E</a>
-              <a class="collapse-item" href="#">TI - 4F</a>
-              <a class="collapse-item" href="#">TI - 4G</a>
-              <a class="collapse-item" href="#">TI - 4H</a>
-              <a class="collapse-item" href="#">TI - 4I</a>
-            </div>
-          </div>
+                  <a
+                    class="nav-link collapsed"
+                    href="tabel.php"
+                  >
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>
+                      Mahasiswa
+                    </span>
+                  </a>
         </li>
-
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 

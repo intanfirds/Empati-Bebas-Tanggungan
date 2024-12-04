@@ -92,8 +92,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 
-        <!-- Nav Item - Pages Mahasiswa -->
-        <li class="nav-item">
+         <!-- Nav Item - Pages Mahasiswa -->
+         <li class="nav-item">
           <a
             class="nav-link collapsed"
             href="tabel.php"
