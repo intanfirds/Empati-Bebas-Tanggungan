@@ -65,70 +65,20 @@ session_start();
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
-
-        <!-- Nav Item - Pages Collapse Menu -->
+        <!-- Nav Item - Pages Mahasiswa -->
         <li class="nav-item">
           <a
             class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseSIB"
-            aria-expanded="true"
-            aria-controls="collapsePages"
+            href="tabel.php"
           >
             <i class="fas fa-fw fa-folder"></i>
-            <span>Sistem Informasi Bisnis</span>
+            <span>
+              Mahasiswa
+            </span>
           </a>
-          <div
-            id="collapseSIB"
-            class="collapse"
-            aria-labelledby="headingPages"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">List Kelas:</h6>
-              <a class="collapse-item" href="#">SIB - 4A</a>
-              <a class="collapse-item" href="#">SIB - 4B</a>
-              <a class="collapse-item" href="#">SIB - 4C</a>
-              <a class="collapse-item" href="#">SIB - 4D</a>
-              <a class="collapse-item" href="#">SIB - 4E</a>
-              <a class="collapse-item" href="#">SIB - 4F</a>
-              <a class="collapse-item" href="#">SIB - 4G</a>
-            </div>
-          </div>
         </li>
-        <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseTI"
-            aria-expanded="true"
-            aria-controls="collapsePages"
-          >
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Teknik Informatika</span>
-          </a>
-          <div
-            id="collapseTI"
-            class="collapse"
-            aria-labelledby="headingPages"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">List Kelas:</h6>
-              <a class="collapse-item" href="#">TI - 4A</a>
-              <a class="collapse-item" href="#">TI - 4B</a>
-              <a class="collapse-item" href="#">TI - 4C</a>
-              <a class="collapse-item" href="#">TI - 4D</a>
-              <a class="collapse-item" href="#">TI - 4E</a>
-              <a class="collapse-item" href="#">TI - 4F</a>
-              <a class="collapse-item" href="#">TI - 4G</a>
-            </div>
-          </div>
-        </li>
+        
+ 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 
@@ -276,21 +226,24 @@ session_start();
                     </div>
                   </div>
                 </div>
-                  <!-- Footer -->
-                  <footer class="sticky-footer bg-white fixed-bottom" style="padding: 10px 0;">
+
+
+
+                </div>
+                <!-- End of Content Wrapper -->
+
+              </div>
+      <!-- End of Page Wrapper -->
+       
+                    <!-- Footer -->
+                   <footer class="sticky-footer bg-white " >
                     <div class="container my-auto">
                       <div class="copyright text-center my-auto">
-                        <span
-                          >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
-                        >
+                        <span>Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span>
                       </div>
                     </div>
                   </footer>
                   <!-- End of Footer -->
-                </div>
-                <!-- End of Content Wrapper -->
-              </div>
-      <!-- End of Page Wrapper -->
 
             <!-- Scroll to Top Button-->
             <a class="scroll-to-top rounded" href="#page-top">
