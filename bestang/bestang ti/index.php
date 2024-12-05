@@ -139,9 +139,6 @@ session_start();
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                   </a>
-                  <a class="dropdown-item" href="#">
-          
-                  </a>
                   
                   <div class="dropdown-divider"></div>
                   <a
@@ -250,13 +247,13 @@ session_start();
                 </div>
                   <!-- Footer -->
                   <footer class="sticky-footer bg-white fixed-bottom" style= "padding: 5px 0 ;">
-                    <div class="container my-auto">
+                    < class="container my-auto">
                       <div class="copyright text-center my-auto">
                         <span
                           >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
                         >
                       </div>
-                    </div>
+                    
                   </footer>
                   <!-- End of Footer -->
                 </div>

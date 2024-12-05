@@ -16,11 +16,26 @@ if ($conn === false) {
 }
 
 // Query untuk mendapatkan jumlah mahasiswa yang mengupload file
-$sql = "SELECT 
-            (SELECT COUNT(*) FROM [dbo].[pengajuan_prodi] WHERE [path1] IS NOT NULL) AS jumlah_laporan_skripsi,
-            (SELECT COUNT(*) FROM [dbo].[pengajuan_prodi] WHERE [path2] IS NOT NULL) AS jumlah_laporan_magang,
-            (SELECT COUNT(*) FROM [dbo].[pengajuan_prodi] WHERE [path3] IS NOT NULL) AS jumlah_bebas_kompensasi,
-            (SELECT COUNT(*) FROM [dbo].[pengajuan_prodi] WHERE [path4] IS NOT NULL) AS jumlah_toeic";
+$sql = "
+SELECT 
+    (SELECT COUNT(*) 
+     FROM pengajuan_prodi p
+     JOIN Mahasiswa m ON p.id_mahasiswa = m.id
+     WHERE m.prodi = 'Teknik Informatika' AND p.path1 IS NOT NULL) AS jumlah_laporan_skripsi,
+    (SELECT COUNT(*) 
+     FROM pengajuan_prodi p
+     JOIN Mahasiswa m ON p.id_mahasiswa = m.id
+     WHERE m.prodi = 'Teknik Informatika' AND p.path2 IS NOT NULL) AS jumlah_laporan_magang,
+    (SELECT COUNT(*) 
+     FROM pengajuan_prodi p
+     JOIN Mahasiswa m ON p.id_mahasiswa = m.id
+     WHERE m.prodi = 'Teknik Informatika' AND p.path3 IS NOT NULL) AS jumlah_bebas_kompensasi,
+    (SELECT COUNT(*) 
+     FROM pengajuan_prodi p
+     JOIN Mahasiswa m ON p.id_mahasiswa = m.id
+     WHERE m.prodi = 'Teknik Informatika' AND p.path4 IS NOT NULL) AS jumlah_toeic;
+";
+
 $stmt = sqlsrv_query($conn, $sql);
 
 // Cek hasil query

@@ -250,7 +250,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                 <tbody>
                                     <?php
                                     include 'koneksi.php';
-                                    $program = 'Teknik Informatik'; // Can be changed in one place
+                                    $program = 'Teknik Informatika'; // Can be changed in one place
 
                                     $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, k.status 
                                     FROM Mahasiswa m 
