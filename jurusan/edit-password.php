@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "Password dari database (asli): " . htmlspecialchars($data['password']) . "<br>";
 
             // Verifikasi password lama
-            if ($old_password === $data['password']) {
+            if (password_verify($old_password, $data['password'])) {
                 // Hash dan simpan password baru
                 $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
                 $update_sql = "UPDATE [dbo].[Admin] SET password = ? WHERE nip = ?";
