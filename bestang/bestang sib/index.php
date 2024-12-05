@@ -77,9 +77,7 @@ session_start();
             </span>
           </a>
         </li>
-           
         </li>
-
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 
@@ -327,32 +325,28 @@ session_start();
       <!-- Page level custom scripts -->
       <script src="js/demo/chart-area-demo.js"></script>
       <script src="js/demo/chart-pie-demo.js"></script>
-
       <script>
-function updateCardData() {
-    $.ajax({
-        url: 'get_data.php',
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // Update jumlah di card (Card 1: Laporan PKL, Card 2: Skripsi, Card 3: Bebas Kompen, Card 4: TOEIC)
-            $('.jumlah_file_skripsi').text(data.jumlah_laporan_magang);
-            $('.jumlah_file_magang').text(data.jumlah_laporan_skripsi);
-            $('.jumlah_file_kompensasi').text(data.jumlah_bebas_kompensasi);
-            $('.jumlah_file_TOEIC').text(data.jumlah_toeic);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
+          function updateCardData() {
+              $.ajax({
+                  url: 'get_data.php',
+                  method: 'GET',
+                  dataType: 'json',
+                  success: function(data) {
+                      // Update jumlah di card (Card 1: Laporan PKL, Card 2: Skripsi, Card 3: Bebas Kompen, Card 4: TOEIC)
+                      $('.jumlah_file_skripsi').text(data.jumlah_laporan_magang);
+                      $('.jumlah_file_magang').text(data.jumlah_laporan_skripsi);
+                      $('.jumlah_file_kompensasi').text(data.jumlah_bebas_kompensasi);
+                      $('.jumlah_file_TOEIC').text(data.jumlah_toeic);
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('Error fetching data:', error);
+                  }
+              });
+          }
 
         // Panggil fungsi updateCardData setiap 1000 detik
         setInterval(updateCardData, 1000);
-
-
-              </script>
-
+        </script>
         <script src="vendor/jquery/jquery.min.js"></script>
     </div>
   </body>
