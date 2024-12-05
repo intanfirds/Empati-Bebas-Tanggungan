@@ -266,7 +266,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       echo '<div class="card shadow-sm">';
                       echo '<div class="card-body">';
                       echo '<h5 class="card-title">Konfirmasi dan Komentar</h5>';
-                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '">';
+                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '" enctype="multipart/form-data">';
                       echo '<div class="form-group">';
                       echo '<label>Status Konfirmasi :</label>';
                       echo '<div class="form-check">';
