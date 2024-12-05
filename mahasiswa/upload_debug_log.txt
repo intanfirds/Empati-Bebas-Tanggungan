@@ -1,0 +1,90 @@
+[2024-12-04 15:38:18] ID Mahasiswa: 3
+[2024-12-04 15:38:18] Files: Array
+(
+    [dokumen1] => Array
+        (
+            [name] => python zero to hero.pdf
+            [full_path] => python zero to hero.pdf
+            [type] => application/pdf
+            [tmp_name] => C:\Users\T14\AppData\Local\Temp\php76BB.tmp
+            [error] => 0
+            [size] => 686644
+        )
+
+    [dokumen2] => Array
+        (
+            [name] => python zero to hero.pdf
+            [full_path] => python zero to hero.pdf
+            [type] => application/pdf
+            [tmp_name] => C:\Users\T14\AppData\Local\Temp\php76BC.tmp
+            [error] => 0
+            [size] => 686644
+        )
+
+)
+
+[2024-12-04 15:38:18] Existing Files: 
+[2024-12-04 15:38:18] Dokumen1 Path: uploads/6750776a52c6f_python zero to hero.pdf
+[2024-12-04 15:38:18] Berhasil update dokumen1
+[2024-12-04 15:38:18] Dokumen2 Path: uploads/6750776a53744_python zero to hero.pdf
+[2024-12-04 15:38:18] Berhasil update dokumen2
+[2024-12-04 15:38:37] ID Mahasiswa: 3
+[2024-12-04 15:38:37] Files: Array
+(
+    [dokumen1] => Array
+        (
+            [name] => Modul Praktikum 16 - Konfigurasi Router Cisco-2 (1).docx
+            [full_path] => Modul Praktikum 16 - Konfigurasi Router Cisco-2 (1).docx
+            [type] => application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            [tmp_name] => C:\Users\T14\AppData\Local\Temp\phpC172.tmp
+            [error] => 0
+            [size] => 86751
+        )
+
+    [dokumen2] => Array
+        (
+            [name] => Jobsheet W08 - Abstract Class.docx
+            [full_path] => Jobsheet W08 - Abstract Class.docx
+            [type] => application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            [tmp_name] => C:\Users\T14\AppData\Local\Temp\phpC183.tmp
+            [error] => 0
+            [size] => 508036
+        )
+
+)
+
+[2024-12-04 15:38:37] Existing Files: 
+[2024-12-04 15:38:37] Dokumen1 Path: uploads/6750777d70f94_Modul Praktikum 16 - Konfigurasi Router Cisco-2 (1).docx
+[2024-12-04 15:38:37] Berhasil update dokumen1
+[2024-12-04 15:38:37] Dokumen2 Path: uploads/6750777d71791_Jobsheet W08 - Abstract Class.docx
+[2024-12-04 15:38:37] Berhasil update dokumen2
+[2024-12-04 15:39:22] ID Mahasiswa: 3
+[2024-12-04 15:39:22] Files: Array
+(
+    [dokumen1] => Array
+        (
+            [name] => SIB - 3C.pdf
+            [full_path] => SIB - 3C.pdf
+            [type] => application/pdf
+            [tmp_name] => C:\Users\T14\AppData\Local\Temp\php72F2.tmp
+            [error] => 0
+            [size] => 87971
+        )
+
+    [dokumen2] => Array
+        (
+            [name] => SIB - 2A.pdf
+            [full_path] => SIB - 2A.pdf
+            [type] => application/pdf
+            [tmp_name] => C:\Users\T14\AppData\Local\Temp\php72F3.tmp
+            [error] => 0
+            [size] => 88777
+        )
+
+)
+
+[2024-12-04 15:39:22] Existing Files: 
+[2024-12-04 15:39:22] Dokumen1 Path: uploads/675077aada495_SIB - 3C.pdf
+[2024-12-04 15:39:22] Berhasil update dokumen1
+[2024-12-04 15:39:22] Dokumen2 Path: uploads/675077aadb1c1_SIB - 2A.pdf
+[2024-12-04 15:39:22] Berhasil update dokumen2
