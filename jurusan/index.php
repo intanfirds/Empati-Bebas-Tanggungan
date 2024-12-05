@@ -331,7 +331,7 @@ function updateCardData() {
 }
 
 // Panggil fungsi updateCardData setiap 5 detik
-setInterval(updateCardData, 5000);
+setInterval(updateCardData, 1000);
 </script>
 <script src="vendor/jquery/jquery.min.js"></script>
     </div>
