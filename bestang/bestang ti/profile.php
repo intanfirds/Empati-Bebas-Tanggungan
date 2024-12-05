@@ -198,6 +198,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                         <p class="text-center">NIP : <?php echo htmlspecialchars($_SESSION['nip_admin']); ?></p>
                         <div class="text-center">
                             <a href="edit-profil.php" class="btn btn-primary">Edit Profile</a>
+                            <a href="edit-password.php" class="btn btn-success">Edit Password</a>
                         </div>
                     </div>
                 </div>
