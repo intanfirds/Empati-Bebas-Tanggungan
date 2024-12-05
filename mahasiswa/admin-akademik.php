@@ -14,12 +14,19 @@ $uploadedFiles = null;
 if ($stmt && sqlsrv_has_rows($stmt)) {
     $uploadedFiles = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 }
+
+// Ambil data status dan komentar dari tabel konfirmasi_akademik
+$queryStatus = "SELECT status, komentar FROM konfirmasi_akademik WHERE id_pengajuan = (SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?) ORDER BY last_modified DESC";
+$stmtStatus = sqlsrv_query($conn, $queryStatus, array($idMahasiswa));
+
+$statusComment = null;
+if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
+    $statusComment = sqlsrv_fetch_array($stmtStatus, SQLSRV_FETCH_ASSOC);
+}
 ?>
 
 
 <head>
-
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -36,6 +43,29 @@ if ($stmt && sqlsrv_has_rows($stmt)) {
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .status-menunggu {
+            background-color: yellow;
+            color: black;
+        }
+
+        .status-diterima {
+            background-color: rgba(0, 128, 0, 0.64);
+            color: white;
+        }
+
+        .status-ditolak {
+            background-color: rgba(255, 0, 0, 0.726);
+            color: white;
+        }
+
+        .komentar {
+            background-color: rgba(0, 143, 252, 0.513);
+            /* Warna hijau untuk komentar */
+            color: white;
+        }
+    </style>
 
 
 </head>
@@ -289,7 +319,6 @@ if ($stmt && sqlsrv_has_rows($stmt)) {
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
-
                                                         </table>
                                                         <button type="submit" class="btn btn-success mt-2"
                                                             id="uploadButton" disabled>Upload Dokumen</button>
@@ -302,6 +331,64 @@ if ($stmt && sqlsrv_has_rows($stmt)) {
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+
+
+                        <!-- Profile Card Example -->
+                        <div class="col-xl-9 col-lg-7 mx-auto">
+                            <div class="card shadow mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Status Pengajuan</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="col-xl-12 mx-auto">
+                                                <div class="col-md-12">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Status</th>
+                                                                <th>Komentar</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php if ($statusComment): ?>
+                                                                <tr>
+                                                                    <td class="<?php
+                                                                    if ($statusComment['status'] == 'Selesai') {
+                                                                        echo 'status-diterima';
+                                                                    } elseif ($statusComment['status'] == 'Ditolak') {
+                                                                        echo 'status-ditolak';
+                                                                    } else {
+                                                                        echo 'status-menunggu';
+                                                                    }
+                                                                    ?>">
+                                                                        <?php echo htmlspecialchars($statusComment['status']) ? htmlspecialchars($statusComment['status']) : 'Menunggu Admin'; ?>
+                                                                    </td>
+                                                                    <td class="komentar">
+                                                                        <?php echo htmlspecialchars($statusComment['komentar']) ? htmlspecialchars($statusComment['komentar']) : 'Belum ada komentar'; ?>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php else: ?>
+                                                                <tr>
+                                                                    <td colspan="2" class="text-center">Belum ada status
+                                                                        atau komentar</td>
+                                                                </tr>
+                                                            <?php endif; ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <!-- End Content Row -->
                 </div>
                 <!-- /.container-fluid -->

@@ -99,6 +99,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+    // Update atau insert ke tabel konfirmasi_akademik
+    $queryCheckKonfirmasi = "SELECT * FROM konfirmasi_akademik WHERE id_pengajuan = (
+        SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?
+    )";
+    $stmtCheckKonfirmasi = sqlsrv_query($conn, $queryCheckKonfirmasi, array($idMahasiswa));
+    if ($stmtCheckKonfirmasi === false) {
+        die("Query SELECT konfirmasi_akademik gagal: " . print_r(sqlsrv_errors(), true));
+    }
+
+    $idAdmin = 1; // Ganti dengan ID admin yang sesuai jika ada, atau ID default jika tidak.
+
+    if (!sqlsrv_has_rows($stmtCheckKonfirmasi)) {
+        // Jika belum ada entri, tambahkan entri baru dengan id_admin
+        $queryInsertKonfirmasi = "INSERT INTO konfirmasi_akademik (id_pengajuan, id_admin, status, komentar, last_modified) VALUES (
+            (SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?), ?, 'Menunggu', 'Menunggu', GETDATE()
+        )";
+        $stmtInsertKonfirmasi = sqlsrv_query($conn, $queryInsertKonfirmasi, array($idMahasiswa, $idAdmin));
+        if ($stmtInsertKonfirmasi === false) {
+            die("Query INSERT konfirmasi_akademik gagal: " . print_r(sqlsrv_errors(), true));
+        }
+    } else {
+        // Jika entri sudah ada, perbarui status dan komentar
+        $queryUpdateKonfirmasi = "UPDATE konfirmasi_akademik SET status = 'Menunggu', komentar = 'Menunggu', last_modified = GETDATE() WHERE id_pengajuan = (
+            SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?
+        )";
+        $stmtUpdateKonfirmasi = sqlsrv_query($conn, $queryUpdateKonfirmasi, array($idMahasiswa));
+        if ($stmtUpdateKonfirmasi === false) {
+            die("Query UPDATE konfirmasi_akademik gagal: " . print_r(sqlsrv_errors(), true));
+        }
+    }
+
     header('Location: admin-akademik.php');
     exit;
 } else {
