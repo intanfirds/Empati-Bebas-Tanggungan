@@ -276,7 +276,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       echo '</div>';
                       echo '<div class="form-check">';
                       echo '<input class="form-check-input" type="radio" name="status" id="status_tidak_sesuai" value="tidak_sesuai" ' . 
-                          (($data_mahasiswa['status'] === 'Tidak Sesuai') ? 'checked' : '') . '>';
+                          (($data_mahasiswa['status'] === 'tidak sesuai') ? 'checked' : '') . '>';
                       echo '<label class="form-check-label" for="status_tidak_sesuai">Tidak Sesuai</label>';
                       echo '</div>';
                       echo '</div>';
