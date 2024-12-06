@@ -264,8 +264,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                             echo '<a href="' . htmlspecialchars($data_mahasiswa['path3']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
                         } 
                     } else {
-                        // Jika mahasiswa tidak memiliki status bebas kompensasi
-                        
+                        // Jika mahasiswa tidak memiliki tanggungan  kompensasi
+                        echo '<p class="card-text">File Bebas Kompensasi :</p>';
                         echo '<p class="card-text">Mahasiswa tidak memiliki tanggungan kompensasi.</p>';
                     }
                       if (!empty($data_mahasiswa['nilai_toeic'])) {

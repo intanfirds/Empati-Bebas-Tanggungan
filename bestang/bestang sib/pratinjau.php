@@ -256,18 +256,19 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                           echo '<a href="' . htmlspecialchars($data_mahasiswa['path2']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
                       }
                       if (!empty($data_mahasiswa['bebas_kompensasi'])) {
-                        echo '<p class="card-text">File Bebas Kompensasi :</p>';
-                        echo '<a href="' . htmlspecialchars($data_mahasiswa['path1']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
-                        // Periksa apakah file tersedia
-                        if (!empty($data_mahasiswa['path3'])) {
-                            // Jika file tersedia
-                            echo '<a href="' . htmlspecialchars($data_mahasiswa['path3']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
-                        } 
-                    } else {
-                        // Jika mahasiswa tidak memiliki status bebas kompensasi
+                        echo '<p class="card-text">File Bebas Kompensasi:</p>';
                         
-                        echo '<p class="card-text">Mahasiswa tidak memiliki tanggungan kompensasi.</p>';
+                        if (!empty($data_mahasiswa['path3'])) {
+                            echo '<a href="' . htmlspecialchars($data_mahasiswa['path3']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
+                        } else {
+                            echo '<p class="card-text text-danger">File Bebas Kompensasi tidak diunggah.</p>';
+                        }
+                    } else {
+                        // Jika mahasiswa tidak memiliki tanggungan kompensasi
+                        echo '<p class="card-text">File Bebas Kompensasi:</p>';
+                        echo '<p class="card-text text-danger">Mahasiswa tidak memiliki tanggungan kompensasi.</p>';
                     }
+                    
                       if (!empty($data_mahasiswa['nilai_toeic'])) {
                         echo '<p class="card-text">File Nilai TOEIC :</p>';
                         echo '<a href="' . htmlspecialchars($data_mahasiswa['path2']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
