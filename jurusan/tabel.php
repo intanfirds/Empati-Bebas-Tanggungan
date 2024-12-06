@@ -267,8 +267,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
                                     $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, k.status 
                                             FROM Mahasiswa m 
-                                            LEFT JOIN pengajuan_akademik p ON m.id = p.id_mahasiswa
-                                            LEFT JOIN konfirmasi_akademik k ON p.id = k.id_pengajuan
+                                            LEFT JOIN pengajuan_jurusan p ON m.id = p.id_mahasiswa
+                                            LEFT JOIN konfirmasi_admin_jurusan k ON p.id = k.id_pengajuan
                                             LEFT JOIN Angkatan a ON m.id_angkatan = a.id
                                             order by m.nim asc";
                                     $stmt = sqlsrv_query($conn, $query, $params);
