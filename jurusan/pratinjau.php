@@ -190,12 +190,12 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                   
                   <?php
                   $nim_mahasiswa = $_GET['nim'];
-                  $query_files = "SELECT m.nama, m.nim, m.prodi, m.jurusan, p.bukti_pelunasan_ukt, 
-                                  p.bukti_pengisian_data_alumni, p.last_modified, p.path1, p.path2,
+                  $query_files = "SELECT m.nama, m.nim, m.prodi, m.jurusan, p.file_bukti_publikasi, 
+                                  p.path1, p.file_skripsi, p.path2, p.hasil_akhir_skripsi, p.path3, p.last_modified,
                                   k.status
                                   FROM Mahasiswa m
-                                  JOIN pengajuan_akademik p ON p.id_mahasiswa = m.id
-                                  JOIN konfirmasi_akademik k ON k.id_pengajuan = p.id 
+                                  JOIN pengajuan_jurusan p ON p.id_mahasiswa = m.id
+                                  JOIN konfirmasi_admin_jurusan k ON k.id_pengajuan = p.id 
                                   WHERE m.nim = ?";
                   $params_nim = [$nim_mahasiswa];
                   $stmt_files = sqlsrv_query($conn, $query_files, $params_nim);
@@ -247,14 +247,18 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       echo '<div class="card shadow-sm">';
                       echo '<div class="card-body">';
                       echo '<h5 class="card-title">Data File</h5>';
-                      if (!empty($data_mahasiswa['bukti_pelunasan_ukt'])) {
-                          echo '<p class="card-text">File Bukti Pelunasan UKT:</p>';
+                      if (!empty($data_mahasiswa['file_bukti_publikasi'])) {
+                          echo '<p class="card-text">File Bukti Publikasi:</p>';
                           echo '<a href="' . htmlspecialchars($data_mahasiswa['path1']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
                       }
-                      if (!empty($data_mahasiswa['bukti_pengisian_data_alumni'])) {
-                          echo '<p class="card-text">File Bukti Pengisian Data Alumni:</p>';
+                      if (!empty($data_mahasiswa['file_skripsi'])) {
+                          echo '<p class="card-text">File Skripsi:</p>';
                           echo '<a href="' . htmlspecialchars($data_mahasiswa['path2']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
                       }
+                      if (!empty($data_mahasiswa['hasil_akhir_skripsi'])) {
+                        echo '<p class="card-text">File Hasil Akhir Skripsi:</p>';
+                        echo '<a href="' . htmlspecialchars($data_mahasiswa['path3']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
+                    }
                       echo '<p class="card-text"><strong>Terakhir Dirubah:</strong> ' . 
                           ($data_mahasiswa['last_modified'] instanceof DateTime
                           ? $data_mahasiswa['last_modified']->format('d-m-Y')
