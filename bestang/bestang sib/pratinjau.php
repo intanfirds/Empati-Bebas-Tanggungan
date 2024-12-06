@@ -42,7 +42,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Prodi</title>
+    <title>SiBeTa - Admin Prodi</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -241,14 +241,14 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
                       // Row untuk data file dan konfirmasi/komentar
                       echo '<div class="row mb-4">';
-                      
+      
                       // Kolom untuk data file
                       echo '<div class="col-md-6">';
                       echo '<div class="card shadow-sm">';
                       echo '<div class="card-body">';
                       echo '<h5 class="card-title">Data File</h5>';
                       if (!empty($data_mahasiswa['distribusi_laporan_skripsi'])) {
-                          echo '<p class="card-text">File Laporan Skripsi:</p>';
+                          echo '<p class="card-text">File Laporan Skripsi :</p>';
                           echo '<a href="' . htmlspecialchars($data_mahasiswa['path1']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
                       }
                       if (!empty($data_mahasiswa['distribusi_laporan_magang'])) {
@@ -257,10 +257,19 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       }
                       if (!empty($data_mahasiswa['bebas_kompensasi'])) {
                         echo '<p class="card-text">File Bebas Kompensasi :</p>';
-                        echo '<a href="' . htmlspecialchars($data_mahasiswa['path3']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
-                      }
+                        echo '<a href="' . htmlspecialchars($data_mahasiswa['path1']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
+                        // Periksa apakah file tersedia
+                        if (!empty($data_mahasiswa['path3'])) {
+                            // Jika file tersedia
+                            echo '<a href="' . htmlspecialchars($data_mahasiswa['path3']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
+                        } 
+                    } else {
+                        // Jika mahasiswa tidak memiliki status bebas kompensasi
+                        
+                        echo '<p class="card-text">Mahasiswa tidak memiliki tanggungan kompensasi.</p>';
+                    }
                       if (!empty($data_mahasiswa['nilai_toeic'])) {
-                        echo '<p class="card-text">File Nilai TOEIC:</p>';
+                        echo '<p class="card-text">File Nilai TOEIC :</p>';
                         echo '<a href="' . htmlspecialchars($data_mahasiswa['path2']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
                       }
                       echo '<p class="card-text"><strong>Terakhir Dirubah:</strong> ' . 
@@ -268,7 +277,6 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                           ? $data_mahasiswa['last_modified']->format('d-m-Y')
                           : 'Tanggal tidak valid') . '</p>';
                       echo '</div></div></div>'; // Close card and column
-
                       // Kolom untuk konfirmasi dan komentar
                       echo '<div class="col-md-6">';
                       echo '<div class="card shadow-sm">';
