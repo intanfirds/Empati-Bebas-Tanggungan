@@ -4,30 +4,23 @@
     font-style: italic; /* Teks miring untuk memberi kesan tidak bisa diubah */
 }
 
-.sticky-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #ffffff; /* Anda bisa mengubah warna sesuai kebutuhan */
-    text-align: center;
-    padding: 10px 0; /* Menambahkan padding jika diperlukan */
-    z-index: 1000; /* Memastikan footer tetap di atas konten */
-}
-
 .status-menunggu {
     background-color: yellow;
     color: black;
 }
+
 .status-diterima {
     background-color: rgba(0, 128, 0, 0.64);
-    color: white;
+    color: black;
 }
+
 .status-ditolak {
     background-color: rgba(255, 0, 0, 0.726);
-    color: white;
+    color: black;
 }
+
 .komentar {
-    background-color: rgba(0, 143, 252, 0.513); /* Warna hijau untuk komentar */
-    color: white;
+    background-color: rgba(0, 143, 252, 0.513);
+    /* Warna hijau untuk komentar */
+    color: black;
 }

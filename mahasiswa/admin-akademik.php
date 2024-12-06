@@ -43,30 +43,7 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .status-menunggu {
-            background-color: yellow;
-            color: black;
-        }
-
-        .status-diterima {
-            background-color: rgba(0, 128, 0, 0.64);
-            color: white;
-        }
-
-        .status-ditolak {
-            background-color: rgba(255, 0, 0, 0.726);
-            color: white;
-        }
-
-        .komentar {
-            background-color: rgba(0, 143, 252, 0.513);
-            /* Warna hijau untuk komentar */
-            color: white;
-        }
-    </style>
-
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -357,9 +334,9 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                                                             <?php if ($statusComment): ?>
                                                                 <tr>
                                                                     <td class="<?php
-                                                                    if ($statusComment['status'] == 'Selesai') {
+                                                                    if ($statusComment['status'] == 'selesai') {
                                                                         echo 'status-diterima';
-                                                                    } elseif ($statusComment['status'] == 'Ditolak') {
+                                                                    } elseif ($statusComment['status'] == 'tidak sesuai') {
                                                                         echo 'status-ditolak';
                                                                     } else {
                                                                         echo 'status-menunggu';

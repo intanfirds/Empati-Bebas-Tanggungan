@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Query SELECT konfirmasi_akademik gagal: " . print_r(sqlsrv_errors(), true));
     }
 
-    $idAdmin = 1; // Ganti dengan ID admin yang sesuai jika ada, atau ID default jika tidak.
+    $idAdmin = 3; // Ganti dengan ID admin yang sesuai jika ada, atau ID default jika tidak.
 
     if (!sqlsrv_has_rows($stmtCheckKonfirmasi)) {
         // Jika belum ada entri, tambahkan entri baru dengan id_admin
