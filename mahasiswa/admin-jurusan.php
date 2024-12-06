@@ -272,15 +272,16 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                                                                 <tr>
                                                                     <td>Bukti Publikasi</td>
                                                                     <td>
-                                                                        <?php if ($uploadedFiles && $uploadedFiles['bukti_publikasi']): ?>
-                                                                            <p><a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['bukti_publikasi']); ?>"
+                                                                        <?php if (isset($uploadedFiles['file_bukti_publikasi']) && $uploadedFiles['file_bukti_publikasi']): ?>
+                                                                            <p><a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['file_bukti_publikasi']); ?>"
                                                                                     target="_blank">
-                                                                                    <?php echo htmlspecialchars($uploadedFiles['bukti_publikasi']); ?>
+                                                                                    <?php echo htmlspecialchars($uploadedFiles['file_bukti_publikasi']); ?>
                                                                                 </a></p>
                                                                         <?php endif; ?>
                                                                         <input type="file" name="dokumen1"
                                                                             class="file-input" accept=".pdf, .docx">
                                                                     </td>
+
                                                                 </tr>
                                                                 <tr>
                                                                     <td>File Skripsi</td>
@@ -296,16 +297,16 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                                                                     </td>
                                                                 </tr>
                                                                 <td>Hasil Akhir Skripsi</td>
-                                                                    <td>
-                                                                        <?php if ($uploadedFiles && $uploadedFiles['hasil_akhir_skripsi']): ?>
-                                                                            <p><a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['hasil_akhir_skripsi']); ?>"
-                                                                                    target="_blank">
-                                                                                    <?php echo htmlspecialchars($uploadedFiles['hasil_akhir_skripsi']); ?>
-                                                                                </a></p>
-                                                                        <?php endif; ?>
-                                                                        <input type="file" name="dokumen3"
-                                                                            class="file-input" accept=".zip">
-                                                                    </td>
+                                                                <td>
+                                                                    <?php if ($uploadedFiles && $uploadedFiles['hasil_akhir_skripsi']): ?>
+                                                                        <p><a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['hasil_akhir_skripsi']); ?>"
+                                                                                target="_blank">
+                                                                                <?php echo htmlspecialchars($uploadedFiles['hasil_akhir_skripsi']); ?>
+                                                                            </a></p>
+                                                                    <?php endif; ?>
+                                                                    <input type="file" name="dokumen3"
+                                                                        class="file-input" accept=".zip">
+                                                                </td>
                                                             </tbody>
                                                         </table>
                                                         <button type="submit" class="btn btn-success mt-2"

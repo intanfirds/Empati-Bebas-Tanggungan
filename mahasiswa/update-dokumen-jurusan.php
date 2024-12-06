@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Update atau insert ke tabel konfirmasi_akademik
+    // Update atau insert ke tabel konfirmasi_jurusan
     $queryCheckKonfirmasi = "SELECT * FROM konfirmasi_admin_jurusan WHERE id_pengajuan = (
         SELECT id FROM pengajuan_jurusan WHERE id_mahasiswa = ?
     )";
@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Query SELECT konfirmasi_admin_jurusan gagal: " . print_r(sqlsrv_errors(), true));
     }
 
-    $idAdmin = 3; // Ganti dengan ID admin yang sesuai jika ada, atau ID default jika tidak.
+    $idAdmin = 1; // Ganti dengan ID admin yang sesuai jika ada, atau ID default jika tidak.
 
     if (!sqlsrv_has_rows($stmtCheckKonfirmasi)) {
         // Jika belum ada entri, tambahkan entri baru dengan id_admin
