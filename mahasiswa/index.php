@@ -65,26 +65,26 @@ session_start();
             <li class="nav-item">
                 <a class="nav-link" href="admin-perpustakaan.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Admin Perpustakaan</span></a>
+                    <span> Perpustakaan</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="admin-jurusan.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Admin Jurusan</span></a>
+                    <span> Jurusan</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="admin-bebastanggungan.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Admin Bebas Tanggungan</span></a>
+                    <span> Bebas Tanggungan</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="admin-akademik.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Admin Akademik</span></a>
+                    <span> Akademik</span></a>
             </li>
 
             <!-- Divider -->

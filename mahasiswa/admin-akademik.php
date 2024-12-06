@@ -43,30 +43,7 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .status-menunggu {
-            background-color: yellow;
-            color: black;
-        }
-
-        .status-diterima {
-            background-color: rgba(0, 128, 0, 0.64);
-            color: white;
-        }
-
-        .status-ditolak {
-            background-color: rgba(255, 0, 0, 0.726);
-            color: white;
-        }
-
-        .komentar {
-            background-color: rgba(0, 143, 252, 0.513);
-            /* Warna hijau untuk komentar */
-            color: white;
-        }
-    </style>
-
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -104,28 +81,28 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="admin-perpustakaan.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Admin Perpustakaan</span></a>
+                    <span> Perpustakaan</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="admin-jurusan.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Admin Jurusan</span></a>
+                    <span> Jurusan</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="admin-bebastanggungan.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Admin Bebas Tanggungan</span></a>
+                    <span> Bebas Tanggungan</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="admin-akademik.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Admin Akademik</span></a>
+                    <span> Akademik</span></a>
             </li>
 
             <!-- Divider -->
@@ -357,9 +334,9 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                                                             <?php if ($statusComment): ?>
                                                                 <tr>
                                                                     <td class="<?php
-                                                                    if ($statusComment['status'] == 'Selesai') {
+                                                                    if ($statusComment['status'] == 'selesai') {
                                                                         echo 'status-diterima';
-                                                                    } elseif ($statusComment['status'] == 'Ditolak') {
+                                                                    } elseif ($statusComment['status'] == 'tidak sesuai') {
                                                                         echo 'status-ditolak';
                                                                     } else {
                                                                         echo 'status-menunggu';
