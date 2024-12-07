@@ -16,7 +16,7 @@ if ($stmt && sqlsrv_has_rows($stmt)) {
 }
 
 // Ambil data status dan komentar dari tabel konfirmasi_akademik
-$queryStatus = "SELECT status, komentar FROM konfirmasi_akademik WHERE id_pengajuan = (SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?) ORDER BY last_modified DESC";
+$queryStatus = "SELECT status1,status2, komentar FROM konfirmasi_akademik WHERE id_pengajuan = (SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?) ORDER BY last_modified DESC";
 $stmtStatus = sqlsrv_query($conn, $queryStatus, array($idMahasiswa));
 
 $statusComment = null;
@@ -43,7 +43,6 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -250,22 +249,22 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                         <div class="col-xl-9 col-lg-7 mx-auto">
                             <div class="card shadow mb-4">
                                 <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
                                     <h6 class="m-0 font-weight-bold text-primary">Admin Akademik</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <!-- Profile Form -->
                                         <div class="col-md-12">
                                             <div class="col-xl-12 mx-auto">
                                                 <div class="card-body">
                                                     <form id="uploadForm" action="update-dokumen-akademik.php"
                                                         method="POST" enctype="multipart/form-data">
-                                                        <table class="table table-bordered">
-                                                            <thead>
+                                                        <table class="table table-bordered table-hover">
+                                                            <thead class="thead-light">
                                                                 <tr>
                                                                     <th>File</th>
                                                                     <th>Choose File</th>
+                                                                    <th>Status</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -281,6 +280,22 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                                                                         <input type="file" name="dokumen1"
                                                                             class="file-input" accept=".pdf, .docx">
                                                                     </td>
+                                                                    <?php if ($statusComment): ?>
+                                                                        <td class="<?php
+                                                                        if ($statusComment['status1'] == 'selesai') {
+                                                                            echo 'status-diterima';
+                                                                        } elseif ($statusComment['status1'] == 'tidak sesuai') {
+                                                                            echo 'status-ditolak';
+                                                                        } else {
+                                                                            echo 'status-menunggu';
+                                                                        }
+                                                                        ?>">
+                                                                            <?php echo htmlspecialchars($statusComment['status1']) ? htmlspecialchars($statusComment['status1']) : 'Menunggu Admin'; ?>
+                                                                        </td>
+                                                                    <?php else: ?>
+                                                                        <td colspan="2" class="text-center">Belum ada status
+                                                                        </td>
+                                                                    <?php endif; ?>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bukti Pengisian Data Alumni</td>
@@ -294,64 +309,44 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                                                                         <input type="file" name="dokumen2"
                                                                             class="file-input" accept=".pdf, .docx">
                                                                     </td>
+                                                                    <?php if ($statusComment): ?>
+                                                                        <td class="<?php
+                                                                        if ($statusComment['status2'] == 'selesai') {
+                                                                            echo 'status-diterima';
+                                                                        } elseif ($statusComment['status2'] == 'tidak sesuai') {
+                                                                            echo 'status-ditolak';
+                                                                        } else {
+                                                                            echo 'status-menunggu';
+                                                                        }
+                                                                        ?>">
+                                                                            <?php echo htmlspecialchars($statusComment['status2']) ? htmlspecialchars($statusComment['status2']) : 'Menunggu Admin'; ?>
+                                                                        </td>
+                                                                    <?php else: ?>
+                                                                        <td colspan="2" class="text-center">Belum ada status
+                                                                        </td>
+                                                                    <?php endif; ?>
                                                                 </tr>
-                                                            </tbody>
                                                         </table>
                                                         <button type="submit" class="btn btn-success mt-2"
                                                             id="uploadButton" disabled>Upload Dokumen</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-
-
-                        <!-- Profile Card Example -->
-                        <div class="col-xl-9 col-lg-7 mx-auto">
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Status Pengajuan</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="col-xl-12 mx-auto">
-                                                <div class="col-md-12">
-                                                    <table class="table table-bordered">
-                                                        <thead>
+                                                    </form><br>
+                                                    <table class="table table-bordered table-hover">
+                                                        <thead class="thead-light">
                                                             <tr>
-                                                                <th>Status</th>
                                                                 <th>Komentar</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <?php if ($statusComment): ?>
                                                                 <tr>
-                                                                    <td class="<?php
-                                                                    if ($statusComment['status'] == 'selesai') {
-                                                                        echo 'status-diterima';
-                                                                    } elseif ($statusComment['status'] == 'tidak sesuai') {
-                                                                        echo 'status-ditolak';
-                                                                    } else {
-                                                                        echo 'status-menunggu';
-                                                                    }
-                                                                    ?>">
-                                                                        <?php echo htmlspecialchars($statusComment['status']) ? htmlspecialchars($statusComment['status']) : 'Menunggu Admin'; ?>
-                                                                    </td>
                                                                     <td class="komentar">
                                                                         <?php echo htmlspecialchars($statusComment['komentar']) ? htmlspecialchars($statusComment['komentar']) : 'Belum ada komentar'; ?>
                                                                     </td>
                                                                 </tr>
                                                             <?php else: ?>
                                                                 <tr>
-                                                                    <td colspan="2" class="text-center">Belum ada status
-                                                                        atau komentar</td>
+                                                                    <td colspan="2" class="text-center">Belum ada komentar
+                                                                    </td>
                                                                 </tr>
                                                             <?php endif; ?>
                                                         </tbody>
@@ -363,6 +358,10 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+                    <div class="row">
+
                     </div>
 
 

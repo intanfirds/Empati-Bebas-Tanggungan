@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Folder upload tidak ditemukan.");
     }
 
-    // Cek data lama di database
+    // Cek data lama di database (Pengajuan Akademik)
     $queryCheck = "SELECT * FROM pengajuan_akademik WHERE id_mahasiswa = ?";
     $stmtCheck = sqlsrv_query($conn, $queryCheck, array($idMahasiswa));
     if ($stmtCheck === false) {
@@ -44,12 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $existingFiles = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
-    // Debugging data lama
-    echo "<pre>Data lama di database:";
-    print_r($existingFiles);
-    echo "</pre>";
-
-    // Proses upload dokumen 1
+    // Proses upload dokumen 1 (Bukti Pelunasan UKT)
     if (isset($_FILES['dokumen1']) && $_FILES['dokumen1']['error'] == UPLOAD_ERR_OK) {
         $file1 = $_FILES['dokumen1'];
         $file1Name = basename($file1['name']);
@@ -58,6 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Hapus file lama jika ada
         if (!empty($existingFiles['bukti_pelunasan_ukt']) && file_exists($uploadDir . $existingFiles['bukti_pelunasan_ukt'])) {
             unlink($uploadDir . $existingFiles['bukti_pelunasan_ukt']);
+        }
+
+        // Validasi file
+        if (!in_array(pathinfo($file1['name'], PATHINFO_EXTENSION), ['pdf', 'docx'])) {
+            die("File harus bertipe PDF atau DOCX.");
         }
 
         // Upload file baru
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Proses upload dokumen 2
+    // Proses upload dokumen 2 (Bukti Pengisian Data Alumni)
     if (isset($_FILES['dokumen2']) && $_FILES['dokumen2']['error'] == UPLOAD_ERR_OK) {
         $file2 = $_FILES['dokumen2'];
         $file2Name = basename($file2['name']);
@@ -83,6 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Hapus file lama jika ada
         if (!empty($existingFiles['bukti_pengisian_data_alumni']) && file_exists($uploadDir . $existingFiles['bukti_pengisian_data_alumni'])) {
             unlink($uploadDir . $existingFiles['bukti_pengisian_data_alumni']);
+        }
+
+        // Validasi file
+        if (!in_array(pathinfo($file2['name'], PATHINFO_EXTENSION), ['pdf', 'docx'])) {
+            die("File harus bertipe PDF atau DOCX.");
         }
 
         // Upload file baru
@@ -99,36 +104,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Update atau insert ke tabel konfirmasi_akademik
+    // Perbarui status dan komentar di tabel konfirmasi_akademik
     $queryCheckKonfirmasi = "SELECT * FROM konfirmasi_akademik WHERE id_pengajuan = (
-        SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?
+        SELECT TOP 1 id FROM pengajuan_akademik WHERE id_mahasiswa = ?
+        ORDER BY id DESC
     )";
+
     $stmtCheckKonfirmasi = sqlsrv_query($conn, $queryCheckKonfirmasi, array($idMahasiswa));
     if ($stmtCheckKonfirmasi === false) {
         die("Query SELECT konfirmasi_akademik gagal: " . print_r(sqlsrv_errors(), true));
     }
 
-    $idAdmin = 3; // Ganti dengan ID admin yang sesuai jika ada, atau ID default jika tidak.
-
     if (!sqlsrv_has_rows($stmtCheckKonfirmasi)) {
-        // Jika belum ada entri, tambahkan entri baru dengan id_admin
-        $queryInsert = "INSERT INTO pengajuan_akademik (id_mahasiswa, last_modified) VALUES (?, GETDATE())";
-        $stmtInsert = sqlsrv_query($conn, $queryInsert, array($idMahasiswa));
-        if ($stmtInsert === false) {
-            die("Query INSERT gagal: " . print_r(sqlsrv_errors(), true));
+        // Jika belum ada entri, tambahkan entri baru
+        $queryInsertKonfirmasi = "INSERT INTO konfirmasi_akademik (id_pengajuan, status1, status2, komentar, last_modified) 
+        VALUES ((SELECT TOP 1 id FROM pengajuan_akademik WHERE id_mahasiswa = ? ORDER BY id DESC), 'Menunggu', 'Menunggu', 'Menunggu', GETDATE())";
+
+        $stmtInsertKonfirmasi = sqlsrv_query($conn, $queryInsertKonfirmasi, array($idMahasiswa));
+        if ($stmtInsertKonfirmasi === false) {
+            die("Query INSERT gagal untuk konfirmasi_akademik: " . print_r(sqlsrv_errors(), true));
         }
-        
     } else {
         // Jika entri sudah ada, perbarui status dan komentar
-        $queryUpdateKonfirmasi = "UPDATE konfirmasi_akademik SET status = 'Menunggu', komentar = 'Menunggu', last_modified = GETDATE() WHERE id_pengajuan = (
-            SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?
-        )";
+        $queryUpdateKonfirmasi = "UPDATE konfirmasi_akademik SET status1 = 'Menunggu', status2 = 'Menunggu', komentar = 'Menunggu', last_modified = GETDATE() 
+                                  WHERE id_pengajuan = (SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?)";
         $stmtUpdateKonfirmasi = sqlsrv_query($conn, $queryUpdateKonfirmasi, array($idMahasiswa));
         if ($stmtUpdateKonfirmasi === false) {
-            die("Query UPDATE konfirmasi_akademik gagal: " . print_r(sqlsrv_errors(), true));
+            die("Query UPDATE gagal untuk konfirmasi_akademik: " . print_r(sqlsrv_errors(), true));
         }
     }
 
+    // Redirect ke halaman admin setelah selesai
     header('Location: admin-akademik.php');
     exit;
 } else {
