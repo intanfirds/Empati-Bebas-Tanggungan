@@ -137,16 +137,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!sqlsrv_has_rows($stmtCheckKonfirmasi)) {
         // Jika belum ada entri, tambahkan entri baru dengan id_admin
-        $queryInsertKonfirmasi = "INSERT INTO konfirmasi_admin_jurusan (id_pengajuan, id_admin, status, komentar, last_modified) VALUES (
-            (SELECT id FROM pengajuan_jurusan WHERE id_mahasiswa = ?), ?, 'Menunggu', 'Menunggu', GETDATE()
-        )";
+        $queryInsertKonfirmasi = "
+    INSERT INTO konfirmasi_admin_jurusan (
+        id_pengajuan, id_admin, status1, status2, status3, komentar, last_modified
+    ) VALUES (
+        (SELECT id FROM pengajuan_jurusan WHERE id_mahasiswa = ?),
+        ?, 'Menunggu', 'Menunggu', 'Menunggu', 'Menunggu', GETDATE()
+    )";
+
         $stmtInsertKonfirmasi = sqlsrv_query($conn, $queryInsertKonfirmasi, array($idMahasiswa, $idAdmin));
         if ($stmtInsertKonfirmasi === false) {
             die("Query INSERT konfirmasi_admin_jurusan gagal: " . print_r(sqlsrv_errors(), true));
         }
     } else {
         // Jika entri sudah ada, perbarui status dan komentar
-        $queryUpdateKonfirmasi = "UPDATE konfirmasi_admin_jurusan SET status = 'Menunggu', komentar = 'Menunggu', last_modified = GETDATE() WHERE id_pengajuan = (
+        $queryUpdateKonfirmasi = "UPDATE konfirmasi_admin_jurusan SET status1 = 'Menunggu',status2 = 'Menunggu',status3 = 'Menunggu', komentar = 'Menunggu', last_modified = GETDATE() WHERE id_pengajuan = (
             SELECT id FROM pengajuan_jurusan WHERE id_mahasiswa = ?
         )";
         $stmtUpdateKonfirmasi = sqlsrv_query($conn, $queryUpdateKonfirmasi, array($idMahasiswa));
