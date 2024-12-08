@@ -267,10 +267,10 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
                                     $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, 
                                     CASE 
-                                      WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' THEN 'selesai'
-                                      WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' THEN 'tidak sesuai'
-                                      WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' THEN 'menunggu'
-                                      ELSE 'belum mengisi'
+                                        WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' AND k.status3 = 'sesuai' THEN 'selesai'
+                                        WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' OR k.status3 = 'tidak sesuai' THEN 'tidak sesuai'
+                                        WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' AND k.status3 = 'menunggu' THEN 'menunggu'
+                                        ELSE 'belum mengisi'
                                     END AS status
                                             FROM Mahasiswa m 
                                             LEFT JOIN pengajuan_jurusan p ON m.id = p.id_mahasiswa
