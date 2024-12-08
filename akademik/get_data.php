@@ -19,7 +19,7 @@ if ($conn === false) {
 $sql = "SELECT 
             (SELECT COUNT(*) FROM [dbo].[pengajuan_akademik] WHERE [bukti_pelunasan_ukt] IS NOT NULL) AS jumlah_bukti_pelunasan,
             (SELECT COUNT(*) FROM [dbo].[pengajuan_akademik] WHERE [bukti_pengisian_data_alumni] IS NOT NULL) AS jumlah_bukti_pengisian,
-            (SELECT COUNT(*) FROM [dbo].[konfirmasi_akademik] WHERE [status] = 'Selesai') AS jumlah_selesai";
+            (SELECT COUNT(*) FROM [dbo].[konfirmasi_akademik] WHERE [status1] = 'sesuai' AND [status2] ='sesuai') AS jumlah_selesai";
 $stmt = sqlsrv_query($conn, $sql);
 
 // Cek hasil query
