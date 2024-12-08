@@ -265,12 +265,19 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     <?php
                                     include 'koneksi.php';
 
-                                    $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, k.status 
+                                    $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, 
+                                    CASE 
+                                      WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' THEN 'selesai'
+                                      WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' THEN 'tidak sesuai'
+                                      WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' THEN 'menunggu'
+                                      ELSE 'belum mengisi'
+                                    END AS status
                                             FROM Mahasiswa m 
                                             LEFT JOIN pengajuan_jurusan p ON m.id = p.id_mahasiswa
                                             LEFT JOIN konfirmasi_admin_jurusan k ON p.id = k.id_pengajuan
                                             LEFT JOIN Angkatan a ON m.id_angkatan = a.id
                                             order by m.nim asc";
+                                            
                                     $stmt = sqlsrv_query($conn, $query, $params);
 
                                     while ($data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
