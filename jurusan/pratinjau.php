@@ -245,9 +245,9 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       echo '<div class="row mb-4">';
 
                       // Data file yang akan ditampilkan
-                      $file1_url = str_replace('uploads/', 'http://localhost/Clone/mahasiswa/uploads/', $data_mahasiswa['file_bukti_publikasi']);
-                      $file2_url = str_replace('uploads/', 'http://localhost/Clone/mahasiswa/uploads/', $data_mahasiswa['file_skripsi']);
-                      $file3_url = str_replace('uploads/', 'http://localhost/Clone/mahasiswa/uploads/', $data_mahasiswa['hasil_akhir_skripsi']);
+                      $file1_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path1']);
+                      $file2_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path2']);
+                      $file3_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path3']);
                       $files = [
                           ['nama' => htmlspecialchars($data_mahasiswa['file_bukti_publikasi']), 'url' => $file1_url, 'status' => $data_mahasiswa['status_publikasi']],
                           ['nama' => htmlspecialchars($data_mahasiswa['file_skripsi']), 'url' => $file2_url, 'status' => $data_mahasiswa['status_skripsi']],
