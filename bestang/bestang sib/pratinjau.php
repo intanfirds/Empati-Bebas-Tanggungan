@@ -268,11 +268,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                           echo '<div class="card-body">';
                           
                           echo '<h5 class="card-title">' . htmlspecialchars($file['nama']) . '</h5>';
-                          if (!empty($data_mahasiswa['path3'])) {
-                            echo '<a href="' . htmlspecialchars($data_mahasiswa['path3']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
-                        } else {
-                            echo '<p class="card-text text-danger">Mahasiswa tidak melampirkan kompen, harap cek hutang kompen mahasiswa.</p>';
-                        }
+                     
                           // Preview berdasarkan ekstensi file
                           $ext = strtolower(pathinfo($file['url'], PATHINFO_EXTENSION));
 
