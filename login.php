@@ -2,59 +2,85 @@
 session_start();
 require_once 'koneksi.php'; // Menghubungkan ke database
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username']; // Misalnya NIM atau username
-    $password = $_POST['password']; // Kata sandi
+class AdminLogin
+{
+    private $conn;
 
-    // Query untuk mengambil data admin berdasarkan username
-    $query = "SELECT nama, nip, role, password FROM admin WHERE username = ?";
-    $params = array($username);
-    $stmt = sqlsrv_prepare($conn, $query, $params);
+    public function __construct($dbConnection)
+    {
+        $this->conn = $dbConnection;
+    }
 
-    // Menjalankan query
-    if (sqlsrv_execute($stmt)) {
-        // Jika data ditemukan
-        if ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-            // Verifikasi password menggunakan password_verify
-            if (password_verify($password, $row['password'])) {
-                // Simpan informasi ke session
-                $_SESSION['nama_admin'] = $row['nama'];
-                $_SESSION['nip_admin'] = $row['nip'];
-                $_SESSION['role'] = $row['role'];
+    public function authenticate($username, $password)
+    {
+        $query = "SELECT nama, nip, role, password FROM admin WHERE username = ?";
+        $params = array($username);
+        $stmt = sqlsrv_prepare($this->conn, $query, $params);
 
-                // Arahkan berdasarkan role
-                switch ($row['role']) {
-                    case 'Jurusan':
-                        header("Location: /Empati-Bebas-Tanggungan/jurusan/index.php");
-                        break;
-                    case 'Admin TI':
-                        header("Location: /Empati-Bebas-Tanggungan/bestang/bestang ti/index.php");
-                        break;
-                    case 'Admin SIB':
-                        header("Location: /Empati-Bebas-Tanggungan/bestang/bestang sib/index.php");
-                        break;
-                    case 'Akademik':
-                        header("Location: /Empati-Bebas-Tanggungan/akademik/index.php");
-                        break;
-                    case 'Perpustakaan':
-                        header("Location: /Empati-Bebas-Tanggungan/perpustakaan/index.php");
-                        break;
-                    default:
-                        echo "<script>alert('Role tidak dikenali!'); window.location.href='index-admin.html';</script>";
-                        break;
+        if (sqlsrv_execute($stmt)) {
+            if ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+                if (password_verify($password, $row['password'])) {
+                    $this->setSession($row);
+                    $this->redirectUser($row['role']);
+                } else {
+                    $this->showAlertAndRedirect('Password salah!', 'index-admin.html');
                 }
             } else {
-                // Password salah
-                echo "<script>alert('Password salah!'); window.location.href='index-admin.html';</script>";
-                exit;
+                $this->showAlertAndRedirect('Username tidak ditemukan!', 'index-admin.html');
             }
         } else {
-            // Username tidak ditemukan
-            echo "<script>alert('Username tidak ditemukan!'); window.location.href='index-admin.html';</script>";
-            exit;
+            throw new Exception('Query gagal dieksekusi!');
         }
-    } else {
-        echo "Query gagal dieksekusi!";
+    }
+
+    private function setSession($userData)
+    {
+        $_SESSION['nama_admin'] = $userData['nama'];
+        $_SESSION['nip_admin'] = $userData['nip'];
+        $_SESSION['role'] = $userData['role'];
+    }
+
+    private function redirectUser($role)
+    {
+        switch ($role) {
+            case 'Jurusan':
+                header("Location: /Empati-Bebas-Tanggungan/jurusan/index.php");
+                break;
+            case 'Admin TI':
+                header("Location: /Empati-Bebas-Tanggungan/bestang/bestang ti/index.php");
+                break;
+            case 'Admin SIB':
+                header("Location: /Empati-Bebas-Tanggungan/bestang/bestang sib/index.php");
+                break;
+            case 'Akademik':
+                header("Location: /Empati-Bebas-Tanggungan/akademik/index.php");
+                break;
+            case 'Perpustakaan':
+                header("Location: /Empati-Bebas-Tanggungan/perpustakaan/index.php");
+                break;
+            default:
+                $this->showAlertAndRedirect('Role tidak dikenali!', 'index-admin.html');
+                break;
+        }
+        exit;
+    }
+
+    private function showAlertAndRedirect($message, $url)
+    {
+        echo "<script>alert('$message'); window.location.href='$url';</script>";
+        exit;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    try {
+        $loginHandler = new AdminLogin($conn);
+        $loginHandler->authenticate($username, $password);
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
     }
 }
 ?>
