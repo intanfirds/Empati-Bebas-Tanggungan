@@ -271,7 +271,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                       WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' THEN 'tidak sesuai'
                                       WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' THEN 'menunggu'
                                       ELSE 'belum mengisi'
-                                    END AS status
+                                        END AS status
                                     FROM Mahasiswa m 
                                     LEFT JOIN pengajuan_akademik p ON m.id = p.id_mahasiswa
                                     LEFT JOIN konfirmasi_akademik k ON p.id = k.id_pengajuan

@@ -44,6 +44,16 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+                .profile-image {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+            /* Membuat gambar berbentuk lingkaran */
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -94,7 +104,7 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
             <li class="nav-item">
                 <a class="nav-link" href="admin-bebastanggungan.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span> Bebas Tanggungan</span></a>
+                    <span>Prodi</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
@@ -217,7 +227,8 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo htmlspecialchars($_SESSION['nama_mahasiswa']); ?></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                    <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>"
+                                    id="profileImagePreview" alt="Foto Profil" class="img-fluid profile-image">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -469,6 +480,7 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                 uploadButton.disabled = !allFilled; // Enable or disable the button
             });
         });
+        
     </script>
 
 </body>

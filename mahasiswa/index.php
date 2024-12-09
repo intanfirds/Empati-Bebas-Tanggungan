@@ -26,6 +26,22 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+        .time-date {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 23px;
+        }
+
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+            /* Membuat gambar berbentuk lingkaran */
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -76,7 +92,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
             <li class="nav-item">
                 <a class="nav-link" href="admin-bebastanggungan.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span> Bebas Tanggungan</span></a>
+                    <span> Prodi</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
@@ -139,6 +155,10 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
                             </div>
                         </li>
 
+                        <div class="time-date" id="timeDate">
+                            <!-- Waktu dan tanggal akan ditampilkan di sini -->
+                        </div>
+
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -198,7 +218,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo htmlspecialchars($_SESSION['nama_mahasiswa']); ?></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>"
+                                    id="profileImagePreview" alt="Foto Profil" class="img-fluid profile-image">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -408,6 +429,42 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
             <!-- Page level custom scripts -->
             <script src="js/demo/chart-area-demo.js"></script>
             <script src="js/demo/chart-pie-demo.js"></script>
+
+            <script>
+                // Function to update the time and date
+                function updateTimeDate() {
+                    const now = new Date();
+                    const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+                    const months = [
+                        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                    ];
+
+                    const day = days[now.getDay()];
+                    const date = now.getDate();
+                    const month = months[now.getMonth()];
+                    const year = now.getFullYear();
+
+                    let hours = now.getHours();
+                    let minutes = now.getMinutes();
+                    let seconds = now.getSeconds();
+
+                    // Add leading zero to single-digit hours, minutes, and seconds
+                    hours = hours < 10 ? "0" + hours : hours;
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    const formattedTime = `${hours}:${minutes}:${seconds}`;
+                    const formattedDate = `${day}, ${date} ${month} ${year}`;
+
+                    // Update the HTML content
+                    document.getElementById("timeDate").innerHTML = `${formattedDate} | ${formattedTime}`;
+                }
+
+                // Call the function once and then every second
+                updateTimeDate();
+                setInterval(updateTimeDate, 1000);
+            </script>
 
 </body>
 
