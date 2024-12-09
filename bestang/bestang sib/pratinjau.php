@@ -208,6 +208,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
                   // Tampilkan data mahasiswa
                   $data_mahasiswa = sqlsrv_fetch_array($stmt_files, SQLSRV_FETCH_ASSOC);
+                        
+                  
                   if ($data_mahasiswa) {
                       // Row untuk data mahasiswa
                       echo '<div class="row mb-4">';
@@ -250,8 +252,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       $file3_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path3']);
                       $file4_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path4']);
                       
-                      
-                      
+              
                       $files = [
                           ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_skripsi']), 'url' => $file1_url, 'status' => $data_mahasiswa['status_pengisian']],
                           ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_magang']), 'url' => $file2_url, 'status' => $data_mahasiswa['status_pengisian']],
@@ -267,7 +268,11 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                           echo '<div class="card-body">';
                           
                           echo '<h5 class="card-title">' . htmlspecialchars($file['nama']) . '</h5>';
-
+                          if (!empty($data_mahasiswa['path3'])) {
+                            echo '<a href="' . htmlspecialchars($data_mahasiswa['path3']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
+                        } else {
+                            echo '<p class="card-text text-danger">Mahasiswa tidak melampirkan kompen, harap cek hutang kompen mahasiswa.</p>';
+                        }
                           // Preview berdasarkan ekstensi file
                           $ext = strtolower(pathinfo($file['url'], PATHINFO_EXTENSION));
 

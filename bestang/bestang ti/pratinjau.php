@@ -42,7 +42,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Admin Prodi</title>
+    <title>SiBeTa - Prodi</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -54,6 +54,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
       href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
       rel="stylesheet"
     />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 
     <!-- Custom styles for this template-->
     <link href="sb-admin-2.min.css" rel="stylesheet" />
@@ -191,12 +193,12 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                   <?php
                   $nim_mahasiswa = $_GET['nim'];
                   $query_files = "SELECT m.nama, m.nim, m.prodi, m.jurusan, p.distribusi_laporan_skripsi, 
-                                  p.distribusi_laporan_magang, p.bebas_kompensasi, p.nilai_toeic, p.last_modified, p.path1, p.path2,
-                                  k.status
+                                  p.distribusi_laporan_magang, p.bebas_kompensasi, p.nilai_toeic , p.last_modified, p.path1, p.path2, p.path3, p.path4,
+                                  k.status1 AS status_pengisian, k.status2 AS status_pengisian, k.status3 AS status_pengisian, k.status4 AS status_pengisian
                                   FROM Mahasiswa m
                                   JOIN pengajuan_prodi p ON p.id_mahasiswa = m.id
                                   JOIN konfirmasi_admin_prodi k ON k.id_pengajuan = p.id 
-                                  WHERE m.nim = ?" ;
+                                  WHERE m.nim = ?";
                   $params_nim = [$nim_mahasiswa];
                   $stmt_files = sqlsrv_query($conn, $query_files, $params_nim);
 
@@ -206,6 +208,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
                   // Tampilkan data mahasiswa
                   $data_mahasiswa = sqlsrv_fetch_array($stmt_files, SQLSRV_FETCH_ASSOC);
+                        
+                  
                   if ($data_mahasiswa) {
                       // Row untuk data mahasiswa
                       echo '<div class="row mb-4">';
@@ -241,62 +245,70 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
                       // Row untuk data file dan konfirmasi/komentar
                       echo '<div class="row mb-4">';
-      
-                      // Kolom untuk data file
-                      echo '<div class="col-md-6">';
-                      echo '<div class="card shadow-sm">';
-                      echo '<div class="card-body">';
-                      echo '<h5 class="card-title">Data File</h5>';
-                      if (!empty($data_mahasiswa['distribusi_laporan_skripsi'])) {
-                          echo '<p class="card-text">File Laporan Skripsi :</p>';
-                          echo '<a href="' . htmlspecialchars($data_mahasiswa['path1']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
-                      }
-                      if (!empty($data_mahasiswa['distribusi_laporan_magang'])) {
-                          echo '<p class="card-text">File Laporan Magang :</p>';
-                          echo '<a href="' . htmlspecialchars($data_mahasiswa['path2']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
-                      }
-                      if (!empty($data_mahasiswa['bebas_kompensasi'])) {
-                        echo '<p class="card-text">File Bebas Kompensasi :</p>';
-                        echo '<a href="' . htmlspecialchars($data_mahasiswa['path1']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
-                        // Periksa apakah file tersedia
-                        if (!empty($data_mahasiswa['path3'])) {
-                            // Jika file tersedia
+
+                      // Data file yang akan ditampilkan
+                      $file1_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path1']);
+                      $file2_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path2']);
+                      $file3_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path3']);
+                      $file4_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path4']);
+                      
+              
+                      $files = [
+                          ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_skripsi']), 'url' => $file1_url, 'status' => $data_mahasiswa['status_pengisian']],
+                          ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_magang']), 'url' => $file2_url, 'status' => $data_mahasiswa['status_pengisian']],
+                          ['nama' => htmlspecialchars($data_mahasiswa['bebas_kompensasi']), 'url' => $file3_url, 'status' => $data_mahasiswa['status_pengisian']],
+                          ['nama' => htmlspecialchars($data_mahasiswa['nilai_toeic']), 'url' => $file4_url, 'status' => $data_mahasiswa['status_pengisian']],
+                      ];
+                      
+                      echo '<div class="container mt-4">';
+                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '">'; // Form utama untuk semua input
+
+                      foreach ($files as $index => $file) {
+                          echo '<div class="card mb-4 shadow-sm">';
+                          echo '<div class="card-body">';
+                          
+                          echo '<h5 class="card-title">' . htmlspecialchars($file['nama']) . '</h5>';
+                          if (!empty($data_mahasiswa['path3'])) {
                             echo '<a href="' . htmlspecialchars($data_mahasiswa['path3']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
-                        } 
-                    } else {
-                        // Jika mahasiswa tidak memiliki tanggungan  kompensasi
-                        echo '<p class="card-text">File Bebas Kompensasi :</p>';
-                        echo '<p class="card-text">Mahasiswa tidak memiliki tanggungan kompensasi.</p>';
-                    }
-                      if (!empty($data_mahasiswa['nilai_toeic'])) {
-                        echo '<p class="card-text">File Nilai TOEIC :</p>';
-                        echo '<a href="' . htmlspecialchars($data_mahasiswa['path2']) . '" class="btn btn-primary btn-block" target="_blank">Buka File</a>';
+                        } else {
+                            echo '<p class="card-text text-danger">Mahasiswa tidak melampirkan kompen, harap cek hutang kompen mahasiswa.</p>';
+                        }
+                          // Preview berdasarkan ekstensi file
+                          $ext = strtolower(pathinfo($file['url'], PATHINFO_EXTENSION));
+
+                          if ($ext === 'pdf') {
+                              // Tampilkan PDF dalam iframe
+                              echo '<iframe src="' . htmlspecialchars($file['url']) . '" width="100%" height="400px" class="mb-3"></iframe>';
+                          } elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'])) {
+                              // Gunakan Google Docs Viewer untuk file Office
+                              echo '<iframe src="https://docs.google.com/viewer?url=' . urlencode($file['url']) . '&embedded=true" width="100%" height="400px" class="mb-3"></iframe>';
+                          } elseif (in_array($ext, ['png', 'jpg', 'jpeg', 'gif'])) {
+                              // Tampilkan gambar langsung
+                              echo '<img src="' . htmlspecialchars($file['url']) . '" class="img-fluid mb-3" alt="Preview">';
+                          } else {
+                              // Tampilkan link untuk file yang tidak didukung
+                              echo '<p>File tidak dapat dipratinjau. <a href="' . htmlspecialchars($file['url']) . '" target="_blank">Unduh file</a>.</p>';
+                          }
+
+                          // Tambahkan checkbox konfirmasi untuk setiap file
+                          $current_status = strtolower($file['status']);
+                          echo '<div class="form-check">';
+                          echo '<input class="form-check-input" type="radio" name="status[' . $index . ']" id="status_sesuai' . $index . '" value="sesuai" ' . 
+                              (($current_status === 'sesuai') ? 'checked' : '') . '>';
+                          echo '<label class="form-check-label" for="status_sesuai' . $index . '">Sesuai</label>';
+                          echo '</div>';
+                          echo '<div class="form-check">';
+                          echo '<input class="form-check-input" type="radio" name="status[' . $index . ']" id="status_tidak_sesuai' . $index . '" value="tidak sesuai" ' . 
+                              (($current_status === 'tidak sesuai') ? 'checked' : '') . '>';
+                          echo '<label class="form-check-label" for="status_tidak_sesuai' . $index . '">Tidak Sesuai</label>';
+                          echo '</div>';
+                      
+                          echo '</div>'; // Close card-body
+                          echo '</div>'; // Close card
                       }
-                      echo '<p class="card-text"><strong>Terakhir Dirubah:</strong> ' . 
-                          ($data_mahasiswa['last_modified'] instanceof DateTime
-                          ? $data_mahasiswa['last_modified']->format('d-m-Y')
-                          : 'Tanggal tidak valid') . '</p>';
-                      echo '</div></div></div>'; // Close card and column
-                      // Kolom untuk konfirmasi dan komentar
-                      echo '<div class="col-md-6">';
-                      echo '<div class="card shadow-sm">';
-                      echo '<div class="card-body">';
-                      echo '<h5 class="card-title">Konfirmasi dan Komentar</h5>';
-                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '" enctype="multipart/form-data">';
-                      echo '<div class="form-group">';
-                      echo '<label>Status Konfirmasi :</label>';
-                      echo '<div class="form-check">';
-                      echo '<input class="form-check-input" type="radio" name="status" id="status_sesuai" value="sesuai" ' . 
-                          (($data_mahasiswa['status'] === 'selesai') ? 'checked' : '') . '>';
-                      echo '<label class="form-check-label" for="status_sesuai">Sesuai</label>';
-                      echo '</div>';
-                      echo '<div class="form-check">';
-                      echo '<input class="form-check-input" type="radio" name="status" id="status_tidak_sesuai" value="tidak_sesuai" ' . 
-                            (($data_mahasiswa['status'] === 'tidak sesuai') ? 'checked' : '') . '>';
-                      echo '<label class="form-check-label" for="status_tidak_sesuai">Tidak Sesuai</label>';
-                      echo '</div>';
-                      echo '</div>';
-                      echo '<div class="form-group">';
+
+                      // Tambahkan area komentar tunggal di bawah semua file
+                      echo '<div class="form-group mt-4">';
                       $sql_komentar = "select k.komentar
                                       FROM konfirmasi_admin_prodi k
                                       JOIN pengajuan_prodi p ON p.id = k.id_pengajuan
@@ -310,10 +322,14 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       echo '<label for="komentar">Komentar :</label>';
                       echo '<textarea class="form-control" id="komentar" name="komentar" rows="4">' . htmlspecialchars($data_komentar['komentar'] ?? '') . '</textarea>';
                       echo '</div>';
-                      echo '<button type="submit" class="btn btn-success btn-block">Konfirmasi</button>';
-                      echo '</form>';
-                      echo '</div></div></div>'; // Close card and column
 
+                      // Tambahkan tombol submit di bawah komentar
+                      echo '<div class="text-center mt-4">';
+                      echo '<button type="submit" class="btn btn-primary">Kirim</button>';
+                      echo '</div>';
+
+                      echo '</form>';
+                      echo '</div>'; // Close container
                       echo '</div>'; // Close row
                   } else {
                       echo '<p class="text-center text-danger">Tidak ada file yang diunggah oleh mahasiswa ini.</p>';

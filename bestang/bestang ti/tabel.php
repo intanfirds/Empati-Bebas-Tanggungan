@@ -199,7 +199,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa Prodi D - IV Teknik Informatika</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa Prodi D - IV Sistem Informasi Bisnis</h6>
                     </div>
                     <div class="card-body">
                     <div class="mb-3">
@@ -263,12 +263,12 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     LEFT JOIN pengajuan_prodi p ON m.id = p.id_mahasiswa
                                     LEFT JOIN konfirmasi_admin_prodi k ON p.id = k.id_pengajuan
                                     LEFT JOIN Angkatan a ON m.id_angkatan = a.id
-                                    WHERE m.prodi = 'Sistem Informasi Bisnis'  -- Correct the WHERE clause
+                                    WHERE m.prodi = 'Teknik Informatika'  -- Correct the WHERE clause
                                     ORDER BY m.nim ASC;
                                     ";
-                                    
-                                    $params = [$program]; // Bind the program name to the query
+
                                     $stmt = sqlsrv_query($conn, $query, $params);
+
                                     while ($data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                                         echo "<tr>";
                                         echo "<td>" . htmlspecialchars($data['nim']) . "</td>";
@@ -281,7 +281,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                         // Ubah kondisi tombol pratinjau
                                         $status = strtolower(trim($data['status']?? 'Belum Mengisi')); // Normalisasi data status
                                         if (in_array($status, ['selesai', 'tidak sesuai', 'menunggu'])) {
-                                            echo "<a href='pratinjau.php?nim=" . htmlspecialchars($data['nim']) . "' class='btn btn-primary btn-sm'>Pratinjau</a>";
+                                            echo "<a href='pratinjau.php?nim=" . htmlspecialchars($data['nim']) . "' class='btn btn-primary'>Pratinjau</a>";
                                         } else {
                                             echo "-"; // Tampilkan tanda kosong untuk status lainnya
                                         }
