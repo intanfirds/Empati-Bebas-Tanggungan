@@ -252,16 +252,23 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     include 'koneksi.php';
                                     $program = 'Sistem Informasi Bisnis'; // Can be changed in one place
 
-                                    $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, k.status 
+                                    $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan,
+                                        CASE 
+                                            WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' AND k.status3 = 'sesuai' AND k.status4 = 'sesuai' THEN 'selesai'
+                                            WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' OR k.status3 = 'tidak sesuai' OR k.status4 = 'tidak sesuai' THEN 'tidak sesuai'
+                                            WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' AND k.status3 = 'menunggu' AND k.status4 = 'menunggu' THEN 'menunggu'
+                                            ELSE 'belum mengisi'
+                                        END AS status
                                     FROM Mahasiswa m 
                                     LEFT JOIN pengajuan_prodi p ON m.id = p.id_mahasiswa
                                     LEFT JOIN konfirmasi_admin_prodi k ON p.id = k.id_pengajuan
                                     LEFT JOIN Angkatan a ON m.id_angkatan = a.id
-                                    WHERE m.prodi = ? 
-                                    ORDER BY m.nim ASC";
-                                    
-                                    $params = [$program]; // Bind the program name to the query
+                                    WHERE m.prodi = 'Sistem Informasi Bisnis'  -- Correct the WHERE clause
+                                    ORDER BY m.nim ASC;
+                                    ";
+
                                     $stmt = sqlsrv_query($conn, $query, $params);
+
                                     while ($data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                                         echo "<tr>";
                                         echo "<td>" . htmlspecialchars($data['nim']) . "</td>";
@@ -274,7 +281,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                         // Ubah kondisi tombol pratinjau
                                         $status = strtolower(trim($data['status']?? 'Belum Mengisi')); // Normalisasi data status
                                         if (in_array($status, ['selesai', 'tidak sesuai', 'menunggu'])) {
-                                            echo "<a href='pratinjau.php?nim=" . htmlspecialchars($data['nim']) . "' class='btn btn-primary btn-sm'>Pratinjau</a>";
+                                            echo "<a href='pratinjau.php?nim=" . htmlspecialchars($data['nim']) . "' class='btn btn-primary'>Pratinjau</a>";
                                         } else {
                                             echo "-"; // Tampilkan tanda kosong untuk status lainnya
                                         }
