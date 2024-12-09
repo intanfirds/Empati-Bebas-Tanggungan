@@ -26,6 +26,20 @@ session_start();
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+        .profile-image {
+    width: 175px;
+    height: 175px;
+    object-fit: cover;
+    border-radius: 50%; /* Membuat gambar berbentuk lingkaran */
+}
+.profile-image2 {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%; /* Membuat gambar berbentuk lingkaran */
+}
+    </style>
 
 </head>
 
@@ -77,7 +91,7 @@ session_start();
             <li class="nav-item">
                 <a class="nav-link" href="admin-bebastanggungan.php">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span> Bebas Tanggungan</span></a>
+                    <span>Prodi</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
@@ -114,9 +128,7 @@ session_start();
                     </button>
 
                     <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-
+                    <ul class="navbar-nav ml-auto"> 
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
@@ -202,7 +214,7 @@ session_start();
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo htmlspecialchars($_SESSION['nama_mahasiswa']); ?></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                    <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>" id="profileImagePreview" alt="Foto Profil" class="img-fluid profile-image2">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -245,7 +257,7 @@ session_start();
                                     <div class="row">
                                         <!-- Profile Picture and Name -->
                                         <div class="col-md-4 d-flex flex-column align-items-center text-center">
-                                        <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>" alt="Foto Profil" class="img-fluid rounded-circle" style="width: 175px; height: 200px;">
+                                        <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>" id="profileImagePreview" alt="Foto Profil" class="img-fluid profile-image">
 
                                             <!-- Name Below Profile Picture -->
                                             <h5 class="mt-3 font-weight-bold text-primary">
