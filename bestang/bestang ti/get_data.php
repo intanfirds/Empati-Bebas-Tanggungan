@@ -2,7 +2,7 @@
 // Koneksi ke database SQL Server
 $serverName = "localhost"; // Ganti dengan nama server Anda
 $connectionOptions = array(
-    "Database" => "bebastanggungan", // Ganti dengan nama database Anda
+    "Database" => "bebastanggungangg", // Ganti dengan nama database Anda
     "Uid" => "", // Ganti dengan username database Anda
     "PWD" => "" // Ganti dengan password database Anda
 );
