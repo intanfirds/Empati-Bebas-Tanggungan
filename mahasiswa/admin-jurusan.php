@@ -469,6 +469,7 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                 uploadButton.disabled = !allFilled; // Enable or disable the button
             });
         });
+        
     </script>
 
 </body>
