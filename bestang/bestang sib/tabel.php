@@ -38,7 +38,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SiBeta - Bestang</title>
+    <title>SiBeta - Prodi</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -58,14 +58,17 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
             pageLength: 25 // Mengatur panjang halaman default
         });
 
+        document.getElementById('filterProdi').addEventListener('change', filterTable);
         document.getElementById('filterAngkatan').addEventListener('change', filterTable);
         document.getElementById('filterStatus').addEventListener('change', filterTable);
 
         function filterTable() {
+            const prodiFilter = document.getElementById('filterProdi').value.toLowerCase();
             const angkatanFilter = document.getElementById('filterAngkatan').value;
             const statusFilter = document.getElementById('filterStatus').value.toLowerCase();
 
             // Menggunakan DataTables API untuk filter
+            table.column(2).search(prodiFilter, true, false); // Prodi
             table.column(3).search(angkatanFilter, true, false); // Angkatan
             table.column(4).search(statusFilter, true, false); // Status
 
@@ -176,7 +179,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="profile.php">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -204,7 +207,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                     <div class="card-body">
                     <div class="mb-3">
                         <div class="row">
-
+                            
                             <!-- Filter Angkatan -->
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -250,7 +253,6 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                 <tbody>
                                     <?php
                                     include 'koneksi.php';
-                                    $program = 'Sistem Informasi Bisnis'; // Can be changed in one place
 
                                     $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan,
                                         CASE 
@@ -266,7 +268,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     WHERE m.prodi = 'Sistem Informasi Bisnis'  -- Correct the WHERE clause
                                     ORDER BY m.nim ASC;
                                     ";
-
+                          
                                     $stmt = sqlsrv_query($conn, $query, $params);
 
                                     while ($data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
@@ -303,10 +305,10 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
+            <footer class="sticky-footer bg-white " >
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span>
                     </div>
                 </div>
             </footer>
@@ -337,7 +339,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="\Empati-Bebas-Tanggungan\index-admin.html">Logout</a>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>
