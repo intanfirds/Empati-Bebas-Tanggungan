@@ -255,7 +255,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       ];
                       
                       echo '<div class="container mt-4">';
-                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '">'; // Form utama untuk semua input
+                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '" onsubmit="return showAlert()">'; // Form utama untuk semua input
 
                       foreach ($files as $index => $file) {
                           echo '<div class="card mb-4 shadow-sm">';
@@ -413,5 +413,13 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
       <script src="js/demo/chart-area-demo.js"></script>
       <script src="js/demo/chart-pie-demo.js"></script>
     </div>
+
+    <script>
+function showAlert() {
+    alert("Data sudah dikirimkan ke mahasiswa");
+    return true; // Mengizinkan form untuk disubmit
+}
+</script>
+
   </body>
 </html>
