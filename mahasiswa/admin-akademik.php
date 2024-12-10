@@ -289,17 +289,22 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                 <div class="card-body">
                                                     <?php if ($allPending): ?>
                                                         <div class="alert alert-warning" role="alert">
-                                                            <i class="fas fa-clock"></i> <!-- Ikon Jam untuk status "Menunggu" -->
-                                                            Semua dokumen sedang dalam status "Menunggu". Harap menunggu verifikasi dari admin sebelum mengunggah dokumen baru.
+                                                            <i class="fas fa-clock"></i>
+                                                            <!-- Ikon Jam untuk status "Menunggu" -->
+                                                            Semua dokumen sedang dalam status "Menunggu". Harap menunggu
+                                                            verifikasi dari admin sebelum mengunggah dokumen baru.
                                                         </div>
                                                     <?php elseif ($anyNotMatch): ?>
                                                         <div class="alert alert-danger" role="alert">
-                                                            <i class="fas fa-times-circle"></i> <!-- Ikon Tanda Silang untuk status "Tidak Sesuai" -->
-                                                            Ada dokumen yang tidak sesuai, mohon untuk mengupload ulang semua berkas.
+                                                            <i class="fas fa-times-circle"></i>
+                                                            <!-- Ikon Tanda Silang untuk status "Tidak Sesuai" -->
+                                                            Ada dokumen yang tidak sesuai, mohon untuk mengupload ulang
+                                                            semua berkas.
                                                         </div>
                                                     <?php elseif ($allVerified): ?>
                                                         <div class="alert alert-success" role="alert">
-                                                            <i class="fas fa-check-circle"></i> <!-- Ikon Centang untuk status "Selesai" -->
+                                                            <i class="fas fa-check-circle"></i>
+                                                            <!-- Ikon Centang untuk status "Selesai" -->
                                                             Semua dokumen berhasil diverifikasi dan sesuai.
                                                         </div>
                                                     <?php endif; ?>
@@ -319,32 +324,38 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                                     <td>
                                                                         <?php if (isset($uploadedFiles['bukti_pelunasan_ukt']) && $uploadedFiles['bukti_pelunasan_ukt']): ?>
                                                                             <p>
-                                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['bukti_pelunasan_ukt']); ?>" target="_blank">
+                                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['bukti_pelunasan_ukt']); ?>"
+                                                                                    target="_blank">
                                                                                     <?php echo htmlspecialchars($uploadedFiles['bukti_pelunasan_ukt']); ?>
                                                                                 </a>
                                                                             </p>
                                                                         <?php endif; ?>
-                                                                        <input type="file" name="dokumen1" class="file-input" accept=".pdf, .docx" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                                        <input type="file" name="dokumen1"
+                                                                            class="file-input" accept=".pdf, .docx"
+                                                                            <?php echo $allPending ? 'disabled' : ''; ?>>
                                                                     </td>
                                                                     <td><?php
-                                                                        echo htmlspecialchars($statusComment['status1'] ?? 'Belum ada status');
-                                                                        ?></td>
+                                                                    echo htmlspecialchars($statusComment['status1'] ?? 'Belum ada status');
+                                                                    ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bukti Pengisian Data Alumni</td>
                                                                     <td>
                                                                         <?php if (isset($uploadedFiles['bukti_pengisian_data_alumni']) && $uploadedFiles['bukti_pengisian_data_alumni']): ?>
                                                                             <p>
-                                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['bukti_pengisian_data_alumni']); ?>" target="_blank">
+                                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['bukti_pengisian_data_alumni']); ?>"
+                                                                                    target="_blank">
                                                                                     <?php echo htmlspecialchars($uploadedFiles['bukti_pengisian_data_alumni']); ?>
                                                                                 </a>
                                                                             </p>
                                                                         <?php endif; ?>
-                                                                        <input type="file" name="dokumen2" class="file-input" accept=".pdf, .docx" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                                        <input type="file" name="dokumen2"
+                                                                            class="file-input" accept=".pdf, .docx"
+                                                                            <?php echo $allPending ? 'disabled' : ''; ?>>
                                                                     </td>
                                                                     <td><?php
-                                                                        echo htmlspecialchars($statusComment['status2'] ?? 'Belum ada status');
-                                                                        ?></td>
+                                                                    echo htmlspecialchars($statusComment['status2'] ?? 'Belum ada status');
+                                                                    ?></td>
                                                                 </tr>
                                                         </table>
                                                         <button type="submit" class="btn btn-success mt-2"
@@ -357,7 +368,8 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <td><?php echo htmlspecialchars($last_modified); ?></td> <!-- Tampilkan Tanggal -->
+                                                            <td><?php echo htmlspecialchars($last_modified); ?></td>
+                                                            <!-- Tampilkan Tanggal -->
                                                         </tbody>
                                                     </table><br>
                                                     <table class="table table-bordered table-hover">

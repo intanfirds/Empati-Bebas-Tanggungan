@@ -265,9 +265,9 @@ $komentar = $data['komentar'] ?? '';
 
                     <!-- Content Row for Profile -->
                     <div class="row">
-                     <!-- Profile Card Example -->
+                        <!-- Profile Card Example -->
 
-    <div class="col-xl-9 col-lg-7 mx-auto">
+                        <div class="col-xl-9 col-lg-7 mx-auto">
                             <div class="card shadow mb-4">
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
@@ -277,41 +277,42 @@ $komentar = $data['komentar'] ?? '';
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="col-xl-12 mx-auto">
-                                            <div class="card-body">
-                <form action="ajukan-dokumen.php" method="POST">
-                    <button type="submit" class="btn btn-success"
-                            <?php echo (strtolower($status) === 'menunggu') ? 'disabled' : ''; ?>>
-                            Ajukan Dokumen
-                    </button>
-                </form>
-                <table class="table table-bordered table-hover mt-3">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Tanggal Diajukan</th> <!-- Kolom Tanggal Diajukan di depan -->
-                            <th>Status</th>
-                            <th>Komentar</th>
-                            <th>Download File</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><?php echo htmlspecialchars($tglMengajukan); ?></td> <!-- Tampilkan Tanggal -->
-                            <td><?php echo htmlspecialchars($status ?: 'Belum Ada Status'); ?></td>
-                            <td><?php echo htmlspecialchars($komentar ?: 'Belum Ada Komentar'); ?></td>
-                            <td>
-                                <?php if (strtolower($status) === 'disetujui' && !empty($fileKonfirmasi)): ?>
-                                    <a href="uploads/<?php echo htmlspecialchars($fileKonfirmasi); ?>" 
-                                       class="btn btn-primary" download>
-                                        Download File
-                                    </a>
-                                <?php else: ?>
-                                    <button class="btn btn-secondary" disabled>File Tidak Tersedia</button>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                                <div class="card-body">
+                                                    <form action="ajukan-dokumen.php" method="POST">
+                                                    <button type="submit" class="btn btn-success"
+    <?php echo (in_array(strtolower($status), ['menunggu', 'sesuai'])) ? 'disabled' : ''; ?>>
+    <?php echo (strtolower($status) === 'menunggu') ? 'Menunggu Konfirmasi' : 'Ajukan Dokumen'; ?>
+</button>
+
+                                                    </form>
+                                                    <table class="table table-bordered table-hover mt-3">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Tanggal Diajukan</th> <!-- Kolom Tanggal Diajukan di depan -->
+                                                                <th>Status</th>
+                                                                <th>Komentar</th>
+                                                                <th>Download File</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><?php echo htmlspecialchars($tglMengajukan); ?></td> <!-- Tampilkan Tanggal -->
+                                                                <td><?php echo htmlspecialchars($status ?: 'Belum Ada Status'); ?></td>
+                                                                <td><?php echo htmlspecialchars($komentar ?: 'Belum Ada Komentar'); ?></td>
+                                                                <td>
+                                                                    <?php if (strtolower($status) === 'disetujui' && !empty($fileKonfirmasi)): ?>
+                                                                        <a href="uploads/<?php echo htmlspecialchars($fileKonfirmasi); ?>"
+                                                                            class="btn btn-primary" download>
+                                                                            Download File
+                                                                        </a>
+                                                                    <?php else: ?>
+                                                                        <button class="btn btn-secondary" disabled>File Tidak Tersedia</button>
+                                                                    <?php endif; ?>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
