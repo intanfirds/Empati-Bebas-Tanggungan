@@ -252,7 +252,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                         </div>
                     </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered data-table" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>NIM</th>
@@ -267,13 +267,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     <?php
                                     include 'koneksi.php';
 
-                                    $query = "SELECT m.nim, m.nama, m.prodi,m.jurusan, a.angkatan, 
-                                    CASE 
-                                      WHEN k.status = 'sesuai' THEN 'selesai'
-                                      WHEN k.status = 'tidak sesuai' THEN 'belum lengkap'
-                                      WHEN k.status = 'menunggu' THEN 'menunggu'
-                                      ELSE 'belum mengisi'
-                                        END AS status
+                                    $query = "SELECT m.nim, m.nama, m.prodi,m.jurusan, a.angkatan, k.status
                                     FROM Mahasiswa m 
                                     LEFT JOIN pengajuan_perpustakaan p ON m.id = p.id_mahasiswa
                                     LEFT JOIN konfirmasi_perpus k ON p.id = k.id_pengajuan
@@ -337,7 +331,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                                     <h6>Status Konfirmasi</h6>
                                                 </div>
                                                 <div class="card-body">
-                                                    <form method="post" action="proses_konfirmasi.php?nim=<?php echo htmlspecialchars($data['nim']); ?>">
+                                                    <form id="konfirmasiForm" method="post" action="proses_konfirmasi.php?nim=<?php echo htmlspecialchars($data['nim']); ?>">
                                                         <div class="mb-3">
                                                             <div class="form-check">
                                                                 <input type="radio" id="tidakAdaTanggungan" name="status" value="sesuai" class="from-check-input">
@@ -345,7 +339,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                                             </div>
                                                             <div class="form-check">
                                                                 <input type="radio" id="adaTanggungan" name="status" value="tidak sesuai" class="from-check-input">
-                                                                <label for="adaTanggungan" class="form-check-label">Ada buku yang dikembalikan</label>
+                                                                <label for="adaTanggungan" class="form-check-label">Ada buku yang belum dikembalikan</label>
                                                             </div>
                                                             
                                                         </div>
@@ -354,8 +348,10 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                                             <textarea class="form-control" id="komentar" name="komentar" rows="2"></textarea> <!-- Mengurangi tinggi textarea -->
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                                            <button type="submit" class="btn btn-primary">Kirim Konfirmasi</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                <i class="fas fa-times"></i> Tutup
+                                                            <button type="submit" class="btn btn-primary" form="konfirmasiForm" id="simpanKonfirmasi">
+                                                                <i class="fas fa-save"></i> Kirim Konfirmasi
                                                         </div>
                                                     </form>
                                                 </div>
@@ -428,34 +424,73 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
             // Isi konten modal
             const modalContent = document.getElementById('modalContent');
-
             modalContent.innerHTML = `
-            <table class="table table-borderless">
-                <tbody>
-                <tr>
-                    <td><strong>Nama</strong></td>
-                    <td>${nama}</td>
-                </tr>
-                <tr>
-                    <td><strong>NIM</strong></td>
-                    <td>${nim}</td>
-                </tr>
-                <tr>
-                    <td><strong>Jurusan</strong></td>
-                    <td>${jurusan}</td>
-                </tr>
-                <tr>
-                    <td><strong>Prodi</strong></td>
-                    <td>${prodi}</td>
-                </tr>
-                </tbody>
-            </table>
+                <table class="table table-borderless">
+                    <tbody>
+                    <tr>
+                        <td><strong>Nama</strong></td>
+                        <td>${nama}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NIM</strong></td>
+                        <td>${nim}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jurusan</strong></td>
+                        <td>${jurusan}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prodi</strong></td>
+                        <td>${prodi}</td>
+                    </tr>
+                    </tbody>
+                </table>
             `;
 
             // Set radio button sesuai status
             document.getElementById('tidakAdaTanggungan').checked = status === 'sesuai';
             document.getElementById('adaTanggungan').checked = status === 'tidak sesuai';
+
+            // Menangani pengiriman formulir dengan AJAX
+            const konfirmasiForm = document.getElementById('konfirmasiForm');
+            konfirmasiForm.onsubmit = function (event) {
+                event.preventDefault(); // Mencegah pengiriman formulir secara default
+
+                const status = document.querySelector('input[name="status"]:checked').value;
+                const komentar = document.getElementById('komentar').value.trim();
+
+                // Kirim data ke server menggunakan fetch
+                fetch('proses_konfirmasi.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: new URLSearchParams({
+                        nim: nim,
+                        status: status,
+                        komentar: komentar
+                    })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    // Tampilkan pesan sukses
+                    alert(data); // Anda bisa mengganti ini dengan modal atau elemen lain untuk menampilkan pesan
+                    $('#dataMahasiswaModal').modal('hide'); // Menutup modal setelah pengiriman
+                })
+                .catch(error => console.error('Error:', error));
+            };
         });
+        function fetchData() {
+            $.ajax({
+                url: 'proses_konfirmasi.php', // Create this PHP file to return updated data
+                method: 'GET',
+                success: function(data) {
+                    $('#data-table').html(data);
+                }
+            });
+        }
+
+        setInterval(fetchData, 1000); // Refresh data every 5 seconds
     </script>
 
 

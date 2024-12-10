@@ -7,7 +7,7 @@ if (!isset($_SESSION['role'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nim = $_GET['nim'];
+    $nim = $_POST['nim'];
     $status = $_POST['status']; // Array status dari setiap file
     $komentar = $_POST['komentar'];
     $last_modified = date('Y-m-d H:i:s'); // Waktu terakhir dimodifikasi
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($data_konfirmasi === null) {
         // Insert data baru ke tabel konfirmasi_akademik jika belum ada
-        $query_insert_konfirmasi = "INSERT INTO konfirmasi_perpus (id_pengajuan, status, komentar, last_modified) VALUES (?, NULL, NULL ?)";
+        $query_insert_konfirmasi = "INSERT INTO konfirmasi_perpus (id_pengajuan, status, komentar, terakhir_dirubah) VALUES (?, NULL, NULL ?)";
         $params_insert_konfirmasi = [$id_pengajuan, $last_modified];
         $stmt_insert_konfirmasi = sqlsrv_query($conn, $query_insert_konfirmasi, $params_insert_konfirmasi);
 
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Update data konfirmasi_akademik
-    $query_update = "UPDATE konfirmasi_perpus SET status = ?,  komentar = ?, last_modified = ? WHERE id_pengajuan = ?";
+    $query_update = "UPDATE konfirmasi_perpus SET status = ?,  komentar = ?, terakhir_dirubah = ? WHERE id_pengajuan = ?";
     $params_update = [
         $status,
         $komentar,
@@ -68,8 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Redirect kembali ke halaman sebelumnya dengan pesan sukses
     $_SESSION['success_message'] = "Data konfirmasi berhasil diperbarui.";
-    header("Location: tabel.php");
-    exit();
+
 } else {
     die("Metode request tidak valid.");
 }
