@@ -332,31 +332,48 @@ if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) 
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <table class="table table-bordered table-hover mt-3">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th>Status</th>
-                                                        <th>Download File</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <?php echo ($statusValid) ? 'Dokumen Lengkap' : 'Dokumen Tidak Lengkap'; ?>
-                                                        </td>
-                                                        <td>
-    <?php if ($statusValid): ?>
-        <!-- Gunakan path absolut berdasarkan struktur yang benar -->
-        <a href="/Empati-Bebas-Tanggungan/form/form-bestang.docx" class="btn btn-primary" download>
-            Download File
-        </a>
-    <?php else: ?>
-        <button class="btn btn-secondary" disabled>File Tidak Tersedia</button>
-    <?php endif; ?>
-</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <div class="col-xl mx-auto">
+                                                <div class="card-body">
+                                                <?php if (!$statusValid): ?>
+    <div class="alert alert-danger" role="alert">
+    <i class="fas fa-times-circle"></i> 
+        Anda harus melengkapi semua dokumen sebelum dapat mengunduh file.
+    </div>
+<?php else: ?>
+    <div class="alert alert-success" role="alert">
+    <i class="fas fa-check-circle"></i>
+        Semua dokumen sudah lengkap. Anda dapat mengunduh file sekarang.
+    </div>
+<?php endif; ?>
+                                                    <table class="table table-bordered table-hover mt-3">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Status</th>
+                                                                <th>Download File</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <?php echo ($statusValid) ? 'Dokumen Lengkap' : 'Dokumen Tidak Lengkap'; ?>
+                                                                </td>
+                                                                <td>
+                                                                    <?php if ($statusValid): ?>
+                                                                        <!-- Gunakan path absolut berdasarkan struktur yang benar -->
+                                                                        <a href="/Empati-Bebas-Tanggungan/form/form-bestang.docx"
+                                                                            class="btn btn-primary" download>
+                                                                            Download File
+                                                                        </a>
+                                                                    <?php else: ?>
+                                                                        <button class="btn btn-secondary" disabled>File
+                                                                            Tidak Tersedia</button>
+                                                                    <?php endif; ?>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
