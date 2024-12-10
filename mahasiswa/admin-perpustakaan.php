@@ -13,13 +13,13 @@ SELECT
     p.id AS id_pengajuan,
     p.tgl_mengajukan,  -- pastikan tgl_mengajukan ada di SELECT
     k.status, 
-    k.komentar, 
-    k.file_konfirmasi 
+    k.komentar
 FROM pengajuan_perpustakaan p
 LEFT JOIN konfirmasi_perpus k ON p.id = k.id_pengajuan
 WHERE p.id_mahasiswa = ?
 ORDER BY p.tgl_mengajukan DESC
 ";
+
 $stmt = sqlsrv_query($conn, $query, array($idMahasiswa));
 
 if (!$stmt) {
@@ -30,7 +30,6 @@ $data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
 // Cek dan format tanggal jika ada
 $tglMengajukan = !empty($data['tgl_mengajukan']) ? $data['tgl_mengajukan']->format('d/m/Y') : 'Belum Mengajukan';
-$fileKonfirmasi = $data['file_konfirmasi'] ?? '';
 $status = $data['status'] ?? '';
 $komentar = $data['komentar'] ?? '';
 ?>
@@ -266,11 +265,9 @@ $komentar = $data['komentar'] ?? '';
                     <!-- Content Row for Profile -->
                     <div class="row">
                         <!-- Profile Card Example -->
-
                         <div class="col-xl-9 col-lg-7 mx-auto">
                             <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
                                     <h6 class="m-0 font-weight-bold text-primary">Admin Perpustakaan</h6>
                                 </div>
                                 <div class="card-body">
@@ -279,16 +276,15 @@ $komentar = $data['komentar'] ?? '';
                                             <div class="col-xl-12 mx-auto">
                                                 <div class="card-body">
                                                     <form action="ajukan-dokumen.php" method="POST">
-                                                    <button type="submit" class="btn btn-success"
-    <?php echo (in_array(strtolower($status), ['menunggu', 'sesuai'])) ? 'disabled' : ''; ?>>
-    <?php echo (strtolower($status) === 'menunggu') ? 'Menunggu Konfirmasi' : 'Ajukan Dokumen'; ?>
-</button>
-
+                                                        <button type="submit" class="btn btn-success"
+                                                            <?php echo (in_array(strtolower($status), ['menunggu', 'sesuai'])) ? 'disabled' : ''; ?>>
+                                                            <?php echo (strtolower($status) === 'menunggu') ? 'Menunggu Konfirmasi' : 'Ajukan Dokumen'; ?>
+                                                        </button>
                                                     </form>
                                                     <table class="table table-bordered table-hover mt-3">
                                                         <thead class="thead-light">
                                                             <tr>
-                                                                <th>Tanggal Diajukan</th> <!-- Kolom Tanggal Diajukan di depan -->
+                                                                <th>Tanggal Diajukan</th>
                                                                 <th>Status</th>
                                                                 <th>Komentar</th>
                                                                 <th>Download File</th>
@@ -296,13 +292,13 @@ $komentar = $data['komentar'] ?? '';
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td><?php echo htmlspecialchars($tglMengajukan); ?></td> <!-- Tampilkan Tanggal -->
-                                                                <td><?php echo htmlspecialchars($status ?: 'Belum Ada Status'); ?></td>
-                                                                <td><?php echo htmlspecialchars($komentar ?: 'Belum Ada Komentar'); ?></td>
+                                                                <td><?php echo htmlspecialchars($tglMengajukan); ?></td>
+                                                                <td><?php echo htmlspecialchars($status); ?></td>
+                                                                <td><?php echo htmlspecialchars($komentar); ?></td>
                                                                 <td>
-                                                                    <?php if (strtolower($status) === 'disetujui' && !empty($fileKonfirmasi)): ?>
-                                                                        <a href="uploads/<?php echo htmlspecialchars($fileKonfirmasi); ?>"
-                                                                            class="btn btn-primary" download>
+                                                                    <?php if (strtolower($status) === 'sesuai'): ?>
+                                                                        <!-- File yang dapat diunduh bernama 'form_perpus.docx' -->
+                                                                        <a href="../perpustakaan/form/form_perpus.docx" class="btn btn-primary" download>
                                                                             Download File
                                                                         </a>
                                                                     <?php else: ?>

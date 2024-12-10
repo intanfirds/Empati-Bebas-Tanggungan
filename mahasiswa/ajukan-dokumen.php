@@ -12,7 +12,7 @@ if (!$conn) {
 
 // Periksa apakah sudah ada pengajuan sebelumnya dengan status Menunggu atau Disetujui
 $queryCheck = "
-    SELECT p.id AS id_pengajuan
+    SELECT p.id AS id_pengajuan, k.status
     FROM pengajuan_perpustakaan p
     LEFT JOIN konfirmasi_perpus k ON p.id = k.id_pengajuan
     WHERE p.id_mahasiswa = ? AND k.status IN ('Menunggu', 'Disetujui')
@@ -29,6 +29,7 @@ $dataExisting = sqlsrv_fetch_array($stmtCheck, SQLSRV_FETCH_ASSOC);
 if ($dataExisting) {
     // Jika sudah ada pengajuan sebelumnya, update data di tabel pengajuan dan konfirmasi
     $idPengajuan = $dataExisting['id_pengajuan'];
+    $status = $dataExisting['status'];
 
     // Update tabel pengajuan_perpustakaan
     $queryUpdatePengajuan = "
@@ -43,14 +44,13 @@ if ($dataExisting) {
         die('Kesalahan saat memperbarui data pengajuan: ' . print_r(sqlsrv_errors(), true));
     }
 
-    // Update tabel konfirmasi_perpus
+    // Update tabel konfirmasi_perpus tanpa file_konfirmasi, cukup status
     $queryUpdateKonfirmasi = "
         UPDATE konfirmasi_perpus
-        SET file_konfirmasi = ?, terakhir_dirubah = ?, status = ?, komentar = ?
+        SET terakhir_dirubah = ?, status = ?, komentar = ?
         WHERE id_pengajuan = ?
     ";
     $paramsUpdateKonfirmasi = array(
-        'file_konfirmasi.pdf',
         $tglMengajukan,
         'Menunggu',
         'Dokumen sedang dalam proses pemeriksaan',
@@ -84,15 +84,14 @@ if ($dataExisting) {
         die('Gagal mendapatkan ID pengajuan yang baru dibuat!');
     }
 
-    // Tambahkan data ke tabel konfirmasi_perpus
+    // Tambahkan data konfirmasi tanpa file_konfirmasi
     $queryKonfirmasi = "
-        INSERT INTO konfirmasi_perpus (id_pengajuan, id_admin, file_konfirmasi, terakhir_dirubah, status, komentar) 
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO konfirmasi_perpus (id_pengajuan, id_admin, terakhir_dirubah, status, komentar) 
+        VALUES (?, ?, ?, ?, ?)
     ";
     $paramsKonfirmasi = array(
         $idPengajuan,
         4, // ID admin (hardcoded untuk contoh, sesuaikan dengan sistem Anda)
-        'file_konfirmasi.pdf',
         $tglMengajukan,
         'Menunggu',
         'Dokumen sedang dalam proses pemeriksaan'
