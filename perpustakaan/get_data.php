@@ -2,7 +2,7 @@
 // Koneksi ke database SQL Server
 $serverName = "localhost"; // Ganti dengan nama server Anda
 $connectionOptions = array(
-    "Database" => "bebastanggungan", // Ganti dengan nama database Anda
+    "Database" => "bebastanggungangg", // Ganti dengan nama database Anda
     "Uid" => "", // Ganti dengan username database Anda
     "PWD" => "" // Ganti dengan password database Anda
 );
@@ -20,12 +20,12 @@ $sql = "SELECT
     (SELECT COUNT(*) 
         FROM pengajuan_perpustakaan p
         JOIN  konfirmasi_perpus k ON p.id = k.id_pengajuan
-        WHERE k.status1 = 'sesuai'
+        WHERE k.status = 'sesuai'
     ) AS mahasiswa_terverifikasi,
     (SELECT COUNT(*) 
         FROM pengajuan_perpustakaan p
         JOIN  konfirmasi_perpus k ON p.id = k.id_pengajuan
-        WHERE k.status1 = 'menunggu' OR k.status1 = 'tidak sesuai'
+        WHERE k.status = 'menunggu' OR k.status = 'tidak sesuai'
     ) AS mahasiswa_belum_terverifikasi;
     ";
 

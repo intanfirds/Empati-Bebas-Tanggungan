@@ -52,6 +52,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const table = $('#dataTable').DataTable({
@@ -265,11 +267,11 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     <?php
                                     include 'koneksi.php';
 
-                                    $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, 
+                                    $query = "SELECT m.nim, m.nama, m.prodi,m.jurusan, a.angkatan, 
                                     CASE 
-                                      WHEN k.status1 = 'sesuai' THEN 'selesai'
-                                      WHEN k.status1 = 'tidak sesuai' THEN 'belum lengkap'
-                                      WHEN k.status1 = 'menunggu' THEN 'menunggu'
+                                      WHEN k.status = 'sesuai' THEN 'selesai'
+                                      WHEN k.status = 'tidak sesuai' THEN 'belum lengkap'
+                                      WHEN k.status = 'menunggu' THEN 'menunggu'
                                       ELSE 'belum mengisi'
                                         END AS status
                                     FROM Mahasiswa m 
@@ -291,8 +293,13 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
                                         // Ubah kondisi tombol pratinjau
                                         $status = strtolower(trim($data['status']?? 'Belum Mengisi')); // Normalisasi data status
-                                        if (in_array($status, ['selesai', 'belum lengkap', 'menunggu'])) {
-                                            echo "<a href='pratinjau.php?nim=" . htmlspecialchars($data['nim']) . "' class='btn btn-primary'>Pratinjau</a>";
+                                        if (in_array($status, ['selesai', 'tidak sesuai', 'menunggu'])) {
+                                            echo '<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#dataMahasiswaModal" 
+                                                data-nama="' . htmlspecialchars($data['nama']) . '" 
+                                                data-nim="' . htmlspecialchars($data['nim']) . '" 
+                                                data-jurusan="' . htmlspecialchars($data['jurusan']) . '" 
+                                                data-prodi="' . htmlspecialchars($data['prodi']) . '"
+                                                data-status-pengecekan="' . htmlspecialchars($data['status']) . '">Pratinjau</button>';
                                         } else {
                                             echo "-"; // Tampilkan tanda kosong untuk status lainnya
                                         }
@@ -303,6 +310,61 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     ?>
                                 </tbody>
                             </table>
+                            <!-- Modal HTML -->
+                            <div class="modal fade" id="dataMahasiswaModal" tabindex="-1" aria-labelledby="dataMahasiswaModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-md"> <!-- Mengubah ukuran modal menjadi medium -->
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-primary text-white">
+                                            <h5 class="modal-title" id="dataMahasiswaModalLabel">Bebas Tanggungan Perpustakaan</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Card untuk Data Mahasiswa -->
+                                            <div class="card mb-3">
+                                                <div class="card-header">
+                                                    <h6>Data Mahasiswa</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div id="modalContent">
+                                                        <!-- Konten modal akan diisi di sini -->
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Card untuk Konfirmasi dan Komentar -->
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h6>Status Konfirmasi</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <form method="post" action="proses_konfirmasi.php?nim=<?php echo htmlspecialchars($data['nim']); ?>">
+                                                        <div class="mb-3">
+                                                            <div class="form-check">
+                                                                <input type="radio" id="tidakAdaTanggungan" name="status" value="sesuai" class="from-check-input">
+                                                                <label for="tidakAdaTanggungan" class="form-check-label">Tidak ada buku yang dikembalikan</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input type="radio" id="adaTanggungan" name="status" value="tidak sesuai" class="from-check-input">
+                                                                <label for="adaTanggungan" class="form-check-label">Ada buku yang dikembalikan</label>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="komentar" class="form-label">Komentar</label>
+                                                            <textarea class="form-control" id="komentar" name="komentar" rows="2"></textarea> <!-- Mengurangi tinggi textarea -->
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                            <button type="submit" class="btn btn-primary">Kirim Konfirmasi</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -353,10 +415,55 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
             </div>
         </div>
     </div>
+    
+    <script>
+        const dataMahasiswaModal = document.getElementById('dataMahasiswaModal');
+        dataMahasiswaModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Tombol yang diklik
+            const nama = button.getAttribute('data-nama');
+            const nim = button.getAttribute('data-nim');
+            const jurusan = button.getAttribute('data-jurusan');
+            const prodi = button.getAttribute('data-prodi');
+            const status = button.getAttribute('data-status-pengecekan');
+
+            // Isi konten modal
+            const modalContent = document.getElementById('modalContent');
+
+            modalContent.innerHTML = `
+            <table class="table table-borderless">
+                <tbody>
+                <tr>
+                    <td><strong>Nama</strong></td>
+                    <td>${nama}</td>
+                </tr>
+                <tr>
+                    <td><strong>NIM</strong></td>
+                    <td>${nim}</td>
+                </tr>
+                <tr>
+                    <td><strong>Jurusan</strong></td>
+                    <td>${jurusan}</td>
+                </tr>
+                <tr>
+                    <td><strong>Prodi</strong></td>
+                    <td>${prodi}</td>
+                </tr>
+                </tbody>
+            </table>
+            `;
+
+            // Set radio button sesuai status
+            document.getElementById('tidakAdaTanggungan').checked = status === 'sesuai';
+            document.getElementById('adaTanggungan').checked = status === 'tidak sesuai';
+        });
+    </script>
+
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
