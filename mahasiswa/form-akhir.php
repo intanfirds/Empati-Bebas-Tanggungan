@@ -7,33 +7,85 @@ include '../koneksi.php';
 
 $idMahasiswa = $_SESSION['id_mahasiswa'];
 
-// Ambil data pengajuan terbaru dan statusnya
-$query = "
-SELECT 
-    p.id AS id_pengajuan,
-    p.tgl_mengajukan,  -- pastikan tgl_mengajukan ada di SELECT
-    k.status, 
-    k.komentar
+// Mengecek status pengajuan akademik
+$queryAkademik = "
+SELECT k.status1, k.status2
+FROM pengajuan_akademik p
+LEFT JOIN konfirmasi_akademik k ON p.id = k.id_pengajuan
+WHERE p.id_mahasiswa = ?
+";
+$stmtAkademik = sqlsrv_query($conn, $queryAkademik, array($idMahasiswa));
+$statusAkademik = sqlsrv_fetch_array($stmtAkademik, SQLSRV_FETCH_ASSOC);
+
+// Mengecek status pengajuan jurusan
+$queryJurusan = "
+SELECT k.status1, k.status2, k.status3
+FROM pengajuan_jurusan p
+LEFT JOIN konfirmasi_admin_jurusan k ON p.id = k.id_pengajuan
+WHERE p.id_mahasiswa = ?
+";
+$stmtJurusan = sqlsrv_query($conn, $queryJurusan, array($idMahasiswa));
+$statusJurusan = sqlsrv_fetch_array($stmtJurusan, SQLSRV_FETCH_ASSOC);
+
+// Mengecek status pengajuan prodi
+$queryProdi = "
+SELECT k.status1, k.status2, k.status3, k.status4
+FROM pengajuan_prodi p
+LEFT JOIN konfirmasi_admin_prodi k ON p.id = k.id_pengajuan
+WHERE p.id_mahasiswa = ?
+";
+$stmtProdi = sqlsrv_query($conn, $queryProdi, array($idMahasiswa));
+$statusProdi = sqlsrv_fetch_array($stmtProdi, SQLSRV_FETCH_ASSOC);
+
+// Mengecek status pengajuan perpustakaan
+$queryPerpus = "
+SELECT k.status
 FROM pengajuan_perpustakaan p
 LEFT JOIN konfirmasi_perpus k ON p.id = k.id_pengajuan
 WHERE p.id_mahasiswa = ?
-ORDER BY p.tgl_mengajukan DESC
 ";
+$stmtPerpus = sqlsrv_query($conn, $queryPerpus, array($idMahasiswa));
+$statusPerpus = sqlsrv_fetch_array($stmtPerpus, SQLSRV_FETCH_ASSOC);
 
-$stmt = sqlsrv_query($conn, $query, array($idMahasiswa));
+// Debugging: Tampilkan status yang diterima untuk memastikan data yang benar diterima
 
-if (!$stmt) {
-    die(print_r(sqlsrv_errors(), true)); // Debug jika query gagal
+// Mengecek apakah semua status sesuai
+$statusValid = true; // Default status valid
+
+// Mengecek status akademik (termasuk cek untuk NULL atau tidak ditemukan data)
+if (
+    empty($statusAkademik) ||
+    in_array('Menunggu', [$statusAkademik['status1'], $statusAkademik['status2']]) ||
+    is_null($statusAkademik['status1']) || is_null($statusAkademik['status2'])
+) {
+    $statusValid = false; // Jika tidak ada data atau ada status akademik yang "Menunggu" atau NULL
 }
 
-$data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+// Mengecek status jurusan (termasuk cek untuk NULL atau tidak ditemukan data)
+if (
+    empty($statusJurusan) ||
+    in_array('Menunggu', [$statusJurusan['status1'], $statusJurusan['status2'], $statusJurusan['status3']]) ||
+    is_null($statusJurusan['status1']) || is_null($statusJurusan['status2']) || is_null($statusJurusan['status3'])
+) {
+    $statusValid = false; // Jika tidak ada data atau ada status jurusan yang "Menunggu" atau NULL
+}
 
-// Cek dan format tanggal jika ada
-$tglMengajukan = !empty($data['tgl_mengajukan']) ? $data['tgl_mengajukan']->format('d/m/Y') : 'Belum Mengajukan';
-$status = $data['status'] ?? '';
-$komentar = $data['komentar'] ?? '';
+// Mengecek status prodi (termasuk cek untuk NULL atau tidak ditemukan data)
+if (
+    empty($statusProdi) ||
+    in_array('Menunggu', [$statusProdi['status1'], $statusProdi['status2'], $statusProdi['status3'], $statusProdi['status4']]) ||
+    is_null($statusProdi['status1']) || is_null($statusProdi['status2']) || is_null($statusProdi['status3']) || is_null($statusProdi['status4'])
+) {
+    $statusValid = false; // Jika tidak ada data atau ada status prodi yang "Menunggu" atau NULL
+}
+
+// Mengecek status perpustakaan
+if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) {
+    $statusValid = false; // Jika status perpustakaan tidak "sesuai"
+}
+
+// Jika semua status sesuai, maka file bisa diunduh
 ?>
-
 
 <head>
     <meta charset="utf-8">
@@ -273,56 +325,43 @@ $komentar = $data['komentar'] ?? '';
                         <!-- Profile Card Example -->
                         <div class="col-xl-9 col-lg-7 mx-auto">
                             <div class="card shadow mb-4">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
-                                    <h6 class="m-0 font-weight-bold text-primary">Admin Perpustakaan</h6>
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
+                                    <h6 class="m-0 font-weight-bold text-primary">Form Akhir</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="col-xl-12 mx-auto">
-                                                <div class="card-body">
-                                                    <form action="ajukan-dokumen.php" method="POST">
-                                                        <button type="submit" class="btn btn-success"
-                                                            <?php echo (in_array(strtolower($status), ['menunggu', 'sesuai'])) ? 'disabled' : ''; ?>>
-                                                            <?php echo (strtolower($status) === 'menunggu') ? 'Menunggu Konfirmasi' : 'Ajukan Dokumen'; ?>
-                                                        </button>
-                                                    </form>
-                                                    <table class="table table-bordered table-hover mt-3">
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>Tanggal Diajukan</th>
-                                                                <th>Status</th>
-                                                                <th>Komentar</th>
-                                                                <th>Download File</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><?php echo htmlspecialchars($tglMengajukan); ?></td>
-                                                                <td><?php echo htmlspecialchars($status); ?></td>
-                                                                <td><?php echo htmlspecialchars($komentar); ?></td>
-                                                                <td>
-                                                                    <?php if (strtolower($status) === 'sesuai'): ?>
-                                                                        <!-- File yang dapat diunduh bernama 'form_perpus.docx' -->
-                                                                        <a href="../perpustakaan/form/form_perpus.docx" class="btn btn-primary" download>
-                                                                            Download File
-                                                                        </a>
-                                                                    <?php else: ?>
-                                                                        <button class="btn btn-secondary" disabled>File Tidak Tersedia</button>
-                                                                    <?php endif; ?>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
+                                            <table class="table table-bordered table-hover mt-3">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Status</th>
+                                                        <th>Download File</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <?php echo ($statusValid) ? 'Dokumen Lengkap' : 'Dokumen Tidak Lengkap'; ?>
+                                                        </td>
+                                                        <td>
+    <?php if ($statusValid): ?>
+        <!-- Gunakan path absolut berdasarkan struktur yang benar -->
+        <a href="/Empati-Bebas-Tanggungan/form/form-bestang.docx" class="btn btn-primary" download>
+            Download File
+        </a>
+    <?php else: ?>
+        <button class="btn btn-secondary" disabled>File Tidak Tersedia</button>
+    <?php endif; ?>
+</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                     <div class="row">
 
@@ -393,17 +432,6 @@ $komentar = $data['komentar'] ?? '';
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
-
-    <script>
-        // Tidak perlu validasi file input lagi, hanya tombol "Ajukan Dokumen" yang dinonaktifkan berdasarkan status
-        const uploadForm = document.getElementById('uploadForm');
-        const uploadButton = document.getElementById('uploadButton');
-
-        // Pastikan tombol tetap dinonaktifkan jika statusnya "menunggu"
-        if (uploadButton.disabled) {
-            uploadButton.textContent = 'Menunggu Konfirmasi';
-        }
-    </script>
 
 </body>
 

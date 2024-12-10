@@ -68,6 +68,11 @@ session_start();
                     <i class="fas fa-home"></i>
                     <span>Beranda</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="form-akhir.php">
+                    <i class="fas fa-file-signature"></i>
+                    <span>Form Akhir</span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">

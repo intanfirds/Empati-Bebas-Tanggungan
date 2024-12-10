@@ -69,6 +69,12 @@ session_start();
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="form-akhir.php">
+                    <i class="fas fa-file-signature"></i>
+                    <span>Form Akhir</span></a>
+            </li>
+
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Charts -->
