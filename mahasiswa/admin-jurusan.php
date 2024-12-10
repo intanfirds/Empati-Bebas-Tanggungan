@@ -24,6 +24,24 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
     $statusComment = sqlsrv_fetch_array($stmtStatus, SQLSRV_FETCH_ASSOC);
 }
 
+// Cek apakah semua status adalah "Menunggu"
+$allPending = $statusComment &&
+    $statusComment['status1'] === 'Menunggu' &&
+    $statusComment['status2'] === 'Menunggu' &&
+    $statusComment['status3'] === 'Menunggu';
+
+// Cek jika ada status yang "Tidak Sesuai"
+$anyNotMatch = $statusComment && (
+    $statusComment['status1'] === 'tidak sesuai' ||
+    $statusComment['status2'] === 'tidak sesuai' ||
+    $statusComment['status3'] === 'tidak sesuai'
+);
+
+// Cek apakah semua status adalah "Selesai"
+$allVerified = $statusComment &&
+    $statusComment['status1'] === 'sesuai' &&
+    $statusComment['status2'] === 'sesuai' &&
+    $statusComment['status3'] === 'sesuai';
 
 $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_modified']->format('d/m/Y') : 'Belum Mengajukan';
 ?>
@@ -272,6 +290,22 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                         <div class="col-md-12">
                                             <div class="col-xl-12 mx-auto">
                                                 <div class="card-body">
+                                                <?php if ($allPending): ?>
+                                        <div class="alert alert-warning" role="alert">
+                                            <i class="fas fa-clock"></i> <!-- Ikon Jam untuk status "Menunggu" -->
+                                            Semua dokumen sedang dalam status "Menunggu". Harap menunggu verifikasi dari admin sebelum mengunggah dokumen baru.
+                                        </div>
+                                    <?php elseif ($anyNotMatch): ?>
+                                        <div class="alert alert-danger" role="alert">
+                                            <i class="fas fa-times-circle"></i> <!-- Ikon Tanda Silang untuk status "Tidak Sesuai" -->
+                                            Ada dokumen yang tidak sesuai, mohon untuk mengupload ulang semua berkas.
+                                        </div>
+                                    <?php elseif ($allVerified): ?>
+                                        <div class="alert alert-success" role="alert">
+                                            <i class="fas fa-check-circle"></i> <!-- Ikon Centang untuk status "Selesai" -->
+                                            Semua dokumen berhasil diverifikasi dan sesuai.
+                                        </div>
+                                    <?php endif; ?>
                                                     <form id="uploadForm" action="update-dokumen-jurusan.php"
                                                         method="POST" enctype="multipart/form-data">
                                                         <table class="table table-bordered table-hover">
@@ -286,89 +320,50 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                                 <tr>
                                                                     <td>Bukti Publikasi</td>
                                                                     <td>
-                                                                        <?php if (isset($uploadedFiles['file_bukti_publikasi']) && $uploadedFiles['file_bukti_publikasi']): ?>
-                                                                            <p><a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['file_bukti_publikasi']); ?>"
-                                                                                    target="_blank">
-                                                                                    <?php echo htmlspecialchars($uploadedFiles['file_bukti_publikasi']); ?>
-                                                                                </a></p>
-                                                                        <?php endif; ?>
-                                                                        <input type="file" name="dokumen1"
-                                                                            class="file-input" accept=".pdf, .docx">
-                                                                    </td>
-                                                                    <?php if ($statusComment): ?>
-                                                                        <td class="<?php
-                                                                        if ($statusComment['status1'] == 'selesai') {
-                                                                            echo 'status-diterima';
-                                                                        } elseif ($statusComment['status1'] == 'tidak sesuai') {
-                                                                            echo 'status-ditolak';
-                                                                        } else {
-                                                                            echo 'status-menunggu';
-                                                                        }
-                                                                        ?>">
-                                                                            <?php echo htmlspecialchars($statusComment['status1']) ? htmlspecialchars($statusComment['status1']) : 'Menunggu Admin'; ?>
-                                                                        </td>
-                                                                    <?php else: ?>
-                                                                        <td colspan="2" class="text-center">Belum ada status
-                                                                        </td>
-                                                                    <?php endif; ?>
+                                                        <?php if (isset($uploadedFiles['file_bukti_publikasi']) && $uploadedFiles['file_bukti_publikasi']): ?>
+                                                            <p>
+                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['file_bukti_publikasi']); ?>" target="_blank">
+                                                                    <?php echo htmlspecialchars($uploadedFiles['file_bukti_publikasi']); ?>
+                                                                </a>
+                                                            </p>
+                                                        <?php endif; ?>
+                                                        <input type="file" name="dokumen1" class="file-input" accept=".pdf, .docx" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                    </td>
+                                                    <td><?php
+                                                        echo htmlspecialchars($statusComment['status1'] ?? 'Belum ada status');
+                                                        ?></td>
 
                                                                 </tr>
                                                                 <tr>
                                                                     <td>File Skripsi</td>
                                                                     <td>
-                                                                        <?php if ($uploadedFiles && $uploadedFiles['file_skripsi']): ?>
-                                                                            <p><a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['file_skripsi']); ?>"
-                                                                                    target="_blank">
-                                                                                    <?php echo htmlspecialchars($uploadedFiles['file_skripsi']); ?>
-                                                                                </a></p>
-                                                                        <?php endif; ?>
-                                                                        <input type="file" name="dokumen2"
-                                                                            class="file-input" accept=".pdf, .docx">
-                                                                    </td>
-                                                                    <?php if ($statusComment): ?>
-                                                                        <td class="<?php
-                                                                        if ($statusComment['status2'] == 'selesai') {
-                                                                            echo 'status-diterima';
-                                                                        } elseif ($statusComment['status2'] == 'tidak sesuai') {
-                                                                            echo 'status-ditolak';
-                                                                        } else {
-                                                                            echo 'status-menunggu';
-                                                                        }
-                                                                        ?>">
-                                                                            <?php echo htmlspecialchars($statusComment['status2']) ? htmlspecialchars($statusComment['status2']) : 'Menunggu Admin'; ?>
-                                                                        </td>
-                                                                    <?php else: ?>
-                                                                        <td colspan="2" class="text-center">Belum ada status
-                                                                        </td>
-                                                                    <?php endif; ?>
+                                                        <?php if (isset($uploadedFiles['file_skripsi']) && $uploadedFiles['file_skripsi']): ?>
+                                                            <p>
+                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['file_skripsi']); ?>" target="_blank">
+                                                                    <?php echo htmlspecialchars($uploadedFiles['file_skripsi']); ?>
+                                                                </a>
+                                                            </p>
+                                                        <?php endif; ?>
+                                                        <input type="file" name="dokumen2" class="file-input" accept=".pdf, .docx" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                    </td>
+                                                    <td><?php
+                                                        echo htmlspecialchars($statusComment['status2'] ?? 'Belum ada status');
+                                                        ?></td>
                                                                 </tr>
                                                                 <td>Hasil Akhir Skripsi</td>
-                                                                <td>
-                                                                    <?php if ($uploadedFiles && $uploadedFiles['hasil_akhir_skripsi']): ?>
-                                                                        <p><a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['hasil_akhir_skripsi']); ?>"
-                                                                                target="_blank">
-                                                                                <?php echo htmlspecialchars($uploadedFiles['hasil_akhir_skripsi']); ?>
-                                                                            </a></p>
-                                                                    <?php endif; ?>
-                                                                    <input type="file" name="dokumen3"
-                                                                        class="file-input" accept=".zip">
-                                                                </td>
-                                                                <?php if ($statusComment): ?>
-                                                                        <td class="<?php
-                                                                        if ($statusComment['status3'] == 'selesai') {
-                                                                            echo 'status-diterima';
-                                                                        } elseif ($statusComment['status3'] == 'tidak sesuai') {
-                                                                            echo 'status-ditolak';
-                                                                        } else {
-                                                                            echo 'status-menunggu';
-                                                                        }
-                                                                        ?>">
-                                                                            <?php echo htmlspecialchars($statusComment['status3']) ? htmlspecialchars($statusComment['status3']) : 'Menunggu Admin'; ?>
-                                                                        </td>
-                                                                    <?php else: ?>
-                                                                        <td colspan="2" class="text-center">Belum ada status
-                                                                        </td>
-                                                                    <?php endif; ?>
+                                                                    <td>
+                                                        <?php if (isset($uploadedFiles['hasil_akhir_skripsi']) && $uploadedFiles['hasil_akhir_skripsi']): ?>
+                                                            <p>
+                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['hasil_akhir_skripsi']); ?>" target="_blank">
+                                                                    <?php echo htmlspecialchars($uploadedFiles['hasil_akhir_skripsi']); ?>
+                                                                </a>
+                                                            </p>
+                                                        <?php endif; ?>
+                                                        <input type="file" name="dokumen3" class="file-input" accept=".zip" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                    </td>
+                                                    <td><?php
+                                                        echo htmlspecialchars($statusComment['status3'] ?? 'Belum ada status');
+                                                        ?></td>
                                                             </tbody>
                                                         </table>
                                                         <button type="submit" class="btn btn-success mt-2"

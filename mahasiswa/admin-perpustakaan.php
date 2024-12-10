@@ -266,12 +266,18 @@ $komentar = $data['komentar'] ?? '';
                     <!-- Content Row for Profile -->
                     <div class="row">
                      <!-- Profile Card Example -->
+
     <div class="col-xl-9 col-lg-7 mx-auto">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 bg-light">
-                <h6 class="m-0 font-weight-bold text-primary">Admin Perpustakaan</h6>
-            </div>
-            <div class="card-body">
+                            <div class="card shadow mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
+                                    <h6 class="m-0 font-weight-bold text-primary">Admin Perpustakaan</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-xl-12 mx-auto">
+                                            <div class="card-body">
                 <form action="ajukan-dokumen.php" method="POST">
                     <button type="submit" class="btn btn-success"
                             <?php echo (strtolower($status) === 'menunggu') ? 'disabled' : ''; ?>>
@@ -306,8 +312,14 @@ $komentar = $data['komentar'] ?? '';
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                     <div class="row">
 
