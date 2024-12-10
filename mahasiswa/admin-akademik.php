@@ -6,9 +6,10 @@
 session_start();
 include_once '../koneksi.php';
 $idMahasiswa = $_SESSION['id_mahasiswa']; // Ambil id_mahasiswa dari session
-$query = "SELECT bukti_pelunasan_ukt, bukti_pengisian_data_alumni FROM pengajuan_akademik WHERE id_mahasiswa = ?";
+$query = "SELECT last_modified, bukti_pelunasan_ukt, bukti_pengisian_data_alumni FROM pengajuan_akademik WHERE id_mahasiswa = ?";
 $params = array($idMahasiswa);
 $stmt = sqlsrv_query($conn, $query, $params);
+
 
 $uploadedFiles = null;
 if ($stmt && sqlsrv_has_rows($stmt)) {
@@ -16,13 +17,15 @@ if ($stmt && sqlsrv_has_rows($stmt)) {
 }
 
 // Ambil data status dan komentar dari tabel konfirmasi_akademik
-$queryStatus = "SELECT status1,status2, komentar FROM konfirmasi_akademik WHERE id_pengajuan = (SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?) ORDER BY last_modified DESC";
+$queryStatus = "SELECT last_modified, status1,status2, komentar FROM konfirmasi_akademik WHERE id_pengajuan = (SELECT id FROM pengajuan_akademik WHERE id_mahasiswa = ?) ORDER BY last_modified DESC";
 $stmtStatus = sqlsrv_query($conn, $queryStatus, array($idMahasiswa));
 
 $statusComment = null;
 if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
     $statusComment = sqlsrv_fetch_array($stmtStatus, SQLSRV_FETCH_ASSOC);
 }
+
+$last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_modified']->format('d/m/Y') : 'Belum Mengajukan';
 ?>
 
 
@@ -341,6 +344,16 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                                                         <button type="submit" class="btn btn-success mt-2"
                                                             id="uploadButton" disabled>Upload Dokumen</button>
                                                     </form><br>
+                                                    <table class="table table-bordered table-hover">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Tanggal Diajukan</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <td><?php echo htmlspecialchars($last_modified); ?></td> <!-- Tampilkan Tanggal -->
+                                                        </tbody>
+                                                    </table><br>
                                                     <table class="table table-bordered table-hover">
                                                         <thead class="thead-light">
                                                             <tr>

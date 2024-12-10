@@ -16,13 +16,16 @@ if ($stmt && sqlsrv_has_rows($stmt)) {
 }
 
 // Ambil data status dan komentar dari tabel konfirmasi_jurusan
-$queryStatus = "SELECT status1,status2,status3, komentar FROM konfirmasi_admin_jurusan WHERE id_pengajuan = (SELECT id FROM pengajuan_jurusan WHERE id_mahasiswa = ?) ORDER BY last_modified DESC";
+$queryStatus = "SELECT last_modified,status1,status2,status3, komentar FROM konfirmasi_admin_jurusan WHERE id_pengajuan = (SELECT id FROM pengajuan_jurusan WHERE id_mahasiswa = ?) ORDER BY last_modified DESC";
 $stmtStatus = sqlsrv_query($conn, $queryStatus, array($idMahasiswa));
 
 $statusComment = null;
 if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
     $statusComment = sqlsrv_fetch_array($stmtStatus, SQLSRV_FETCH_ASSOC);
 }
+
+
+$last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_modified']->format('d/m/Y') : 'Belum Mengajukan';
 ?>
 
 
@@ -371,6 +374,16 @@ if ($stmtStatus && sqlsrv_has_rows($stmtStatus)) {
                                                         <button type="submit" class="btn btn-success mt-2"
                                                             id="uploadButton" disabled>Upload Dokumen</button>
                                                     </form><br>
+                                                    <table class="table table-bordered table-hover">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Tanggal Diajukan</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <td><?php echo htmlspecialchars($last_modified); ?></td> <!-- Tampilkan Tanggal -->
+                                                        </tbody>
+                                                    </table><br>
                                                     <table class="table table-bordered table-hover">
                                                         <thead class="thead-light">
                                                             <tr>

@@ -26,7 +26,10 @@ $sql = "
         SUM(CASE WHEN COALESCE(kap.status1, '') = 'Menunggu' THEN 1 ELSE 0 END) +
         SUM(CASE WHEN COALESCE(kap.status2, '') = 'Menunggu' THEN 1 ELSE 0 END) +
         SUM(CASE WHEN COALESCE(kap.status3, '') = 'Menunggu' THEN 1 ELSE 0 END) +
-        SUM(CASE WHEN COALESCE(kap.status4, '') = 'Menunggu' THEN 1 ELSE 0 END) AS pending_count
+        SUM(CASE WHEN COALESCE(kap.status4, '') = 'Menunggu' THEN 1 ELSE 0 END) +
+
+        -- Pengajuan Perpustakaan
+        SUM(CASE WHEN COALESCE(kp.status, '') = 'Menunggu' THEN 1 ELSE 0 END) AS pending_count
     FROM mahasiswa m
     LEFT JOIN pengajuan_akademik pa ON m.id = pa.id_mahasiswa
     LEFT JOIN konfirmasi_akademik ka ON pa.id = ka.id_pengajuan
@@ -34,6 +37,8 @@ $sql = "
     LEFT JOIN konfirmasi_admin_jurusan kaj ON pj.id = kaj.id_pengajuan
     LEFT JOIN pengajuan_prodi pp ON m.id = pp.id_mahasiswa
     LEFT JOIN konfirmasi_admin_prodi kap ON pp.id = kap.id_pengajuan
+    LEFT JOIN pengajuan_perpustakaan ppustaka ON m.id = ppustaka.id_mahasiswa
+    LEFT JOIN konfirmasi_perpus kp ON ppustaka.id = kp.id_pengajuan
     WHERE m.id = ?
 ";
 
