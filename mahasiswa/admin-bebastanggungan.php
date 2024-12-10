@@ -342,7 +342,7 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                                     <?php endif; ?>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Bebas Kompensasi</td>
+                                                                    <td>Bebas Kompensasi (opsional)</td>
                                                                     <td>
                                                                         <?php if ($uploadedFiles && $uploadedFiles['bebas_kompensasi']): ?>
                                                                             <p><a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['bebas_kompensasi']); ?>"
@@ -350,8 +350,8 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                                                     <?php echo htmlspecialchars($uploadedFiles['bebas_kompensasi']); ?>
                                                                                 </a></p>
                                                                         <?php endif; ?>
-                                                                        <input type="file" name="dokumen3"
-                                                                            class="file-input" accept=".pdf, .docx">
+                                                                        <input type="file" name="dokumen3" class="file-input" accept=".pdf, .docx" data-optional="true">
+
                                                                     </td>
                                                                     <?php if ($statusComment): ?>
                                                                         <td class="<?php
@@ -510,17 +510,23 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
     <script src="js/demo/chart-pie-demo.js"></script>
 
     <script>
-        const uploadForm = document.getElementById('uploadForm');
-        const uploadButton = document.getElementById('uploadButton');
-        const fileInputs = uploadForm.querySelectorAll('input[type="file"]');
+       const uploadForm = document.getElementById('uploadForm');
+const uploadButton = document.getElementById('uploadButton');
+const fileInputs = uploadForm.querySelectorAll('input[type="file"]');
 
-        fileInputs.forEach(input => {
-            input.addEventListener('change', () => {
-                // Check if both file inputs have a value
-                const allFilled = Array.from(fileInputs).every(fileInput => fileInput.files.length > 0);
-                uploadButton.disabled = !allFilled; // Enable or disable the button
-            });
+fileInputs.forEach(input => {
+    input.addEventListener('change', () => {
+        // Check if all required file inputs have a value
+        const allRequiredFilled = Array.from(fileInputs).every(fileInput => {
+            if (fileInput.hasAttribute('data-optional')) {
+                return true; // Skip optional inputs
+            }
+            return fileInput.files.length > 0; // Ensure required inputs have files
         });
+        uploadButton.disabled = !allRequiredFilled; // Enable or disable the button
+    });
+});
+
     </script>
 
 </body>

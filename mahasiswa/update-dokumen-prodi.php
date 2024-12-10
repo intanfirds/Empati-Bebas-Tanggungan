@@ -99,30 +99,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Proses upload dokumen 3
-    if (isset($_FILES['dokumen3']) && $_FILES['dokumen3']['error'] == UPLOAD_ERR_OK) {
-        $file3 = $_FILES['dokumen3'];
-        $file3Name = basename($file3['name']);
-        $file3Path = $uploadDir . $file3Name;
+  // Proses upload dokumen 3
+if (isset($_FILES['dokumen3']) && $_FILES['dokumen3']['error'] == UPLOAD_ERR_OK) {
+    $file3 = $_FILES['dokumen3'];
+    $file3Name = basename($file3['name']);
+    $file3Path = $uploadDir . $file3Name;
 
-        // Hapus file lama jika ada
-        if (!empty($existingFiles['bebas_kompensasi']) && file_exists($uploadDir . $existingFiles['bebas_kompensasi'])) {
-            unlink($uploadDir . $existingFiles['bebas_kompensasi']);
-        }
-
-        // Upload file baru
-        if (move_uploaded_file($file3['tmp_name'], $file3Path)) {
-            // Simpan ke database
-            $queryUpdate = "UPDATE pengajuan_prodi SET bebas_kompensasi = ?, path3 = ?, last_modified = GETDATE() WHERE id_mahasiswa = ?";
-            $stmtUpdate = sqlsrv_query($conn, $queryUpdate, array($file3Name, $file3Path, $idMahasiswa));
-            if ($stmtUpdate === false) {
-                die("Query UPDATE gagal untuk dokumen3: " . print_r(sqlsrv_errors(), true));
-            }
-            echo "File Bebas Kompensasi berhasil diupload.<br>";
-        } else {
-            die("Gagal mengupload File Hasil Bebas Kompensasi.");
-        }
+    // Hapus file lama jika ada
+    if (!empty($existingFiles['bebas_kompensasi']) && file_exists($uploadDir . $existingFiles['bebas_kompensasi'])) {
+        unlink($uploadDir . $existingFiles['bebas_kompensasi']);
     }
+
+    // Upload file baru
+    if (move_uploaded_file($file3['tmp_name'], $file3Path)) {
+        // Simpan ke database dengan status "Menunggu Admin"
+        $queryUpdate = "UPDATE pengajuan_prodi 
+                        SET bebas_kompensasi = ?, path3 = ?, status3 = ?, last_modified = GETDATE() 
+                        WHERE id_mahasiswa = ?";
+        $stmtUpdate = sqlsrv_query($conn, $queryUpdate, array($file3Name, $file3Path, 'Menunggu Admin', $idMahasiswa));
+        if ($stmtUpdate === false) {
+            die("Query UPDATE gagal untuk dokumen3: " . print_r(sqlsrv_errors(), true));
+        }
+        echo "File Bebas Kompensasi berhasil diupload.<br>";
+    } else {
+        die("Gagal mengupload File Bebas Kompensasi.");
+    }
+} else {
+    // Jika file tidak diunggah, atur status menjadi "Sesuai"
+    $queryUpdate = "UPDATE pengajuan_prodi 
+                    SET status3 = ?, last_modified = GETDATE() 
+                    WHERE id_mahasiswa = ?";
+    $stmtUpdate = sqlsrv_query($conn, $queryUpdate, array('Sesuai', $idMahasiswa));
+    if ($stmtUpdate === false) {
+        die("Query UPDATE gagal untuk status Bebas Kompensasi kosong: " . print_r(sqlsrv_errors(), true));
+    }
+    echo "Bebas Kompensasi tidak diupload. Status otomatis diatur menjadi 'Sesuai'.<br>";
+}
+
 
     // Proses upload dokumen 4
     if (isset($_FILES['dokumen4']) && $_FILES['dokumen4']['error'] == UPLOAD_ERR_OK) {
