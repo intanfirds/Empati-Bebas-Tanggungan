@@ -247,62 +247,72 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       echo '<div class="row mb-4">';
 
                       // Data file yang akan ditampilkan
-                      $file1_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path1']);
-                      $file2_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path2']);
-                      $file3_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path3']);
-                      $file4_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path4']);
-                      
-              
-                      $files = [
-                          ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_skripsi']), 'url' => $file1_url, 'status' => $data_mahasiswa['status_pengisian']],
-                          ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_magang']), 'url' => $file2_url, 'status' => $data_mahasiswa['status_pengisian']],
-                          ['nama' => htmlspecialchars($data_mahasiswa['bebas_kompensasi']), 'url' => $file3_url, 'status' => $data_mahasiswa['status_pengisian']],
-                          ['nama' => htmlspecialchars($data_mahasiswa['nilai_toeic']), 'url' => $file4_url, 'status' => $data_mahasiswa['status_pengisian']],
-                      ];
-                      
-                      echo '<div class="container mt-4">';
-                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '">'; // Form utama untuk semua input
+                     // Data file yang akan ditampilkan
+                     $file1_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path1']);
+                     $file2_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path2']);
+                     $file3_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path3'] ?? '');
+                     $file4_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path4']);
 
-                      foreach ($files as $index => $file) {
-                          echo '<div class="card mb-4 shadow-sm">';
-                          echo '<div class="card-body">';
-                          
-                          echo '<h5 class="card-title">' . htmlspecialchars($file['nama']) . '</h5>';
+                     // Untuk file kompensasi, jika kosong set null atau kosongkan URL
+                     $file3_url = empty($data_mahasiswa['path3']) ? '' : $file3_url;
+
+                     $files = [
+                         ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_skripsi'] ?? ''), 'url' => $file1_url, 'status' => $data_mahasiswa['status_pengisian']],
+                         ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_magang'] ?? ''), 'url' => $file2_url, 'status' => $data_mahasiswa['status_pengisian']],
+                         ['nama' => htmlspecialchars($data_mahasiswa['bebas_kompensasi'] ?? ''), 'url' => $file3_url, 'status' => $data_mahasiswa['status_pengisian']],
+                         ['nama' => htmlspecialchars($data_mahasiswa['nilai_toeic'] ?? ''), 'url' => $file4_url, 'status' => $data_mahasiswa['status_pengisian']],
+                     ];
+
+                      
+                     echo '<div class="container mt-4">';
+                     echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '">'; // Form utama untuk semua input
+                         
+                     foreach ($files as $index => $file) {
+                         echo '<div class="card mb-4 shadow-sm">';
+                         echo '<div class="card-body">';
+                         
+                         echo '<h5 class="card-title">' . htmlspecialchars($file['nama']) . '</h5>';
+                       
+                         // Preview berdasarkan ekstensi file
+                         $ext = strtolower(pathinfo($file['url'], PATHINFO_EXTENSION));
+
+                         if ($ext === 'pdf') {
+                             // Tampilkan PDF dalam iframe
+                             echo '<iframe src="' . htmlspecialchars($file['url']) . '" width="100%" height="400px" class="mb-3"></iframe>';
+                         } elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'])) {
+                             // Gunakan Google Docs Viewer untuk file Office
+                             echo '<iframe src="https://docs.google.com/viewer?url=' . urlencode($file['url']) . '&embedded=true" width="100%" height="400px" class="mb-3"></iframe>';
+                         } elseif (in_array($ext, ['png', 'jpg', 'jpeg', 'gif'])) {
+                             // Tampilkan gambar langsung
+                             echo '<img src="' . htmlspecialchars($file['url']) . '" class="img-fluid mb-3" alt="Preview">';
+                         } else {
+                             // Tampilkan link untuk file yang tidak didukung
+                             echo '<p>File tidak dapat dipratinjau. <a href="' . htmlspecialchars($file['url']) . '" target="_blank">Unduh file</a>.</p>';
+                         }
+
+                         // Tambahkan checkbox konfirmasi untuk setiap file
+                         $current_status = strtolower($file['status']);
+                         echo '<div class="form-check">';
+                         echo '<input class="form-check-input" type="radio" name="status[' . $index . ']" id="status_sesuai' . $index . '" value="sesuai" ' . 
+                             (($current_status === 'sesuai') ? 'checked' : '') . '>';
+                         echo '<label class="form-check-label" for="status_sesuai' . $index . '">Sesuai</label>';
+                         echo '</div>';
+                         echo '<div class="form-check">';
+                         echo '<input class="form-check-input" type="radio" name="status[' . $index . ']" id="status_tidak_sesuai' . $index . '" value="tidak sesuai" ' . 
+                             (($current_status === 'tidak sesuai') ? 'checked' : '') . '>';
+                         echo '<label class="form-check-label" for="status_tidak_sesuai' . $index . '">Tidak Sesuai</label>';
+                         echo '</div>';
+
+                         if ($index == 2) { // Kompensasi (file3)
+                           // Menambahkan keterangan jika file kompensasi tidak ada
+                           if (empty($file['url'])) {
+                               echo '<p class="text-muted"> <span style="color: red;">Mahasiswa tidak melampirkan file kompensasi. Mohon cek data mahasiswa terkait</p>';
+                           }
+                       }
                      
-                          // Preview berdasarkan ekstensi file
-                          $ext = strtolower(pathinfo($file['url'], PATHINFO_EXTENSION));
-
-                          if ($ext === 'pdf') {
-                              // Tampilkan PDF dalam iframe
-                              echo '<iframe src="' . htmlspecialchars($file['url']) . '" width="100%" height="400px" class="mb-3"></iframe>';
-                          } elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'])) {
-                              // Gunakan Google Docs Viewer untuk file Office
-                              echo '<iframe src="https://docs.google.com/viewer?url=' . urlencode($file['url']) . '&embedded=true" width="100%" height="400px" class="mb-3"></iframe>';
-                          } elseif (in_array($ext, ['png', 'jpg', 'jpeg', 'gif'])) {
-                              // Tampilkan gambar langsung
-                              echo '<img src="' . htmlspecialchars($file['url']) . '" class="img-fluid mb-3" alt="Preview">';
-                          } else {
-                              // Tampilkan link untuk file yang tidak didukung
-                              echo '<p>File tidak dapat dipratinjau. <a href="' . htmlspecialchars($file['url']) . '" target="_blank">Unduh file</a>.</p>';
-                          }
-
-                          // Tambahkan checkbox konfirmasi untuk setiap file
-                          $current_status = strtolower($file['status']);
-                          echo '<div class="form-check">';
-                          echo '<input class="form-check-input" type="radio" name="status[' . $index . ']" id="status_sesuai' . $index . '" value="sesuai" ' . 
-                              (($current_status === 'sesuai') ? 'checked' : '') . '>';
-                          echo '<label class="form-check-label" for="status_sesuai' . $index . '">Sesuai</label>';
-                          echo '</div>';
-                          echo '<div class="form-check">';
-                          echo '<input class="form-check-input" type="radio" name="status[' . $index . ']" id="status_tidak_sesuai' . $index . '" value="tidak sesuai" ' . 
-                              (($current_status === 'tidak sesuai') ? 'checked' : '') . '>';
-                          echo '<label class="form-check-label" for="status_tidak_sesuai' . $index . '">Tidak Sesuai</label>';
-                          echo '</div>';
-                      
-                          echo '</div>'; // Close card-body
-                          echo '</div>'; // Close card
-                      }
-
+                        echo '</div>'; // Close card-body
+                        echo '</div>'; // Close card
+                     }
                       // Tambahkan area komentar tunggal di bawah semua file
                       echo '<div class="form-group mt-4">';
                       $sql_komentar = "select k.komentar
