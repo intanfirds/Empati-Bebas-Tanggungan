@@ -16,7 +16,7 @@ session_start();
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Admin Prodi</title>
+    <title>SiBeTa - Prodi</title>
 
     <!-- Custom fonts for this template-->
     <link
