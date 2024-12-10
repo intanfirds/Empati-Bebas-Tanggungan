@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Debugging sementara
             // echo "Password dari database: " . htmlspecialchars($data['password']) . "<br>";
             // echo "Password lama yang dimasukkan: " . htmlspecialchars($old_password) . "<br>";
-            echo "Password dari database (asli): " . htmlspecialchars($data['password']) . "<br>";
+            // echo "Password dari database (asli): " . htmlspecialchars($data['password']) . "<br>";
 
             // Verifikasi password lama
             if (password_verify($old_password, $data['password'])) {
