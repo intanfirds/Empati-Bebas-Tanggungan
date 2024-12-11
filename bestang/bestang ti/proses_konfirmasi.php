@@ -54,8 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update data konfirmasi_akademik
     $query_update = "UPDATE konfirmasi_admin_prodi SET status1 = ?, status2 = ?, status3 = ?, status4 = ?, komentar = ?, last_modified = ? WHERE id_pengajuan = ?";
     $params_update = [
-        isset($status[0]) ? $status[0] : null, // Status file pertama (bukti pelunasan UKT)
-        isset($status[1]) ? $status[1] : null, // Status file kedua (bukti pengisian data alumni)
+        isset($status[0]) ? $status[0] : null, 
+        isset($status[1]) ? $status[1] : null, 
         isset($status[2]) ? $status[2] : null,
         isset($status[3]) ? $status[3] : null,
         $komentar,
