@@ -42,7 +42,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Perpustakaan</title>
+    <title>SiBeTa - Akademik</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -64,7 +64,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <div id="wrapper">
       <!-- Sidebar -->
       <ul
-        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion bg-sidebar"
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
         id="accordionSidebar"
       >
         <!-- Sidebar - Brand -->
@@ -133,6 +133,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
+              
               <div class="topbar-divider d-none d-sm-block"></div>
 
               <!-- Nav Item - User Information -->
@@ -184,69 +185,44 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           <!-- Begin Page Content -->
           <div class="container-fluid">
             <!-- Page Heading -->
-            <div
-              class="d-sm-flex align-items-center justify-content-between mb-4"
-            >
-              <h1 class="h3 mb-0 text-gray-800">Welcome, <?php echo htmlspecialchars($_SESSION['nama_admin']); ?></h1>
-            </div>
-
-            <!-- Content Row -->
-            <div class="row">
-              <!-- Card Mahasiswa yang telah mengirim bukti pembayaran UKT -->
-              <div class="col-xl-4 col-md-6 mb-4">
-                  <div class="card border-left-primary shadow h-100 py-2">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Profil Admin</h2>
+                    </div>
                     <div class="card-body">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="h5 mb-0 font-weight-bold text-primary mahasiswa_terverifikasi"></div>
-                          <div class="text-xs font-weight-bold mb-1">
-                            Jumlah Mahasiswa Terverifikasi
-                          </div>
+                        <div class="text-center">
+                            <img src="img/undraw_profile_3.svg" alt="Foto Profil" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
                         </div>
-                        <div class="col-auto">
-                          <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        <h3 class="text-center"><?php echo htmlspecialchars($_SESSION['nama_admin']); ?></h3>
+                        <p class="text-center">NIP : <?php echo htmlspecialchars($_SESSION['nip_admin']); ?></p>
+                        <div class="text-center">
+                            <a href="edit-profil.php" class="btn btn-primary mr-4">Edit Profile</a>
+                            <a href="edit-password.php" class="btn btn-success">Edit Password</a>
                         </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-
-              <!-- Card Mahasiswa yang telah mengirim bukti pengisian data alumni -->
-              <div class="col-xl-4 col-md-6 mb-4">
-                  <div class="card border-left-info shadow h-100 py-2">
-                      <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                          <div class="col mr-2">
-                            <div class="h5 text-info mb-0 font-weight-bold mahasiswa_belum_terverifikasi"></div>
-                            <div class="text-xs font-weight-bold mb-1">
-                              Jumlah Mahasiswa belum Terverifikasi
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
             </div>
           </div>
-      
-          <!-- End of Footer -->
+          <!-- End of Main Content -->
+
+          
         </div>
         <!-- End of Content Wrapper -->
          <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                  <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                      <span
-                        >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
-                      >
-                    </div>
-                  </div>
-                </footer>
+          <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+              <div class="copyright text-center my-auto">
+                <span
+                  >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
+                >
+              </div>
+            </div>
+          </footer>
+          <!-- End of Footer -->
       </div>
       <!-- End of Page Wrapper -->
+
       <!-- Scroll to Top Button-->
       <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -297,27 +273,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </div>
         </div>
       </div>
-      <script>
-      function updateCardData() {
-          $.ajax({
-              url: 'get_data.php',
-              method: 'GET',
-              dataType: 'json',
-              success: function(data) {
-                  // Update jumlah Mahasiswa
-                  console.log(data);
-                  $('.mahasiswa_terverifikasi').text(data.mahasiswa_terverifikasi);
-                  $('.mahasiswa_belum_terverifikasi').text(data.mahasiswa_belum_terverifikasi);
-              },
-              error: function(xhr, status, error) {
-                  console.error('Error fetching data:', error);
-              }
-          });
-      }
 
-      // Panggil fungsi updateCardData setiap 5 detik
-      setInterval(updateCardData, 1000);
-      </script>
       <!-- Bootstrap core JavaScript-->
       <script src="vendor/jquery/jquery.min.js"></script>
       <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -337,4 +293,3 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     </div>
   </body>
 </html>
-
