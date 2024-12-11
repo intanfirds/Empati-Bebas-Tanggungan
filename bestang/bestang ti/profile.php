@@ -42,7 +42,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Prodi</title>
+    <title>SiBeTa - Prodi </title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -92,8 +92,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 
-         <!-- Nav Item - Pages Mahasiswa -->
-         <li class="nav-item">
+        <!-- Nav Item - Pages Mahasiswa -->
+        <li class="nav-item">
           <a
             class="nav-link collapsed"
             href="tabel.php"
@@ -197,7 +197,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                         <h3 class="text-center"><?php echo htmlspecialchars($_SESSION['nama_admin']); ?></h3>
                         <p class="text-center">NIP : <?php echo htmlspecialchars($_SESSION['nip_admin']); ?></p>
                         <div class="text-center">
-                            <a href="edit-profil.php" class="btn btn-primary">Edit Profile</a>
+                            <a href="edit-profil.php" class="btn btn-primary mr-4">Edit Profile</a>
                             <a href="edit-password.php" class="btn btn-success">Edit Password</a>
                         </div>
                     </div>
@@ -206,8 +206,11 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </div>
           <!-- End of Main Content -->
 
-          <!-- Footer -->
-          <footer class="sticky-footer bg-white fixed-bottom" style="padding: 10px 0;">
+          
+        </div>
+        <!-- End of Content Wrapper -->
+         <!-- Footer -->
+          <footer class="sticky-footer bg-white">
             <div class="container my-auto">
               <div class="copyright text-center my-auto">
                 <span
@@ -217,8 +220,6 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
             </div>
           </footer>
           <!-- End of Footer -->
-        </div>
-        <!-- End of Content Wrapper -->
       </div>
       <!-- End of Page Wrapper -->
 

@@ -199,7 +199,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa Prodi D-IV Teknik Informatika</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa Prodi D-IV Teknik Informatika </h6>
                     </div>
                     <div class="card-body">
                     <div class="mb-3">

@@ -63,20 +63,18 @@ session_start();
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 
-        <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-        <!-- Nav Item - Pages Mahasiswa -->
-        <li class="nav-item">
-                  <a
-                    class="nav-link collapsed"
-                    href="tabel.php"
-                  >
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>
-                      Mahasiswa
-                    </span>
-                  </a>
+          <a
+            class="nav-link collapsed"
+            href="tabel.php"
+          >
+            <i class="fas fa-fw fa-folder"></i>
+            <span>
+              Mahasiswa
+            </span>
+          </a>
         </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 
@@ -174,8 +172,11 @@ session_start();
             </div>
           <!-- End of Main Content -->
 
-          <!-- Footer -->
-          <footer class="sticky-footer bg-white fixed-bottom" style="padding: 10px 0;">
+          
+        </div>
+        <!-- End of Content Wrapper -->
+         <!-- Footer -->
+          <footer class="sticky-footer bg-white">
             <div class="container my-auto">
               <div class="copyright text-center my-auto">
                 <span
@@ -185,8 +186,6 @@ session_start();
             </div>
           </footer>
           <!-- End of Footer -->
-        </div>
-        <!-- End of Content Wrapper -->
       </div>
       <!-- End of Page Wrapper -->
 

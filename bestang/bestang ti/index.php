@@ -16,7 +16,7 @@ session_start();
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Prodi </title>
+    <title>SiBeTa - Prodi</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -77,9 +77,7 @@ session_start();
             </span>
           </a>
         </li>
-           
         </li>
-
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 
@@ -139,7 +137,6 @@ session_start();
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                   </a>
-                  
                   <div class="dropdown-divider"></div>
                   <a
                     class="dropdown-item"
@@ -246,19 +243,21 @@ session_start();
                   </div>
                 </div>
                   <!-- Footer -->
-                  <footer class="sticky-footer bg-white fixed-bottom" style= "padding: 5px 0 ;">
-                    < class="container my-auto">
+                  
+                  <!-- End of Footer -->
+                </div>
+                
+                <!-- End of Content Wrapper -->
+              </div>
+              <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
                       <div class="copyright text-center my-auto">
                         <span
                           >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
                         >
                       </div>
-                    
+                    </div>
                   </footer>
-                  <!-- End of Footer -->
-                </div>
-                <!-- End of Content Wrapper -->
-              </div>
       <!-- End of Page Wrapper -->
 
             <!-- Scroll to Top Button-->
@@ -328,32 +327,28 @@ session_start();
       <!-- Page level custom scripts -->
       <script src="js/demo/chart-area-demo.js"></script>
       <script src="js/demo/chart-pie-demo.js"></script>
-
       <script>
-function updateCardData() {
-    $.ajax({
-        url: 'get_data.php',
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // Update jumlah di card (Card 1: Laporan PKL, Card 2: Skripsi, Card 3: Bebas Kompen, Card 4: TOEIC)
-            $('.jumlah_file_skripsi').text(data.jumlah_laporan_magang);
-            $('.jumlah_file_magang').text(data.jumlah_laporan_skripsi);
-            $('.jumlah_file_kompensasi').text(data.jumlah_bebas_kompensasi);
-            $('.jumlah_file_TOEIC').text(data.jumlah_toeic);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
+          function updateCardData() {
+              $.ajax({
+                  url: 'get_data.php',
+                  method: 'GET',
+                  dataType: 'json',
+                  success: function(data) {
+                      // Update jumlah di card (Card 1: Laporan PKL, Card 2: Skripsi, Card 3: Bebas Kompen, Card 4: TOEIC)
+                      $('.jumlah_file_skripsi').text(data.jumlah_laporan_magang);
+                      $('.jumlah_file_magang').text(data.jumlah_laporan_skripsi);
+                      $('.jumlah_file_kompensasi').text(data.jumlah_bebas_kompensasi);
+                      $('.jumlah_file_TOEIC').text(data.jumlah_toeic);
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('Error fetching data:', error);
+                  }
+              });
+          }
 
         // Panggil fungsi updateCardData setiap 1000 detik
         setInterval(updateCardData, 1000);
-
-
-              </script>
-
+        </script>
         <script src="vendor/jquery/jquery.min.js"></script>
     </div>
   </body>

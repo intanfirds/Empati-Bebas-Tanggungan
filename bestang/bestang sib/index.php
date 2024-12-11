@@ -243,7 +243,13 @@ session_start();
                   </div>
                 </div>
                   <!-- Footer -->
-                  <footer class="sticky-footer bg-white fixed-bottom" style= "padding: 5px 0 ;">
+                  
+                  <!-- End of Footer -->
+                </div>
+                
+                <!-- End of Content Wrapper -->
+              </div>
+              <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                       <div class="copyright text-center my-auto">
                         <span
@@ -252,10 +258,6 @@ session_start();
                       </div>
                     </div>
                   </footer>
-                  <!-- End of Footer -->
-                </div>
-                <!-- End of Content Wrapper -->
-              </div>
       <!-- End of Page Wrapper -->
 
             <!-- Scroll to Top Button-->
