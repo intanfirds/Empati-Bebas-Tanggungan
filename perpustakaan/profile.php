@@ -42,7 +42,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Akademik</title>
+    <title>SiBeTa - Perpustakaan</title>
 
     <!-- Custom fonts for this template-->
     <link
