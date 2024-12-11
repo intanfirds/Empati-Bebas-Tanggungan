@@ -265,7 +265,13 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     <?php
                                     include 'koneksi.php';
 
-                                    $query = "SELECT m.nim, m.nama, m.prodi,m.jurusan, a.angkatan, k.status
+                                    $query = "SELECT m.nim, m.nama, m.prodi,m.jurusan, a.angkatan,
+                                    CASE
+                                         WHEN k.status = 'sesuai' THEN 'selesai'
+                                         WHEN k.status = 'tidak selesai' THEN 'tidak selesai'
+                                         WHEN k.status = 'menunggu' THEN 'menunggu'
+                                         ELSE 'belum mengisi'
+                                            END AS status
                                     FROM Mahasiswa m 
                                     LEFT JOIN pengajuan_perpustakaan p ON m.id = p.id_mahasiswa
                                     LEFT JOIN konfirmasi_perpus k ON p.id = k.id_pengajuan
