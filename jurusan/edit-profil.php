@@ -13,7 +13,7 @@ session_start();
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Akademik</title>
+    <title>SiBeTa - Jurusan</title>
 
     <!-- Custom fonts for this template-->
     <link
