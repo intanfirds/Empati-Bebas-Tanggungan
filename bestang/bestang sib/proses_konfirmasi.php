@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $id_pengajuan = $data_pengajuan['id'];
 
-    // Cek jika mahasiswa baru pertama kali mengirim file, buatkan ID di tabel konfirmasi_akademik
+    // Cek jika mahasiswa baru pertama kali mengirim file, buatkan ID di tabel konfirmasi_prodi
     $query_cek_konfirmasi = "SELECT id FROM konfirmasi_admin_prodi WHERE id_pengajuan = ?";
     $params_cek_konfirmasi = [$id_pengajuan];
     $stmt_cek_konfirmasi = sqlsrv_query($conn, $query_cek_konfirmasi, $params_cek_konfirmasi);
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data_konfirmasi = sqlsrv_fetch_array($stmt_cek_konfirmasi, SQLSRV_FETCH_ASSOC);
 
     if ($data_konfirmasi === null) {
-        // Insert data baru ke tabel konfirmasi_akademik jika belum ada
+        // Insert data baru ke tabel konfirmasi_prodi jika belum ada
         $query_insert_konfirmasi = "INSERT INTO konfirmasi_admin_prodi (id_pengajuan, status1, status2, status3, status4, komentar, last_modified) VALUES (?, NULL, NULL, NULL, NULL, NULL, ?)";
         $params_insert_konfirmasi = [$id_pengajuan, $last_modified];
         $stmt_insert_konfirmasi = sqlsrv_query($conn, $query_insert_konfirmasi, $params_insert_konfirmasi);
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Update data konfirmasi_akademik
+    // Update data konfirmasi_prodi 
     $query_update = "UPDATE konfirmasi_admin_prodi SET status1 = ?, status2 = ?, status3 = ?, status4 = ?, komentar = ?, last_modified = ? WHERE id_pengajuan = ?";
     $params_update = [
         isset($status[0]) ? $status[0] : null, 
