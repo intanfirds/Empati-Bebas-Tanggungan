@@ -154,10 +154,10 @@ $komentar = $data['komentar'] ?? 'Tidak ada komentar';
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                <div class="d-flex align-items-center mt-2 mx-3">
-            <i class="fas fa-arrow-left text-secondary"></i>
-            <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
-        </div>
+                    <div class="d-flex align-items-center mt-2 mx-3">
+                        <i class="fas fa-arrow-left text-secondary"></i>
+                        <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
+                    </div>
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -418,9 +418,9 @@ $komentar = $data['komentar'] ?? 'Tidak ada komentar';
     <script src="js/demo/chart-pie-demo.js"></script>
 
     <script>
-          function goBack() {
-        window.history.back();
-    }
+        function goBack() {
+            window.history.back();
+        }
 
         // Tidak perlu validasi file input lagi, hanya tombol "Ajukan Dokumen" yang dinonaktifkan berdasarkan status
         const uploadForm = document.getElementById('uploadForm');

@@ -200,10 +200,10 @@ if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                <div class="d-flex align-items-center mt-2 mx-3">
-            <i class="fas fa-arrow-left text-secondary"></i>
-            <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
-        </div>
+                    <div class="d-flex align-items-center mt-2 mx-3">
+                        <i class="fas fa-arrow-left text-secondary"></i>
+                        <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
+                    </div>
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -454,9 +454,9 @@ if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) 
     <script src="js/demo/chart-pie-demo.js"></script>
 
     <script>
-          function goBack() {
-        window.history.back();
-    }
+        function goBack() {
+            window.history.back();
+        }
     </script>
 
 </body>

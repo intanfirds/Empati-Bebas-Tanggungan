@@ -50,6 +50,11 @@ $allVerified = $statusComment &&
     $statusComment['status4'] === 'sesuai';
 
 $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_modified']->format('d/m/Y') : 'Belum Mengajukan';
+$disableAllUpload = $allVerified;
+function isDisabled($status)
+{
+    return $status === 'sesuai' || $status === 'Menunggu';
+}
 ?>
 
 
@@ -167,10 +172,10 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                <div class="d-flex align-items-center mt-2 mx-3">
-            <i class="fas fa-arrow-left text-secondary"></i>
-            <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
-        </div>
+                    <div class="d-flex align-items-center mt-2 mx-3">
+                        <i class="fas fa-arrow-left text-secondary"></i>
+                        <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
+                    </div>
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -313,7 +318,7 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                     <?php elseif ($anyNotMatch): ?>
                                                         <div class="alert alert-danger" role="alert">
                                                             <i class="fas fa-times-circle"></i> <!-- Ikon Tanda Silang untuk status "Tidak Sesuai" -->
-                                                            Ada dokumen yang tidak sesuai, mohon untuk mengupload ulang semua berkas.
+                                                            Ada dokumen yang tidak sesuai, mohon untuk mengupload ulang berkas yang tidak sesuai.
                                                         </div>
                                                     <?php elseif ($allVerified): ?>
                                                         <div class="alert alert-success" role="alert">
@@ -342,11 +347,10 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                                                 </a>
                                                                             </p>
                                                                         <?php endif; ?>
-                                                                        <input type="file" name="dokumen1" class="file-input" accept=".pdf, .docx" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                                        <input type="file" name="dokumen1" class="file-input" accept=".pdf, .docx"
+                                                                            <?php echo ($disableAllUpload || isDisabled($statusComment['status1'] ?? null)) ? 'disabled' : ''; ?>>
                                                                     </td>
-                                                                    <td><?php
-                                                                        echo htmlspecialchars($statusComment['status1'] ?? 'Belum ada status');
-                                                                        ?></td>
+                                                                    <td><?php echo htmlspecialchars($statusComment['status1'] ?? 'Belum ada status'); ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Distribusi Laporan Magang</td>
@@ -358,11 +362,10 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                                                 </a>
                                                                             </p>
                                                                         <?php endif; ?>
-                                                                        <input type="file" name="dokumen2" class="file-input" accept=".pdf, .docx" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                                        <input type="file" name="dokumen2" class="file-input" accept=".pdf, .docx"
+                                                                            <?php echo ($disableAllUpload || isDisabled($statusComment['status2'] ?? null)) ? 'disabled' : ''; ?>>
                                                                     </td>
-                                                                    <td><?php
-                                                                        echo htmlspecialchars($statusComment['status2'] ?? 'Belum ada status');
-                                                                        ?></td>
+                                                                    <td><?php echo htmlspecialchars($statusComment['status2'] ?? 'Belum ada status'); ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bebas Kompensasi (opsional)</td>
@@ -374,11 +377,10 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                                                 </a>
                                                                             </p>
                                                                         <?php endif; ?>
-                                                                        <input type="file" name="dokumen3" class="file-input" accept=".pdf, .docx" data-optional="true" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                                        <input type="file" name="dokumen3" class="file-input" accept=".pdf, .docx" data-optional="true"
+                                                                            <?php echo ($disableAllUpload || isDisabled($statusComment['status3'] ?? null)) ? 'disabled' : ''; ?>>
                                                                     </td>
-                                                                    <td><?php
-                                                                        echo htmlspecialchars($statusComment['status3'] ?? 'Belum ada status');
-                                                                        ?></td>
+                                                                    <td><?php echo htmlspecialchars($statusComment['status3'] ?? 'Belum ada status'); ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Sertifikat TOEIC</td>
@@ -390,18 +392,18 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                                                                 </a>
                                                                             </p>
                                                                         <?php endif; ?>
-                                                                        <input type="file" name="dokumen4" class="file-input" accept=".pdf" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                                        <input type="file" name="dokumen4" class="file-input" accept=".pdf"
+                                                                            <?php echo ($disableAllUpload || isDisabled($statusComment['status4'] ?? null)) ? 'disabled' : ''; ?>>
                                                                     </td>
-                                                                    <td><?php
-                                                                        echo htmlspecialchars($statusComment['status4'] ?? 'Belum ada status');
-                                                                        ?></td>
+                                                                    <td><?php echo htmlspecialchars($statusComment['status4'] ?? 'Belum ada status'); ?></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                        <button type="submit" class="btn btn-success mt-2" id="uploadButton" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                        <button type="submit" class="btn btn-success mt-2" id="uploadButton" <?php echo $disableAllUpload ? 'disabled' : ''; ?>>
                                                             Upload Dokumen
                                                         </button>
-                                                    </form><br>
+                                                    </form>
+                                                    <br>
                                                     <table class="table table-bordered table-hover">
                                                         <thead class="thead-light">
                                                             <tr>
@@ -507,24 +509,17 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
         <script src="js/demo/chart-pie-demo.js"></script>
 
         <script>
-              function goBack() {
-        window.history.back();
-    }
+            function goBack() {
+                window.history.back();
+            }
 
-            const uploadForm = document.getElementById('uploadForm');
-            const uploadButton = document.getElementById('uploadButton');
-            const fileInputs = uploadForm.querySelectorAll('input[type="file"]');
-
-            fileInputs.forEach(input => {
+            document.querySelectorAll('input[type="file"]').forEach(input => {
                 input.addEventListener('change', () => {
-                    // Check if all required file inputs have a value
-                    const allRequiredFilled = Array.from(fileInputs).every(fileInput => {
-                        if (fileInput.hasAttribute('data-optional')) {
-                            return true; // Skip optional inputs
-                        }
-                        return fileInput.files.length > 0; // Ensure required inputs have files
-                    });
-                    uploadButton.disabled = !allRequiredFilled; // Enable or disable the button
+                    const uploadButton = document.getElementById('uploadButton');
+                    // Validasi apakah input yang dapat diunggah sudah memiliki file
+                    const hasFile = Array.from(document.querySelectorAll('input[type="file"]:not([disabled])'))
+                        .some(fileInput => fileInput.files.length > 0);
+                    uploadButton.disabled = !hasFile; // Tombol upload hanya aktif jika ada file baru
                 });
             });
         </script>
