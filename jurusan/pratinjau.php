@@ -59,6 +59,19 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
     <!-- Custom styles for this template-->
     <link href="sb-admin-2.min.css" rel="stylesheet" />
+    <style>
+.back-button {
+    position: fixed; /* Menggunakan posisi absolute */
+    bottom: 20px; /* Jarak dari bawah */
+    left: 70px; /* Jarak dari kiri */
+    z-index: 1000; /* Pastikan di atas elemen lain */
+    transition: left 0.3s; /* Animasi transisi untuk pergerakan */
+}
+
+.sidebar-collapsed .back-button {
+    left: 20px; /* Ubah posisi saat sidebar ditutup */
+}
+</style>
   </head>
 
   <body id="page-top">
@@ -315,9 +328,12 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       // Tambahkan tombol submit di bawah komentar
                       echo '<div class="text-left mt-4">';
                       echo '<button type="submit" class="btn btn-primary">Kirim</button>';
+
                       echo '</div>';
 
                       echo '</form>';
+
+                      echo '<a href="tabel.php" class="btn btn-secondary back-button">Back</a>'; 
                       echo '</div>'; // Close container
                       echo '</div>'; // Close row
                   } else {
@@ -419,6 +435,14 @@ function showAlert() {
     alert("Data sudah dikirimkan ke mahasiswa");
     return true; // Mengizinkan form untuk disubmit
 }
+</script>
+
+<script>
+$(document).ready(function() {
+    $('#sidebarToggle').on('click', function() {
+        $('body').toggleClass('sidebar-collapsed'); // Tambahkan atau hapus kelas saat sidebar toggle
+    });
+});
 </script>
 
   </body>
