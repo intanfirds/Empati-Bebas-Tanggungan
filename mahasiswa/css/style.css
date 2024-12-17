@@ -4,25 +4,4 @@
     font-style: italic; /* Teks miring untuk memberi kesan tidak bisa diubah */
 }
 
-.status-menunggu {
-    background-color: yellow;
-    color: black;
-}
-
-.status-diterima {
-    background-color: rgba(0, 128, 0, 0.64);
-    color: black;
-}
-
-.status-ditolak {
-    background-color: rgba(255, 0, 0, 0.726);
-    color: black;
-}
-
-.komentar {
-    background-color: rgba(245, 251, 255, 0.513);
-    /* Warna hijau untuk komentar */
-    color: black;
-}
-
 

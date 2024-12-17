@@ -29,18 +29,16 @@ if (!$stmt) {
 $data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
 // Cek dan format tanggal jika ada
-$tglMengajukan = !empty($data['tgl_mengajukan']) && $data['tgl_mengajukan'] instanceof DateTime 
-    ? $data['tgl_mengajukan']->format('d/m/Y') 
+$tglMengajukan = !empty($data['tgl_mengajukan']) && $data['tgl_mengajukan'] instanceof DateTime
+    ? $data['tgl_mengajukan']->format('d/m/Y')
     : 'Belum Mengajukan';
 
-$status = isset($data['status']) && trim($data['status']) !== '' 
-    ? $data['status'] 
+$status = isset($data['status']) && trim($data['status']) !== ''
+    ? $data['status']
     : 'Belum mengajukan';
 
 $komentar = $data['komentar'] ?? 'Tidak ada komentar';
-
 ?>
-
 
 <head>
     <meta charset="utf-8">
@@ -66,7 +64,6 @@ $komentar = $data['komentar'] ?? 'Tidak ada komentar';
             height: 40px;
             object-fit: cover;
             border-radius: 50%;
-            /* Membuat gambar berbentuk lingkaran */
         }
     </style>
 
@@ -156,6 +153,11 @@ $komentar = $data['komentar'] ?? 'Tidak ada komentar';
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <div class="d-flex align-items-center mt-2 mx-3">
+            <i class="fas fa-arrow-left text-secondary"></i>
+            <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
+        </div>
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -278,81 +280,77 @@ $komentar = $data['komentar'] ?? 'Tidak ada komentar';
                     <!-- Content Row for Profile -->
                     <div class="row">
                         <!-- Profile Card Example -->
-                            <div class="col-xl-9 col-lg-7 mx-auto">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
-                <h6 class="m-0 font-weight-bold text-primary">Admin Perpustakaan</h6>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-xl-12 mx-auto">
-                            <div class="card-body">
-                                <!-- Tambahkan alert berdasarkan status -->
-                                <?php if (strtolower($status) === 'menunggu'): ?>
-                                    <div class="alert alert-warning" role="alert">
-                                    <i class="fas fa-clock"></i>
-                                        Mohon tunggu, admin sedang melakukan pengecekan.
-                                    </div>
-                                <?php elseif (strtolower($status) === 'tidak sesuai'): ?>
-                                    <div class="alert alert-danger" role="alert">
-                                    <i class="fas fa-times-circle"></i> 
-                                        Anda masih mempunyai tanggungan buku yang belum dikembalikan.
-                                    </div>
-                                <?php elseif (strtolower($status) === 'sesuai'): ?>
-                                    <div class="alert alert-success" role="alert">
-                                    <i class="fas fa-check-circle"></i>
-                                        Tanggungan buku tidak ada. Anda dapat mengunduh file.
-                                    </div>
-                                <?php endif; ?>
+                        <div class="col-xl-9 col-lg-7 mx-auto">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
+                                    <h6 class="m-0 font-weight-bold text-primary">Admin Perpustakaan</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-xl-12 mx-auto">
+                                                <div class="card-body">
+                                                    <!-- Tambahkan alert berdasarkan status -->
+                                                    <?php if (strtolower($status) === 'menunggu'): ?>
+                                                        <div class="alert alert-warning" role="alert">
+                                                            <i class="fas fa-clock"></i>
+                                                            Mohon tunggu, admin sedang melakukan pengecekan.
+                                                        </div>
+                                                    <?php elseif (strtolower($status) === 'tidak sesuai'): ?>
+                                                        <div class="alert alert-danger" role="alert">
+                                                            <i class="fas fa-times-circle"></i>
+                                                            Anda masih mempunyai tanggungan buku yang belum dikembalikan.
+                                                        </div>
+                                                    <?php elseif (strtolower($status) === 'sesuai'): ?>
+                                                        <div class="alert alert-success" role="alert">
+                                                            <i class="fas fa-check-circle"></i>
+                                                            Tanggungan buku tidak ada. Anda dapat mengunduh file.
+                                                        </div>
+                                                    <?php endif; ?>
 
-                                <form action="ajukan-dokumen.php" method="POST">
-                                    <button type="submit" class="btn btn-success"
-                                        <?php echo (in_array(strtolower($status), ['menunggu', 'sesuai'])) ? 'disabled' : ''; ?>>
-                                        <?php echo (strtolower($status) === 'menunggu') ? 'Menunggu Konfirmasi' : 'Ajukan Dokumen'; ?>
-                                    </button>
-                                </form>
-                                <table class="table table-bordered table-hover mt-3">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Tanggal Diajukan</th>
-                                            <th>Status</th>
-                                            <th>Komentar</th>
-                                            <th>Download File</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                            <td><?php echo htmlspecialchars($tglMengajukan); ?></td>
-                                            <td><?php echo htmlspecialchars($status ?? 'Belum mengajukan'); ?></td>
-                                            <td><?php echo htmlspecialchars($komentar); ?></td>
-                                            <td>
-                                                <?php if (strtolower($status) === 'sesuai'): ?>
-                                                    <!-- File yang dapat diunduh bernama 'form_perpus.docx' -->
-                                                    <a href="../perpustakaan/form/form_perpus.docx" class="btn btn-primary" download>
-                                                        Download File
-                                                    </a>
-                                                <?php else: ?>
-                                                    <button class="btn btn-secondary" disabled>File Tidak Tersedia</button>
-                                                <?php endif; ?>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                    <form action="ajukan-dokumen.php" method="POST">
+                                                        <button type="submit" class="btn btn-success"
+                                                            <?php echo (in_array(strtolower($status), ['menunggu', 'sesuai'])) ? 'disabled' : ''; ?>>
+                                                            <?php echo (strtolower($status) === 'menunggu') ? 'Menunggu Konfirmasi' : 'Ajukan Dokumen'; ?>
+                                                        </button>
+                                                    </form>
+                                                    <table class="table table-bordered table-hover mt-3">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Tanggal Diajukan</th>
+                                                                <th>Status</th>
+                                                                <th>Komentar</th>
+                                                                <th>Download File</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <td><?php echo htmlspecialchars($tglMengajukan); ?></td>
+                                                            <td><?php echo htmlspecialchars($status ?? 'Belum mengajukan'); ?></td>
+                                                            <td><?php echo htmlspecialchars($komentar); ?></td>
+                                                            <td>
+                                                                <?php if (strtolower($status) === 'sesuai'): ?>
+                                                                    <!-- File yang dapat diunduh bernama 'form_perpus.docx' -->
+                                                                    <a href="../perpustakaan/form/form_perpus.docx" class="btn btn-primary" download>
+                                                                        Download File
+                                                                    </a>
+                                                                <?php else: ?>
+                                                                    <button class="btn btn-secondary" disabled>File Tidak Tersedia</button>
+                                                                <?php endif; ?>
+                                                            </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 
                     </div>
                     <div class="row">
-
                     </div>
-
 
                     <!-- End Content Row -->
                 </div>
@@ -420,6 +418,10 @@ $komentar = $data['komentar'] ?? 'Tidak ada komentar';
     <script src="js/demo/chart-pie-demo.js"></script>
 
     <script>
+          function goBack() {
+        window.history.back();
+    }
+
         // Tidak perlu validasi file input lagi, hanya tombol "Ajukan Dokumen" yang dinonaktifkan berdasarkan status
         const uploadForm = document.getElementById('uploadForm');
         const uploadButton = document.getElementById('uploadButton');

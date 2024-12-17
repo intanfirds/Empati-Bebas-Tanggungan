@@ -77,7 +77,6 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
             height: 40px;
             object-fit: cover;
             border-radius: 50%;
-            /* Membuat gambar berbentuk lingkaran */
         }
     </style>
 
@@ -167,6 +166,11 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <div class="d-flex align-items-center mt-2 mx-3">
+            <i class="fas fa-arrow-left text-secondary"></i>
+            <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
+        </div>
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -300,136 +304,136 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="col-xl-12 mx-auto">
-                                            <div class="card-body">
-                                    <?php if ($allPending): ?>
-                                        <div class="alert alert-warning" role="alert">
-                                            <i class="fas fa-clock"></i> <!-- Ikon Jam untuk status "Menunggu" -->
-                                            Semua dokumen sedang dalam status "Menunggu". Harap menunggu verifikasi dari admin sebelum mengunggah dokumen baru.
-                                        </div>
-                                    <?php elseif ($anyNotMatch): ?>
-                                        <div class="alert alert-danger" role="alert">
-                                            <i class="fas fa-times-circle"></i> <!-- Ikon Tanda Silang untuk status "Tidak Sesuai" -->
-                                            Ada dokumen yang tidak sesuai, mohon untuk mengupload ulang semua berkas.
-                                        </div>
-                                    <?php elseif ($allVerified): ?>
-                                        <div class="alert alert-success" role="alert">
-                                            <i class="fas fa-check-circle"></i> <!-- Ikon Centang untuk status "Selesai" -->
-                                            Semua dokumen berhasil diverifikasi dan sesuai.
-                                        </div>
-                                    <?php endif; ?>
+                                                <div class="card-body">
+                                                    <?php if ($allPending): ?>
+                                                        <div class="alert alert-warning" role="alert">
+                                                            <i class="fas fa-clock"></i> <!-- Ikon Jam untuk status "Menunggu" -->
+                                                            Semua dokumen sedang dalam status "Menunggu". Harap menunggu verifikasi dari admin sebelum mengunggah dokumen baru.
+                                                        </div>
+                                                    <?php elseif ($anyNotMatch): ?>
+                                                        <div class="alert alert-danger" role="alert">
+                                                            <i class="fas fa-times-circle"></i> <!-- Ikon Tanda Silang untuk status "Tidak Sesuai" -->
+                                                            Ada dokumen yang tidak sesuai, mohon untuk mengupload ulang semua berkas.
+                                                        </div>
+                                                    <?php elseif ($allVerified): ?>
+                                                        <div class="alert alert-success" role="alert">
+                                                            <i class="fas fa-check-circle"></i> <!-- Ikon Centang untuk status "Selesai" -->
+                                                            Semua dokumen berhasil diverifikasi dan sesuai.
+                                                        </div>
+                                                    <?php endif; ?>
 
-                                    <form id="uploadForm" action="update-dokumen-prodi.php" method="POST" enctype="multipart/form-data">
-                                        <table class="table table-bordered table-hover">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th>File</th>
-                                                    <th>Choose File</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Distribusi Laporan Skripsi</td>
-                                                    <td>
-                                                        <?php if (isset($uploadedFiles['distribusi_laporan_skripsi']) && $uploadedFiles['distribusi_laporan_skripsi']): ?>
-                                                            <p>
-                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['distribusi_laporan_skripsi']); ?>" target="_blank">
-                                                                    <?php echo htmlspecialchars($uploadedFiles['distribusi_laporan_skripsi']); ?>
-                                                                </a>
-                                                            </p>
-                                                        <?php endif; ?>
-                                                        <input type="file" name="dokumen1" class="file-input" accept=".pdf, .docx" <?php echo $allPending ? 'disabled' : ''; ?>>
-                                                    </td>
-                                                    <td><?php
-                                                        echo htmlspecialchars($statusComment['status1'] ?? 'Belum ada status');
-                                                        ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Distribusi Laporan Magang</td>
-                                                    <td>
-                                                        <?php if (isset($uploadedFiles['distribusi_laporan_magang']) && $uploadedFiles['distribusi_laporan_magang']): ?>
-                                                            <p>
-                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['distribusi_laporan_magang']); ?>" target="_blank">
-                                                                    <?php echo htmlspecialchars($uploadedFiles['distribusi_laporan_magang']); ?>
-                                                                </a>
-                                                            </p>
-                                                        <?php endif; ?>
-                                                        <input type="file" name="dokumen2" class="file-input" accept=".pdf, .docx" <?php echo $allPending ? 'disabled' : ''; ?>>
-                                                    </td>
-                                                    <td><?php
-                                                        echo htmlspecialchars($statusComment['status2'] ?? 'Belum ada status');
-                                                        ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Bebas Kompensasi (opsional)</td>
-                                                    <td>
-                                                        <?php if (isset($uploadedFiles['bebas_kompensasi']) && $uploadedFiles['bebas_kompensasi']): ?>
-                                                            <p>
-                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['bebas_kompensasi']); ?>" target="_blank">
-                                                                    <?php echo htmlspecialchars($uploadedFiles['bebas_kompensasi']); ?>
-                                                                </a>
-                                                            </p>
-                                                        <?php endif; ?>
-                                                        <input type="file" name="dokumen3" class="file-input" accept=".pdf, .docx" data-optional="true" <?php echo $allPending ? 'disabled' : ''; ?>>
-                                                    </td>
-                                                    <td><?php
-                                                        echo htmlspecialchars($statusComment['status3'] ?? 'Belum ada status');
-                                                        ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Sertifikat TOEIC</td>
-                                                    <td>
-                                                        <?php if (isset($uploadedFiles['nilai_toeic']) && $uploadedFiles['nilai_toeic']): ?>
-                                                            <p>
-                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['nilai_toeic']); ?>" target="_blank">
-                                                                    <?php echo htmlspecialchars($uploadedFiles['nilai_toeic']); ?>
-                                                                </a>
-                                                            </p>
-                                                        <?php endif; ?>
-                                                        <input type="file" name="dokumen4" class="file-input" accept=".pdf" <?php echo $allPending ? 'disabled' : ''; ?>>
-                                                    </td>
-                                                    <td><?php
-                                                        echo htmlspecialchars($statusComment['status4'] ?? 'Belum ada status');
-                                                        ?></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <button type="submit" class="btn btn-success mt-2" id="uploadButton" <?php echo $allPending ? 'disabled' : ''; ?>>
-                                            Upload Dokumen
-                                        </button>
-                                    </form><br>
-                                    <table class="table table-bordered table-hover">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>Tanggal Diajukan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <td><?php echo htmlspecialchars($last_modified); ?></td> <!-- Tampilkan Tanggal -->
-                                        </tbody>
-                                    </table><br>
-                                    <table class="table table-bordered table-hover">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>Komentar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if ($statusComment): ?>
-                                                <tr>
-                                                    <td class="komentar">
-                                                        <?php echo htmlspecialchars($statusComment['komentar']) ? htmlspecialchars($statusComment['komentar']) : 'Belum ada komentar'; ?>
-                                                    </td>
-                                                </tr>
-                                            <?php else: ?>
-                                                <tr>
-                                                    <td colspan="2" class="text-center">Belum ada komentar
-                                                    </td>
-                                                </tr>
-                                            <?php endif; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                    <form id="uploadForm" action="update-dokumen-prodi.php" method="POST" enctype="multipart/form-data">
+                                                        <table class="table table-bordered table-hover">
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th>File</th>
+                                                                    <th>Choose File</th>
+                                                                    <th>Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Distribusi Laporan Skripsi</td>
+                                                                    <td>
+                                                                        <?php if (isset($uploadedFiles['distribusi_laporan_skripsi']) && $uploadedFiles['distribusi_laporan_skripsi']): ?>
+                                                                            <p>
+                                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['distribusi_laporan_skripsi']); ?>" target="_blank">
+                                                                                    <?php echo htmlspecialchars($uploadedFiles['distribusi_laporan_skripsi']); ?>
+                                                                                </a>
+                                                                            </p>
+                                                                        <?php endif; ?>
+                                                                        <input type="file" name="dokumen1" class="file-input" accept=".pdf, .docx" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                                    </td>
+                                                                    <td><?php
+                                                                        echo htmlspecialchars($statusComment['status1'] ?? 'Belum ada status');
+                                                                        ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Distribusi Laporan Magang</td>
+                                                                    <td>
+                                                                        <?php if (isset($uploadedFiles['distribusi_laporan_magang']) && $uploadedFiles['distribusi_laporan_magang']): ?>
+                                                                            <p>
+                                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['distribusi_laporan_magang']); ?>" target="_blank">
+                                                                                    <?php echo htmlspecialchars($uploadedFiles['distribusi_laporan_magang']); ?>
+                                                                                </a>
+                                                                            </p>
+                                                                        <?php endif; ?>
+                                                                        <input type="file" name="dokumen2" class="file-input" accept=".pdf, .docx" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                                    </td>
+                                                                    <td><?php
+                                                                        echo htmlspecialchars($statusComment['status2'] ?? 'Belum ada status');
+                                                                        ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Bebas Kompensasi (opsional)</td>
+                                                                    <td>
+                                                                        <?php if (isset($uploadedFiles['bebas_kompensasi']) && $uploadedFiles['bebas_kompensasi']): ?>
+                                                                            <p>
+                                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['bebas_kompensasi']); ?>" target="_blank">
+                                                                                    <?php echo htmlspecialchars($uploadedFiles['bebas_kompensasi']); ?>
+                                                                                </a>
+                                                                            </p>
+                                                                        <?php endif; ?>
+                                                                        <input type="file" name="dokumen3" class="file-input" accept=".pdf, .docx" data-optional="true" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                                    </td>
+                                                                    <td><?php
+                                                                        echo htmlspecialchars($statusComment['status3'] ?? 'Belum ada status');
+                                                                        ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Sertifikat TOEIC</td>
+                                                                    <td>
+                                                                        <?php if (isset($uploadedFiles['nilai_toeic']) && $uploadedFiles['nilai_toeic']): ?>
+                                                                            <p>
+                                                                                <a href="<?php echo htmlspecialchars('uploads/' . $uploadedFiles['nilai_toeic']); ?>" target="_blank">
+                                                                                    <?php echo htmlspecialchars($uploadedFiles['nilai_toeic']); ?>
+                                                                                </a>
+                                                                            </p>
+                                                                        <?php endif; ?>
+                                                                        <input type="file" name="dokumen4" class="file-input" accept=".pdf" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                                    </td>
+                                                                    <td><?php
+                                                                        echo htmlspecialchars($statusComment['status4'] ?? 'Belum ada status');
+                                                                        ?></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <button type="submit" class="btn btn-success mt-2" id="uploadButton" <?php echo $allPending ? 'disabled' : ''; ?>>
+                                                            Upload Dokumen
+                                                        </button>
+                                                    </form><br>
+                                                    <table class="table table-bordered table-hover">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Tanggal Diajukan</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <td><?php echo htmlspecialchars($last_modified); ?></td> <!-- Tampilkan Tanggal -->
+                                                        </tbody>
+                                                    </table><br>
+                                                    <table class="table table-bordered table-hover">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Komentar</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php if ($statusComment): ?>
+                                                                <tr>
+                                                                    <td class="komentar">
+                                                                        <?php echo htmlspecialchars($statusComment['komentar']) ? htmlspecialchars($statusComment['komentar']) : 'Belum ada komentar'; ?>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php else: ?>
+                                                                <tr>
+                                                                    <td colspan="2" class="text-center">Belum ada komentar
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endif; ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -437,89 +441,93 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                             </div>
                         </div>
 
-                    <!-- End Content Row -->
+                        <!-- End Content Row -->
+                    </div>
+                    <!-- /.container-fluid -->
+
                 </div>
-                <!-- /.container-fluid -->
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
 
             </div>
-            <!-- End of Main Content -->
+            <!-- End of Content Wrapper -->
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span>
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="\Empati-Bebas-Tanggungan\index-mahasiswa.html">Logout</a>
                     </div>
                 </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="\Empati-Bebas-Tanggungan\index-mahasiswa.html">Logout</a>
-                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+        <!-- Page level plugins -->
+        <script src="vendor/chart.js/Chart.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+        <!-- Page level custom scripts -->
+        <script src="js/demo/chart-area-demo.js"></script>
+        <script src="js/demo/chart-pie-demo.js"></script>
 
-    <script>
-        const uploadForm = document.getElementById('uploadForm');
-        const uploadButton = document.getElementById('uploadButton');
-        const fileInputs = uploadForm.querySelectorAll('input[type="file"]');
+        <script>
+              function goBack() {
+        window.history.back();
+    }
 
-        fileInputs.forEach(input => {
-            input.addEventListener('change', () => {
-                // Check if all required file inputs have a value
-                const allRequiredFilled = Array.from(fileInputs).every(fileInput => {
-                    if (fileInput.hasAttribute('data-optional')) {
-                        return true; // Skip optional inputs
-                    }
-                    return fileInput.files.length > 0; // Ensure required inputs have files
+            const uploadForm = document.getElementById('uploadForm');
+            const uploadButton = document.getElementById('uploadButton');
+            const fileInputs = uploadForm.querySelectorAll('input[type="file"]');
+
+            fileInputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    // Check if all required file inputs have a value
+                    const allRequiredFilled = Array.from(fileInputs).every(fileInput => {
+                        if (fileInput.hasAttribute('data-optional')) {
+                            return true; // Skip optional inputs
+                        }
+                        return fileInput.files.length > 0; // Ensure required inputs have files
+                    });
+                    uploadButton.disabled = !allRequiredFilled; // Enable or disable the button
                 });
-                uploadButton.disabled = !allRequiredFilled; // Enable or disable the button
             });
-        });
-    </script>
+        </script>
 
 </body>
 

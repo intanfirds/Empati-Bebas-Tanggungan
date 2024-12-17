@@ -3,6 +3,7 @@
 
 <?php
 
+//variabel global memasukkan file pending-request.php
 session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.php';
 ?>
@@ -113,18 +114,18 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
         </ul>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
+            
 
             <!-- Main Content -->
             <div id="content">
+                
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -136,6 +137,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
                         <!-- Waktu dan tanggal akan ditampilkan di sini -->
                         <div class="time-date" id="timeDate">
                         </div>
+                        
 
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
@@ -196,7 +198,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo htmlspecialchars($_SESSION['nama_mahasiswa']); ?></span>
-                                <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>"
+                                <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? '../mahasiswa/img/undraw_profile.svg'); ?>"
                                     id="profileImagePreview" alt="Foto Profil" class="img-fluid profile-image">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -239,7 +241,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
                     <div class="row">
 
                         <!-- Card IPK -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="col-xl-6 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -259,7 +261,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
                         </div>
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <!-- <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -285,10 +287,10 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <!-- Pending Requests -->
+                        <div class="col-xl-6 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -308,10 +310,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
                             </div>
                         </div>
 
-
-
                         <!-- Content Row -->
-
                         <div class="row">
 
                             <!-- Kalender Akademik -->
@@ -342,9 +341,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Empati-Bebas-Tanggungan/pending-request.ph
                                 </div>
                             </div>
 
-
                         </div>
-                        <!-- /.container-fluid -->
 
                     </div>
                     <!-- End of Main Content -->

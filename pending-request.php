@@ -1,16 +1,15 @@
 <?php
-// Include the database connection
 include('koneksi.php');  
 
-// Start session only if not already started
+// Memulai session jika belum dimulai
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Get the ID of the logged-in user
+// Mendapatkan ID mahasiswa yang sedang login dari session
 $idMahasiswa = $_SESSION['id_mahasiswa'];
 
-// Query to count pending requests for the logged-in user
+// Query ngitung 'Menunggu'
 $sql = "
     SELECT 
         -- Pengajuan Akademik
@@ -42,26 +41,25 @@ $sql = "
     WHERE m.id = ?
 ";
 
-// Execute query with parameter
+// Menjalankan query dengan parameter id mahasiswa
 $params = array($idMahasiswa);
 $result = sqlsrv_query($conn, $sql, $params);
 
-// Check if query was executed successfully
+// Check query apakah berhasil?
 if ($result) {
     $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
     if ($row) {
-        // Set the number of pending requests
+        // Menyimpan jumlah yang statusnya 'Menunggu'
         $pendingRequests = $row['pending_count'];
     } else {
         $pendingRequests = 0;
     }
 } else {
-    // Handle error if query fails
+    // Jika query gagal
     $pendingRequests = 0;
     die(print_r(sqlsrv_errors(), true));
 }
 
-// Close the database connection
 sqlsrv_close($conn);
 
 ?>

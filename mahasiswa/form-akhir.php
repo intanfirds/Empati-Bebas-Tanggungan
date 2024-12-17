@@ -111,7 +111,6 @@ if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) 
             height: 40px;
             object-fit: cover;
             border-radius: 50%;
-            /* Membuat gambar berbentuk lingkaran */
         }
     </style>
 
@@ -189,7 +188,6 @@ if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) 
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
-
         </ul>
         <!-- End of Sidebar -->
 
@@ -201,6 +199,11 @@ if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) 
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <div class="d-flex align-items-center mt-2 mx-3">
+            <i class="fas fa-arrow-left text-secondary"></i>
+            <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
+        </div>
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -334,17 +337,18 @@ if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) 
                                         <div class="col-md-12">
                                             <div class="col-xl mx-auto">
                                                 <div class="card-body">
-                                                <?php if (!$statusValid): ?>
-    <div class="alert alert-danger" role="alert">
-    <i class="fas fa-times-circle"></i> 
-        Anda harus melengkapi semua dokumen sebelum dapat mengunduh file.
-    </div>
-<?php else: ?>
-    <div class="alert alert-success" role="alert">
-    <i class="fas fa-check-circle"></i>
-        Semua dokumen sudah lengkap. Anda dapat mengunduh file sekarang.
-    </div>
-<?php endif; ?>
+                                                    <?php if (!$statusValid): ?>
+                                                        <div class="alert alert-danger" role="alert">
+                                                            <i class="fas fa-times-circle"></i>
+                                                            Anda harus melengkapi semua dokumen sebelum dapat mengunduh
+                                                            file.
+                                                        </div>
+                                                    <?php else: ?>
+                                                        <div class="alert alert-success" role="alert">
+                                                            <i class="fas fa-check-circle"></i>
+                                                            Semua dokumen sudah lengkap. Anda dapat mengunduh file sekarang.
+                                                        </div>
+                                                    <?php endif; ?>
                                                     <table class="table table-bordered table-hover mt-3">
                                                         <thead class="thead-light">
                                                             <tr>
@@ -383,7 +387,6 @@ if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) 
                     <div class="row">
 
                     </div>
-
 
                     <!-- End Content Row -->
                 </div>
@@ -449,6 +452,12 @@ if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) 
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <script>
+          function goBack() {
+        window.history.back();
+    }
+    </script>
 
 </body>
 

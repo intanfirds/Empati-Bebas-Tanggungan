@@ -28,17 +28,18 @@ session_start();
 
     <style>
         .profile-image {
-    width: 175px;
-    height: 175px;
-    object-fit: cover;
-    border-radius: 50%; /* Membuat gambar berbentuk lingkaran */
-}
-.profile-image2 {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 50%; /* Membuat gambar berbentuk lingkaran */
-}
+            width: 175px;
+            height: 175px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .profile-image2 {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
     </style>
 
 </head>
@@ -127,13 +128,18 @@ session_start();
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
+                <div class="d-flex align-items-center mt-2 mx-3">
+            <i class="fas fa-arrow-left text-secondary"></i>
+            <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
+        </div>
+
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
 
                     <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto"> 
+                    <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
@@ -219,7 +225,7 @@ session_start();
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo htmlspecialchars($_SESSION['nama_mahasiswa']); ?></span>
-                                    <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>" id="profileImagePreview" alt="Foto Profil" class="img-fluid profile-image2">
+                                <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>" id="profileImagePreview" alt="Foto Profil" class="img-fluid profile-image2">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -244,8 +250,6 @@ session_start();
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-
-
                     <!-- Content Row for Profile -->
                     <div class="row">
 
@@ -262,7 +266,7 @@ session_start();
                                     <div class="row">
                                         <!-- Profile Picture and Name -->
                                         <div class="col-md-4 d-flex flex-column align-items-center text-center">
-                                        <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>" id="profileImagePreview" alt="Foto Profil" class="img-fluid profile-image">
+                                            <img src="<?php echo htmlspecialchars($_SESSION['foto_profil'] ?? 'img/undraw_profile.svg'); ?>" id="profileImagePreview" alt="Foto Profil" class="img-fluid profile-image">
 
                                             <!-- Name Below Profile Picture -->
                                             <h5 class="mt-3 font-weight-bold text-primary">
@@ -314,13 +318,8 @@ session_start();
                             </div>
                         </div>
 
-
-
-
                     </div>
                     <!-- End Content Row -->
-
-
 
                 </div>
                 <!-- /.container-fluid -->
@@ -385,6 +384,12 @@ session_start();
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+    
+    <script>
+          function goBack() {
+        window.history.back();
+    }
+    </script>
 
 </body>
 

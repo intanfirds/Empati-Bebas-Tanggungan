@@ -39,7 +39,7 @@ if ($dataExisting) {
     SET tgl_mengajukan = GETDATE()
     WHERE id = ?
 ";
-$paramsUpdatePengajuan = array($idPengajuan);
+        $paramsUpdatePengajuan = array($idPengajuan);
 
         $stmtUpdatePengajuan = sqlsrv_query($conn, $queryUpdatePengajuan, $paramsUpdatePengajuan);
 
@@ -99,7 +99,7 @@ $paramsUpdatePengajuan = array($idPengajuan);
     ";
     $paramsKonfirmasi = array(
         $idPengajuan,
-        4, // ID admin (hardcoded untuk contoh, sesuaikan dengan sistem Anda)
+        4, // ID Admin Perpustakaan
         $tglMengajukan,
         'Menunggu',
         'Dokumen sedang dalam proses pemeriksaan'
@@ -115,4 +115,3 @@ $paramsUpdatePengajuan = array($idPengajuan);
 $_SESSION['pesan'] = 'Pengajuan dokumen berhasil diajukan.';
 header('Location: admin-perpustakaan.php');
 exit();
-?>

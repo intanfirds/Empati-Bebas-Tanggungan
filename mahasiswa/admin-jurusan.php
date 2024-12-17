@@ -162,6 +162,11 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
+                <div class="d-flex align-items-center mt-2 mx-3">
+            <i class="fas fa-arrow-left text-secondary"></i>
+            <button class="btn btn-link text-secondary p-0 ml-2" onclick="goBack()">Back</button>
+        </div>
+
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -483,6 +488,10 @@ $last_modified = !empty($statusComment['last_modified']) ? $statusComment['last_
     <script src="js/demo/chart-pie-demo.js"></script>
 
     <script>
+          function goBack() {
+        window.history.back();
+    }
+
         const uploadForm = document.getElementById('uploadForm');
         const uploadButton = document.getElementById('uploadButton');
         const fileInputs = uploadForm.querySelectorAll('input[type="file"]');
