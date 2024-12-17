@@ -313,7 +313,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       echo '</div>';
 
                       // Tambahkan tombol submit di bawah komentar
-                      echo '<div class="text-center mt-4">';
+                      echo '<div class="text-left mt-4">';
                       echo '<button type="submit" class="btn btn-primary">Kirim</button>';
                       echo '</div>';
 
