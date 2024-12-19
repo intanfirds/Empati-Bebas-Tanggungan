@@ -5,87 +5,81 @@
 session_start();
 include '../koneksi.php';
 
+// Validasi login
+if (!isset($_SESSION['id_mahasiswa'])) {
+    die('Akses ditolak.');
+}
+
 $idMahasiswa = $_SESSION['id_mahasiswa'];
 
-// Mengecek status pengajuan akademik
-$queryAkademik = "
-SELECT k.status1, k.status2
-FROM pengajuan_akademik p
-LEFT JOIN konfirmasi_akademik k ON p.id = k.id_pengajuan
-WHERE p.id_mahasiswa = ?
-";
-$stmtAkademik = sqlsrv_query($conn, $queryAkademik, array($idMahasiswa));
-$statusAkademik = sqlsrv_fetch_array($stmtAkademik, SQLSRV_FETCH_ASSOC);
+// Fungsi untuk mendapatkan data mahasiswa
+function getDataMahasiswa($conn, $query, $params) {
+    $stmt = sqlsrv_query($conn, $query, $params);
+    return sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+}
 
-// Mengecek status pengajuan jurusan
-$queryJurusan = "
-SELECT k.status1, k.status2, k.status3
-FROM pengajuan_jurusan p
-LEFT JOIN konfirmasi_admin_jurusan k ON p.id = k.id_pengajuan
-WHERE p.id_mahasiswa = ?
-";
-$stmtJurusan = sqlsrv_query($conn, $queryJurusan, array($idMahasiswa));
-$statusJurusan = sqlsrv_fetch_array($stmtJurusan, SQLSRV_FETCH_ASSOC);
+// Mendapatkan data status dokumen mahasiswa
+$statusAkademik = getDataMahasiswa($conn, "
+    SELECT k.status1, k.status2
+    FROM pengajuan_akademik p
+    LEFT JOIN konfirmasi_akademik k ON p.id = k.id_pengajuan
+    WHERE p.id_mahasiswa = ?
+", array($idMahasiswa));
 
-// Mengecek status pengajuan prodi
-$queryProdi = "
-SELECT k.status1, k.status2, k.status3, k.status4
-FROM pengajuan_prodi p
-LEFT JOIN konfirmasi_admin_prodi k ON p.id = k.id_pengajuan
-WHERE p.id_mahasiswa = ?
-";
-$stmtProdi = sqlsrv_query($conn, $queryProdi, array($idMahasiswa));
-$statusProdi = sqlsrv_fetch_array($stmtProdi, SQLSRV_FETCH_ASSOC);
+$statusJurusan = getDataMahasiswa($conn, "
+    SELECT k.status1, k.status2, k.status3
+    FROM pengajuan_jurusan p
+    LEFT JOIN konfirmasi_admin_jurusan k ON p.id = k.id_pengajuan
+    WHERE p.id_mahasiswa = ?
+", array($idMahasiswa));
 
-// Mengecek status pengajuan perpustakaan
-$queryPerpus = "
-SELECT k.status
-FROM pengajuan_perpustakaan p
-LEFT JOIN konfirmasi_perpus k ON p.id = k.id_pengajuan
-WHERE p.id_mahasiswa = ?
-";
-$stmtPerpus = sqlsrv_query($conn, $queryPerpus, array($idMahasiswa));
-$statusPerpus = sqlsrv_fetch_array($stmtPerpus, SQLSRV_FETCH_ASSOC);
+$statusProdi = getDataMahasiswa($conn, "
+    SELECT k.status1, k.status2, k.status3, k.status4
+    FROM pengajuan_prodi p
+    LEFT JOIN konfirmasi_admin_prodi k ON p.id = k.id_pengajuan
+    WHERE p.id_mahasiswa = ?
+", array($idMahasiswa));
 
-// Debugging: Tampilkan status yang diterima untuk memastikan data yang benar diterima
+$statusPerpus = getDataMahasiswa($conn, "
+    SELECT k.status
+    FROM pengajuan_perpustakaan p
+    LEFT JOIN konfirmasi_perpus k ON p.id = k.id_pengajuan
+    WHERE p.id_mahasiswa = ?
+", array($idMahasiswa));
 
-// Mengecek apakah semua status sesuai
-$statusValid = true; // Default status valid
+// Validasi status dokumen
+$statusValid = true;
 
-// Mengecek status akademik (termasuk cek untuk NULL atau tidak ditemukan data)
 if (
     empty($statusAkademik) ||
     in_array('Menunggu', [$statusAkademik['status1'], $statusAkademik['status2']]) ||
     is_null($statusAkademik['status1']) || is_null($statusAkademik['status2'])
 ) {
-    $statusValid = false; // Jika tidak ada data atau ada status akademik yang "Menunggu" atau NULL
+    $statusValid = false;
 }
 
-// Mengecek status jurusan (termasuk cek untuk NULL atau tidak ditemukan data)
 if (
     empty($statusJurusan) ||
     in_array('Menunggu', [$statusJurusan['status1'], $statusJurusan['status2'], $statusJurusan['status3']]) ||
     is_null($statusJurusan['status1']) || is_null($statusJurusan['status2']) || is_null($statusJurusan['status3'])
 ) {
-    $statusValid = false; // Jika tidak ada data atau ada status jurusan yang "Menunggu" atau NULL
+    $statusValid = false;
 }
 
-// Mengecek status prodi (termasuk cek untuk NULL atau tidak ditemukan data)
 if (
     empty($statusProdi) ||
     in_array('Menunggu', [$statusProdi['status1'], $statusProdi['status2'], $statusProdi['status3'], $statusProdi['status4']]) ||
     is_null($statusProdi['status1']) || is_null($statusProdi['status2']) || is_null($statusProdi['status3']) || is_null($statusProdi['status4'])
 ) {
-    $statusValid = false; // Jika tidak ada data atau ada status prodi yang "Menunggu" atau NULL
+    $statusValid = false;
 }
 
-// Mengecek status perpustakaan
 if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) {
-    $statusValid = false; // Jika status perpustakaan tidak "sesuai"
+    $statusValid = false;
 }
-
-// Jika semua status sesuai, maka file bisa diunduh
 ?>
+
+
 
 <head>
     <meta charset="utf-8">
@@ -327,61 +321,55 @@ if (isset($statusPerpus) && (strtolower($statusPerpus['status']) !== 'sesuai')) 
                     <div class="row">
                         <!-- Profile Card Example -->
                         <div class="col-xl-9 col-lg-7 mx-auto">
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
-                                    <h6 class="m-0 font-weight-bold text-primary">Form Akhir</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="col-xl mx-auto">
-                                                <div class="card-body">
-                                                    <?php if (!$statusValid): ?>
-                                                        <div class="alert alert-danger" role="alert">
-                                                            <i class="fas fa-times-circle"></i>
-                                                            Anda harus melengkapi semua dokumen sebelum dapat mengunduh
-                                                            file.
-                                                        </div>
-                                                    <?php else: ?>
-                                                        <div class="alert alert-success" role="alert">
-                                                            <i class="fas fa-check-circle"></i>
-                                                            Semua dokumen sudah lengkap. Anda dapat mengunduh file sekarang.
-                                                        </div>
-                                                    <?php endif; ?>
-                                                    <table class="table table-bordered table-hover mt-3">
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>Status</th>
-                                                                <th>Download File</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <?php echo ($statusValid) ? 'Dokumen Lengkap' : 'Dokumen Tidak Lengkap'; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php if ($statusValid): ?>
-                                                                        <!-- Gunakan path absolut berdasarkan struktur yang benar -->
-                                                                        <a href="/Empati-Bebas-Tanggungan/form/form-bestang.docx"
-                                                                            class="btn btn-primary" download>
-                                                                            Download File
-                                                                        </a>
-                                                                    <?php else: ?>
-                                                                        <button class="btn btn-secondary" disabled>File
-                                                                            Tidak Tersedia</button>
-                                                                    <?php endif; ?>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
+        <h6 class="m-0 font-weight-bold text-primary">Form Akhir</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-xl mx-auto">
+                    <div class="card-body">
+                        <?php if (!$statusValid): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <i class="fas fa-times-circle"></i>
+                                Anda harus melengkapi semua dokumen sebelum dapat mengunduh file.
                             </div>
+                        <?php else: ?>
+                            <div class="alert alert-success" role="alert">
+                                <i class="fas fa-check-circle"></i>
+                                Semua dokumen sudah lengkap. Anda dapat mengunduh file sekarang.
+                            </div>
+                        <?php endif; ?>
+                        <table class="table table-bordered table-hover mt-3">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Download File</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <?php echo ($statusValid) ? 'Dokumen Lengkap' : 'Dokumen Tidak Lengkap'; ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($statusValid): ?>
+                                            <!-- Arahkan ke file PHP untuk mengunduh -->
+                                            <a href="download.php" class="btn btn-primary">Download File</a>
+                                        <?php else: ?>
+                                            <button class="btn btn-secondary" disabled>File Tidak Tersedia</button>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                         </div>
                     </div>
                     <div class="row">
