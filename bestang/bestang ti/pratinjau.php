@@ -42,147 +42,168 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Prodi</title>
+    <title>SiBeTa - Prodi </title>
 
-    <!-- Custom fonts for this template-->
-    <link
-      href="vendor/fontawesome-free/css/all.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-      rel="stylesheet"
-    />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link
+  href="vendor/fontawesome-free/css/all.min.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+  rel="stylesheet"
+/>
 
+<!-- Custom styles for this template-->
+<link href="sb-admin-2.min.css" rel="stylesheet" />
+<style>
+.back-button {
+    position: fixed; /* Menggunakan posisi absolute */
+    bottom: 20px; /* Jarak dari bawah */
+    left: 70px; /* Jarak dari kiri */
+    z-index: 1000; /* Pastikan di atas elemen lain */
+    transition: left 0.3s; /* Animasi transisi untuk pergerakan */
+}
 
-    <!-- Custom styles for this template-->
-    <link href="sb-admin-2.min.css" rel="stylesheet" />
-  </head>
+.sidebar-collapsed .back-button {
+    left: 20px; /* Ubah posisi saat sidebar ditutup */
+}
+</style>
+</head>
 
-  <body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-      <!-- Sidebar -->
-      <ul
-        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-        id="accordionSidebar"
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <!-- Sidebar -->
+  <ul
+    class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+    id="accordionSidebar"
+  >
+    <!-- Sidebar - Brand -->
+    <a
+      class="sidebar-brand d-flex align-items-center justify-content-center"
+      href="index.php"
+    >
+      <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <div class="sidebar-brand-text mx-3">SiBeTa polinema</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
+
+    <!-- Nav Item - Beranda -->
+    <li class="nav-item">
+      <a class="nav-link" href="index.php">
+        <i class="fas fa-home"></i>
+        <span>Beranda</span></a
       >
-        <!-- Sidebar - Brand -->
-        <a
-          class="sidebar-brand d-flex align-items-center justify-content-center"
-          href="index.php"
-        >
-          <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-graduation-cap"></i>
-          </div>
-          <div class="sidebar-brand-text mx-3">SiBeTa polinema</div>
-        </a>
+    </li>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
 
-        <!-- Nav Item - Beranda -->
-        <li class="nav-item">
-          <a class="nav-link" href="index.php">
-            <i class="fas fa-home"></i>
-            <span>Beranda</span></a
-          >
-        </li>
+    <!-- Nav Item - Pages Mahasiswa -->
+    <li class="nav-item">
+      <a
+        class="nav-link collapsed"
+        href="tabel.php"
+      >
+        <i class="fas fa-fw fa-folder"></i>
+        <span>
+          Mahasiswa
+        </span>
+      </a>
+    </li>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
+<!-- Divider -->
+<hr class="sidebar-divider my-0" />
 
-        <!-- Nav Item - Pages Mahasiswa -->
-        <li class="nav-item">
+<!-- Nav Item - Beranda -->
+<li class="nav-item">
+  <a class="nav-link" href="index.php">
+  <i class="fas fa-fw fa-folder"></i>
+    <span>Rekapan Data</span></a
+  >
+</li>
+<!-- Divider -->
+<hr class="sidebar-divider d-none d-md-block" />
+
+<!-- Sidebar Toggler (Sidebar) -->
+<div class="text-center d-none d-md-inline">
+<button class="rounded-circle border-0" id="sidebarToggle"></button>
+</div>
+</ul>
+<!-- End of Sidebar -->
+
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+<!-- Main Content -->
+<div id="content">
+<!-- Topbar -->
+<nav
+  class="navbar navbar-expand navbar-dark bg-white topbar mb-4 static-top shadow"
+>
+  <!-- Sidebar Toggle (Topbar) -->
+  <button
+    id="sidebarToggleTop"
+    class="btn btn-link d-md-none rounded-circle mr-3"
+  >
+    <i class="fa fa-bars"></i>
+  </button>
+
+  <!-- Topbar Navbar -->
+  <ul class="navbar-nav ml-auto">
+
+    <div class="topbar-divider d-none d-sm-block"></div>
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
           <a
-            class="nav-link collapsed"
-            href="tabel.php"
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="userDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
           >
-            <i class="fas fa-fw fa-folder"></i>
-            <span>
-              Mahasiswa
-            </span>
-          </a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block" />
-
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-          <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
-      </ul>
-      <!-- End of Sidebar -->
-
-      <!-- Content Wrapper -->
-      <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-          <!-- Topbar -->
-          <nav
-            class="navbar navbar-expand navbar-dark bg-white topbar mb-4 static-top shadow"
-          >
-            <!-- Sidebar Toggle (Topbar) -->
-            <button
-              id="sidebarToggleTop"
-              class="btn btn-link d-md-none rounded-circle mr-3"
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+              <?php echo htmlspecialchars($_SESSION['nama_admin']); ?></span
             >
-              <i class="fa fa-bars"></i>
-            </button>
+            <img
+              class="img-profile rounded-circle"
+              src="img/undraw_profile.svg"
+            />
+          </a>
+          <!-- Dropdown - User Information -->
+          <div
+            class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+            aria-labelledby="userDropdown"
+          >
+            <a class="dropdown-item" href="profile.php">
+              <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+              Profile
+            </a>
+            <div class="dropdown-divider"></div>
+            <a
+              class="dropdown-item"
+              href="#"
+              data-toggle="modal"
+              data-target="#logoutModal"
+            >
+              <i
+                class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"
+              ></i>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    <!-- End of Topbar -->
 
-            <!-- Topbar Navbar -->
-            <ul class="navbar-nav ml-auto">
-              
-              <div class="topbar-divider d-none d-sm-block"></div>
-
-              <!-- Nav Item - User Information -->
-              <li class="nav-item dropdown no-arrow">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="userDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                    <?php echo htmlspecialchars($_SESSION['nama_admin']); ?></span
-                  >
-                  <img
-                    class="img-profile rounded-circle"
-                    src="img/undraw_profile.svg"
-                  />
-                </a>
-                <!-- Dropdown - User Information -->
-                <div
-                  class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                  aria-labelledby="userDropdown"
-                >
-                  <a class="dropdown-item" href="profile.php">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a
-                    class="dropdown-item"
-                    href="#"
-                    data-toggle="modal"
-                    data-target="#logoutModal"
-                  >
-                    <i
-                      class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"
-                    ></i>
-                    Logout
-                  </a>
-                </div>
-              </li>
-            </ul>
-          </nav>
-          <!-- End of Topbar -->
 
           <!-- Main Content -->
           <!-- Main Content -->
@@ -247,74 +268,72 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       echo '<div class="row mb-4">';
 
                       // Data file yang akan ditampilkan
-                      $file1_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path1']);
-                      $file2_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path2']);
-                      $file3_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path3'] ?? '');
-                      $file4_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path4']);
+                     // Data file yang akan ditampilkan
+                     $file1_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path1']);
+                     $file2_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path2']);
+                     $file3_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path3'] ?? '');
+                     $file4_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path4']);
 
-                      // Untuk file kompensasi, jika kosong set null atau kosongkan URL
-                      $file3_url = empty($data_mahasiswa['path3']) ? '' : $file3_url;
+                     // Untuk file kompensasi, jika kosong set null atau kosongkan URL
+                     $file3_url = empty($data_mahasiswa['path3']) ? '' : $file3_url;
 
-                      $files = [
-                          ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_skripsi'] ?? ''), 'url' => $file1_url, 'status' => $data_mahasiswa['status_pengisian']],
-                          ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_magang'] ?? ''), 'url' => $file2_url, 'status' => $data_mahasiswa['status_pengisian']],
-                          ['nama' => htmlspecialchars($data_mahasiswa['bebas_kompensasi'] ?? ''), 'url' => $file3_url, 'status' => $data_mahasiswa['status_pengisian']],
-                          ['nama' => htmlspecialchars($data_mahasiswa['nilai_toeic'] ?? ''), 'url' => $file4_url, 'status' => $data_mahasiswa['status_pengisian']],
-                      ];
+                     $files = [
+                         ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_skripsi'] ?? ''), 'url' => $file1_url, 'status' => $data_mahasiswa['status_pengisian']],
+                         ['nama' => htmlspecialchars($data_mahasiswa['distribusi_laporan_magang'] ?? ''), 'url' => $file2_url, 'status' => $data_mahasiswa['status_pengisian']],
+                         ['nama' => htmlspecialchars($data_mahasiswa['bebas_kompensasi'] ?? ''), 'url' => $file3_url, 'status' => $data_mahasiswa['status_pengisian']],
+                         ['nama' => htmlspecialchars($data_mahasiswa['nilai_toeic'] ?? ''), 'url' => $file4_url, 'status' => $data_mahasiswa['status_pengisian']],
+                     ];
 
                       
-                      echo '<div class="container mt-4">';
-                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '">'; // Form utama untuk semua input
-                          
-                      foreach ($files as $index => $file) {
-                          echo '<div class="card mb-4 shadow-sm">';
-                          echo '<div class="card-body">';
-                          
-                          echo '<h5 class="card-title">' . htmlspecialchars($file['nama']) . '</h5>';
-                        
-                          // Preview berdasarkan ekstensi file
-                          $ext = strtolower(pathinfo($file['url'], PATHINFO_EXTENSION));
+                     echo '<div class="container mt-4">';
+                     echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '">'; // Form utama untuk semua input
+                         
+                     foreach ($files as $index => $file) {
+                         echo '<div class="card mb-4 shadow-sm">';
+                         echo '<div class="card-body">';
+                         
+                         echo '<h5 class="card-title">' . htmlspecialchars($file['nama']) . '</h5>';
+                       
+                         // Preview berdasarkan ekstensi file
+                         $ext = strtolower(pathinfo($file['url'], PATHINFO_EXTENSION));
 
-                          if ($ext === 'pdf') {
-                              // Tampilkan PDF dalam iframe
-                              echo '<iframe src="' . htmlspecialchars($file['url']) . '" width="100%" height="400px" class="mb-3"></iframe>';
-                          } elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'])) {
-                              // Gunakan Google Docs Viewer untuk file Office
-                              echo '<iframe src="https://docs.google.com/viewer?url=' . urlencode($file['url']) . '&embedded=true" width="100%" height="400px" class="mb-3"></iframe>';
-                          } elseif (in_array($ext, ['png', 'jpg', 'jpeg', 'gif'])) {
-                              // Tampilkan gambar langsung
-                              echo '<img src="' . htmlspecialchars($file['url']) . '" class="img-fluid mb-3" alt="Preview">';
-                          } else {
-                              // Tampilkan link untuk file yang tidak didukung
-                              echo '<p>File tidak dapat dipratinjau. <a href="' . htmlspecialchars($file['url']) . '" target="_blank">Unduh file</a>.</p>';
-                          }
+                         if ($ext === 'pdf') {
+                             // Tampilkan PDF dalam iframe
+                             echo '<iframe src="' . htmlspecialchars($file['url']) . '" width="100%" height="400px" class="mb-3"></iframe>';
+                         } elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'])) {
+                             // Gunakan Google Docs Viewer untuk file Office
+                             echo '<iframe src="https://docs.google.com/viewer?url=' . urlencode($file['url']) . '&embedded=true" width="100%" height="400px" class="mb-3"></iframe>';
+                         } elseif (in_array($ext, ['png', 'jpg', 'jpeg', 'gif'])) {
+                             // Tampilkan gambar langsung
+                             echo '<img src="' . htmlspecialchars($file['url']) . '" class="img-fluid mb-3" alt="Preview">';
+                         } else {
+                             // Tampilkan link untuk file yang tidak didukung
+                             echo '<p>File tidak dapat dipratinjau. <a href="' . htmlspecialchars($file['url']) . '" target="_blank">Unduh file</a>.</p>';
+                         }
 
-                          // Tambahkan checkbox konfirmasi untuk setiap file
-                          $current_status = strtolower($file['status']);
-                          echo '<div class="form-check">';
-                          echo '<input class="form-check-input" type="radio" name="status[' . $index . ']" id="status_sesuai' . $index . '" value="sesuai" ' . 
-                              (($current_status === 'sesuai') ? 'checked' : '') . '>';
-                          echo '<label class="form-check-label" for="status_sesuai' . $index . '">Sesuai</label>';
-                          echo '</div>';
-                          echo '<div class="form-check">';
-                          echo '<input class="form-check-input" type="radio" name="status[' . $index . ']" id="status_tidak_sesuai' . $index . '" value="tidak sesuai" ' . 
-                              (($current_status === 'tidak sesuai') ? 'checked' : '') . '>';
-                          echo '<label class="form-check-label" for="status_tidak_sesuai' . $index . '">Tidak Sesuai</label>';
-                          echo '</div>';
+                         // Tambahkan checkbox konfirmasi untuk setiap file
+                         $current_status = strtolower($file['status']);
+                         echo '<div class="form-check">';
+                         echo '<input class="form-check-input" type="radio" name="status[' . $index . ']" id="status_sesuai' . $index . '" value="sesuai" ' . 
+                             (($current_status === 'sesuai') ? 'checked' : '') . '>';
+                         echo '<label class="form-check-label" for="status_sesuai' . $index . '">Sesuai</label>';
+                         echo '</div>';
+                         echo '<div class="form-check">';
+                         echo '<input class="form-check-input" type="radio" name="status[' . $index . ']" id="status_tidak_sesuai' . $index . '" value="tidak sesuai" ' . 
+                             (($current_status === 'tidak sesuai') ? 'checked' : '') . '>';
+                         echo '<label class="form-check-label" for="status_tidak_sesuai' . $index . '">Tidak Sesuai</label>';
+                         echo '</div>';
 
-                          if ($index == 2) { // Kompensasi (file3)
-                            // Menambahkan keterangan jika file kompensasi tidak ada
-                            if (empty($file['url'])) {
-                                echo '<p class="text-muted"> <span style="color: red;">Mahasiswa tidak melampirkan file kompensasi. Mohon cek data mahasiswa terkait</p>';
-                            }
-                        }
-                        
-                        
-                      
-                          echo '</div>'; // Close card-body
-                          echo '</div>'; // Close card
-                      }
-
+                         if ($index == 2) { // Kompensasi (file3)
+                           // Menambahkan keterangan jika file kompensasi tidak ada
+                           if (empty($file['url'])) {
+                               echo '<p class="text-muted"> <span style="color: red;">Mahasiswa tidak melampirkan file kompensasi. Mohon cek data mahasiswa terkait</p>';
+                           }
+                       }
+                     
+                        echo '</div>'; // Close card-body
+                        echo '</div>'; // Close card
+                     }
                       // Tambahkan area komentar tunggal di bawah semua file
                       echo '<div class="form-group mt-4">';
                       $sql_komentar = "select k.komentar
@@ -337,6 +356,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       echo '</div>';
 
                       echo '</form>';
+
+                      echo '<a href="tabel.php" class="btn btn-secondary back-button">Back</a>'; 
                       echo '</div>'; // Close container
                       echo '</div>'; // Close row
                   } else {
@@ -432,5 +453,21 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
       <script src="js/demo/chart-area-demo.js"></script>
       <script src="js/demo/chart-pie-demo.js"></script>
     </div>
-  </body>
+       
+    <script>
+    function showAlert() {
+        alert("Data sudah dikirimkan ke mahasiswa");
+        return true; // Mengizinkan form untuk disubmit
+    }
+    </script>
+
+    <script>
+    $(document).ready(function() {
+        $('#sidebarToggle').on('click', function() {
+            $('body').toggleClass('sidebar-collapsed'); // Tambahkan atau hapus kelas saat sidebar toggle
+        });
+    });
+    </script>
+
+      </body>
 </html>
