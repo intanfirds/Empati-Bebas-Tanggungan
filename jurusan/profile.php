@@ -105,6 +105,17 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </a>
         </li>
 
+             <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
+
+<!-- Nav Item - Beranda -->
+<li class="nav-item">
+  <a class="nav-link" href="index.php">
+  <i class="fas fa-fw fa-folder"></i>
+    <span>Rekapan Data</span></a
+  >
+</li>
+
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 
