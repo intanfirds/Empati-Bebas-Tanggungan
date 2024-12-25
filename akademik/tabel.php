@@ -55,7 +55,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const table = $('#dataTable').DataTable({
-            pageLength: 25 // Mengatur panjang halaman default
+            pageLength: 25, // Mengatur panjang halaman default
+            order: [], // Mengosongkan pengurutan sorting default
         });
 
         document.getElementById('filterProdi').addEventListener('change', filterTable);
@@ -137,6 +138,22 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
         </li>
 
         <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
+
+        <!-- Nav Item - Pages Rekapan -->
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="rekapan.php"
+          >
+            <i class="fas fa-fw fa-folder"></i>
+            <span>
+              Rekapan
+            </span>
+          </a>
+        </li>
+
+        <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 
         <!-- Sidebar Toggler (Sidebar) -->
@@ -179,7 +196,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="profile.php">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -267,16 +284,23 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
                                     $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, 
                                     CASE 
-                                      WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' THEN 'selesai'
-                                      WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' THEN 'tidak sesuai'
-                                      WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' THEN 'menunggu'
-                                      ELSE 'belum mengisi'
-                                        END AS status
+                                      WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' THEN 'Selesai'
+                                      WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' THEN 'Tidak Sesuai'
+                                      WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' THEN 'Menunggu'
+                                      ELSE 'Belum Mengisi'
+                                    END AS status
                                     FROM Mahasiswa m 
                                     LEFT JOIN pengajuan_akademik p ON m.id = p.id_mahasiswa
                                     LEFT JOIN konfirmasi_akademik k ON p.id = k.id_pengajuan
                                     LEFT JOIN Angkatan a ON m.id_angkatan = a.id
-                                    ORDER BY m.nim ASC";
+                                    ORDER BY 
+                                      CASE 
+                                        WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' THEN 1
+                                        WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' THEN 2
+                                        WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' THEN 3
+                                        ELSE 4
+                                      END,
+                                      m.nim ASC";
                           
                                     $stmt = sqlsrv_query($conn, $query, $params);
 
@@ -348,7 +372,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="index-admin.html">Logout</a>
                 </div>
             </div>
         </div>

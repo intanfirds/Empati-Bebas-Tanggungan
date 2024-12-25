@@ -108,6 +108,22 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
         </li>
 
         <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
+
+        <!-- Nav Item - Pages Rekapan -->
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="rekapan.php"
+          >
+            <i class="fas fa-fw fa-folder"></i>
+            <span>
+              Rekapan
+            </span>
+          </a>
+        </li>
+
+        <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 
         <!-- Sidebar Toggler (Sidebar) -->
@@ -125,6 +141,9 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           <nav
             class="navbar navbar-expand navbar-dark bg-white topbar mb-4 static-top shadow"
           >
+            <button class="btn" onclick="window.history.back();">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </button>
             <!-- Sidebar Toggle (Topbar) -->
             <button
               id="sidebarToggleTop"
@@ -266,9 +285,6 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                           if ($ext === 'pdf') {
                               // Tampilkan PDF dalam iframe
                               echo '<iframe src="' . htmlspecialchars($file['url']) . '" width="100%" height="400px" class="mb-3"></iframe>';
-                          } elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'])) {
-                              // Gunakan Google Docs Viewer untuk file Office
-                              echo '<iframe src="https://docs.google.com/viewer?url=' . urlencode($file['url']) . '&embedded=true" width="100%" height="400px" class="mb-3"></iframe>';
                           } elseif (in_array($ext, ['png', 'jpg', 'jpeg', 'gif'])) {
                               // Tampilkan gambar langsung
                               echo '<img src="' . htmlspecialchars($file['url']) . '" class="img-fluid mb-3" alt="Preview">';
@@ -307,12 +323,19 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       }
                       $data_komentar = sqlsrv_fetch_array($stmt_komentar, SQLSRV_FETCH_ASSOC);
                       echo '<label for="komentar">Komentar :</label>';
-                      echo '<textarea class="form-control" id="komentar" name="komentar" rows="4">' . htmlspecialchars($data_komentar['komentar'] ?? '') . '</textarea>';
+                      $komentar = htmlspecialchars($data_komentar['komentar'] ?? '');
+                      if ($komentar === 'Menunggu' || $komentar === ' ') {
+                        $komentar = ' ';
+                      }
+                      echo '<textarea class="form-control" id="komentar" name="komentar" rows="4">' . htmlspecialchars($komentar) . '</textarea>';
                       echo '</div>';
 
                       // Tambahkan tombol submit di bawah komentar
-                      echo '<div class="text-center mt-4">';
-                      echo '<button type="submit" class="btn btn-primary">Kirim</button>';
+                      echo '<div class="mt-4">';
+                      echo '<button class="btn btn-secondary mr-3" onclick="window.history.back();">';
+                          echo '<i class="fas fa-arrow-left"></i> Kembali';
+                      echo '</button>';
+                      echo '<button type="submit" class="btn btn-success">Kirim</button>';
                       echo '</div>';
 
                       echo '</form>';

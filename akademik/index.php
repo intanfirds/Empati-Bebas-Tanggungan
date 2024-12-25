@@ -106,6 +106,22 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
         </li>
 
         <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
+
+        <!-- Nav Item - Pages Rekapan -->
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="rekapan.php"
+          >
+            <i class="fas fa-fw fa-folder"></i>
+            <span>
+              Rekapan
+            </span>
+          </a>
+        </li>
+
+        <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 
         <!-- Sidebar Toggler (Sidebar) -->
