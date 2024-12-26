@@ -301,7 +301,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
               if ($komentar === 'Menunggu' || $komentar === ' ') {
                 $komentar = ' ';
               }
-              echo '<textarea class="form-control" id="komentar" name="komentar" rows="4">' . htmlspecialchars($data_komentar['komentar'] ?? '') . '</textarea>';
+              echo '<textarea class="form-control" id="komentar" name="komentar" rows="4">' . htmlspecialchars($komentar) . '</textarea>';
               echo '</div>';
 
               // Tambahkan tombol submit di bawah komentar
