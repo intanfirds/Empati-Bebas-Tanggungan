@@ -42,7 +42,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SiBeTa - Jurusan</title>
+    <title>SiBeTa - Akademik</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -59,19 +59,6 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
     <!-- Custom styles for this template-->
     <link href="sb-admin-2.min.css" rel="stylesheet" />
-    <style>
-.back-button {
-    position: fixed; /* Menggunakan posisi absolute */
-    bottom: 20px; /* Jarak dari bawah */
-    left: 70px; /* Jarak dari kiri */
-    z-index: 1000; /* Pastikan di atas elemen lain */
-    transition: left 0.3s; /* Animasi transisi untuk pergerakan */
-}
-
-.sidebar-collapsed .back-button {
-    left: 20px; /* Ubah posisi saat sidebar ditutup */
-}
-</style>
   </head>
 
   <body id="page-top">
@@ -121,6 +108,22 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
         </li>
 
         <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
+
+        <!-- Nav Item - Pages Rekapan -->
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="rekapan.php"
+          >
+            <i class="fas fa-fw fa-folder"></i>
+            <span>
+              Rekapan
+            </span>
+          </a>
+        </li>
+
+        <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 
         <!-- Sidebar Toggler (Sidebar) -->
@@ -138,6 +141,9 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           <nav
             class="navbar navbar-expand navbar-dark bg-white topbar mb-4 static-top shadow"
           >
+            <button class="btn" onclick="window.history.back();">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </button>
             <!-- Sidebar Toggle (Topbar) -->
             <button
               id="sidebarToggleTop"
@@ -205,12 +211,12 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                   
                   <?php
                   $nim_mahasiswa = $_GET['nim'];
-                  $query_files = "SELECT m.nama, m.nim, m.prodi, m.jurusan, p.file_bukti_publikasi, p.path1, 
-                                  p.file_skripsi, p.path2, p.hasil_akhir_skripsi, p.path3, p.last_modified,
-                                  k.status1 AS status_publikasi, k.status2 AS status_skripsi, k.status3 AS status_akhir
+                  $query_files = "SELECT m.nama, m.nim, m.prodi, m.jurusan, p.bukti_pelunasan_ukt, 
+                                  p.bukti_pengisian_data_alumni, p.last_modified, p.path1, p.path2,
+                                  k.status1 AS status_pelunasan, k.status2 AS status_pengisian
                                   FROM Mahasiswa m
-                                  JOIN pengajuan_jurusan p ON p.id_mahasiswa = m.id
-                                  JOIN konfirmasi_admin_jurusan k ON k.id_pengajuan = p.id 
+                                  JOIN pengajuan_akademik p ON p.id_mahasiswa = m.id
+                                  JOIN konfirmasi_akademik k ON k.id_pengajuan = p.id 
                                   WHERE m.nim = ?";
                   $params_nim = [$nim_mahasiswa];
                   $stmt_files = sqlsrv_query($conn, $query_files, $params_nim);
@@ -260,15 +266,13 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       // Data file yang akan ditampilkan
                       $file1_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path1']);
                       $file2_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path2']);
-                      $file3_url = str_replace('uploads/', 'http://localhost/Empati-Bebas-Tanggungan/mahasiswa/uploads/', $data_mahasiswa['path3']);
                       $files = [
-                          ['nama' => htmlspecialchars($data_mahasiswa['file_bukti_publikasi']), 'url' => $file1_url, 'status' => $data_mahasiswa['status_publikasi']],
-                          ['nama' => htmlspecialchars($data_mahasiswa['file_skripsi']), 'url' => $file2_url, 'status' => $data_mahasiswa['status_skripsi']],
-                          ['nama' => htmlspecialchars($data_mahasiswa['hasil_akhir_skripsi']), 'url' => $file3_url, 'status' => $data_mahasiswa['status_akhir']],
+                          ['nama' => htmlspecialchars($data_mahasiswa['bukti_pelunasan_ukt']), 'url' => $file1_url, 'status' => $data_mahasiswa['status_pelunasan']],
+                          ['nama' => htmlspecialchars($data_mahasiswa['bukti_pengisian_data_alumni']), 'url' => $file2_url, 'status' => $data_mahasiswa['status_pengisian']],
                       ];
                       
                       echo '<div class="container mt-4">';
-                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '" onsubmit="return showAlert()">'; // Form utama untuk semua input
+                      echo '<form method="post" action="proses_konfirmasi.php?nim=' . htmlspecialchars($data_mahasiswa['nim']) . '">'; // Form utama untuk semua input
 
                       foreach ($files as $index => $file) {
                           echo '<div class="card mb-4 shadow-sm">';
@@ -281,9 +285,6 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                           if ($ext === 'pdf') {
                               // Tampilkan PDF dalam iframe
                               echo '<iframe src="' . htmlspecialchars($file['url']) . '" width="100%" height="400px" class="mb-3"></iframe>';
-                          } elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'])) {
-                              // Gunakan Google Docs Viewer untuk file Office
-                              echo '<iframe src="https://docs.google.com/viewer?url=' . urlencode($file['url']) . '&embedded=true" width="100%" height="400px" class="mb-3"></iframe>';
                           } elseif (in_array($ext, ['png', 'jpg', 'jpeg', 'gif'])) {
                               // Tampilkan gambar langsung
                               echo '<img src="' . htmlspecialchars($file['url']) . '" class="img-fluid mb-3" alt="Preview">';
@@ -312,8 +313,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       // Tambahkan area komentar tunggal di bawah semua file
                       echo '<div class="form-group mt-4">';
                       $sql_komentar = "select k.komentar
-                                      FROM konfirmasi_admin_jurusan k
-                                      JOIN pengajuan_jurusan p ON p.id = k.id_pengajuan
+                                      FROM konfirmasi_akademik k
+                                      JOIN pengajuan_akademik p ON p.id = k.id_pengajuan
                                       JOIN Mahasiswa m ON m.id = p.id_mahasiswa
                                       WHERE m.nim = ?";
                       $stmt_komentar = sqlsrv_query($conn, $sql_komentar, $params_nim);
@@ -322,18 +323,22 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       }
                       $data_komentar = sqlsrv_fetch_array($stmt_komentar, SQLSRV_FETCH_ASSOC);
                       echo '<label for="komentar">Komentar :</label>';
-                      echo '<textarea class="form-control" id="komentar" name="komentar" rows="4">' . htmlspecialchars($data_komentar['komentar'] ?? '') . '</textarea>';
+                      $komentar = htmlspecialchars($data_komentar['komentar'] ?? '');
+                      if ($komentar === 'Menunggu' || $komentar === ' ') {
+                        $komentar = ' ';
+                      }
+                      echo '<textarea class="form-control" id="komentar" name="komentar" rows="4">' . htmlspecialchars($komentar) . '</textarea>';
                       echo '</div>';
 
                       // Tambahkan tombol submit di bawah komentar
-                      echo '<div class="text-left mt-4">';
-                      echo '<button type="submit" class="btn btn-primary">Kirim</button>';
-
+                      echo '<div class="mt-4">';
+                      echo '<button class="btn btn-secondary mr-3" onclick="window.history.back();">';
+                          echo '<i class="fas fa-arrow-left"></i> Kembali';
+                      echo '</button>';
+                      echo '<button type="submit" class="btn btn-success">Kirim</button>';
                       echo '</div>';
 
                       echo '</form>';
-
-                      echo '<a href="tabel.php" class="btn btn-secondary back-button">Back</a>'; 
                       echo '</div>'; // Close container
                       echo '</div>'; // Close row
                   } else {
@@ -429,21 +434,5 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
       <script src="js/demo/chart-area-demo.js"></script>
       <script src="js/demo/chart-pie-demo.js"></script>
     </div>
-
-    <script>
-function showAlert() {
-    alert("Data sudah dikirimkan ke mahasiswa");
-    return true; // Mengizinkan form untuk disubmit
-}
-</script>
-
-<script>
-$(document).ready(function() {
-    $('#sidebarToggle').on('click', function() {
-        $('body').toggleClass('sidebar-collapsed'); // Tambahkan atau hapus kelas saat sidebar toggle
-    });
-});
-</script>
-
   </body>
 </html>

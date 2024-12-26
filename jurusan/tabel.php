@@ -141,9 +141,9 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
 <!-- Nav Item - Beranda -->
 <li class="nav-item">
-  <a class="nav-link" href="index.php">
+  <a class="nav-link" href="rekapan.php">
   <i class="fas fa-fw fa-folder"></i>
-    <span>Rekapan Data</span></a
+    <span>Rekapan</span></a
   >
 </li>
 
