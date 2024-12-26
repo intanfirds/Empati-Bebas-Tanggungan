@@ -55,7 +55,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const table = $('#dataTable').DataTable({
-            pageLength: 25 // Mengatur panjang halaman default
+            pageLength: 25, // Mengatur panjang halaman default
+            order: [], // Mengosongkan pengurutan sorting default
         });
 
         document.getElementById('filterProdi').addEventListener('change', filterTable);
@@ -136,16 +137,21 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </a>
         </li>
 
-             <!-- Divider -->
-    <hr class="sidebar-divider my-0" />
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
 
-<!-- Nav Item - Beranda -->
-<li class="nav-item">
-  <a class="nav-link" href="rekapan.php">
-  <i class="fas fa-fw fa-folder"></i>
-    <span>Rekapan</span></a
-  >
-</li>
+        <!-- Nav Item - Pages Rekapan -->
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="rekapan.php"
+          >
+            <i class="fas fa-fw fa-folder"></i>
+            <span>
+              Rekapan
+            </span>
+          </a>
+        </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
@@ -276,19 +282,27 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     <?php
                                     include 'koneksi.php';
 
-                                    $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan, 
+                                    $query =
+                                    "SELECT m.nim, m.nama, m.prodi, a.angkatan, 
                                     CASE 
-                                        WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' AND k.status3 = 'sesuai' THEN 'selesai'
-                                        WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' OR k.status3 = 'tidak sesuai' THEN 'tidak sesuai'
-                                        WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' AND k.status3 = 'menunggu' THEN 'menunggu'
-                                        ELSE 'belum mengisi'
+                                        WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' AND k.status3 = 'sesuai' THEN 'Selesai'
+                                        WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' OR k.status3 = 'tidak sesuai' THEN 'Tidak Sesuai'
+                                        WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' AND k.status3 = 'menunggu' THEN 'Menunggu'
+                                        ELSE 'Belum Mengisi'
                                     END AS status
                                             FROM Mahasiswa m 
                                             LEFT JOIN pengajuan_jurusan p ON m.id = p.id_mahasiswa
                                             LEFT JOIN konfirmasi_admin_jurusan k ON p.id = k.id_pengajuan
                                             LEFT JOIN Angkatan a ON m.id_angkatan = a.id
-                                            order by m.nim asc";
-                                            
+                                             ORDER BY 
+                                      CASE 
+                                        WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' AND k.status3 = 'menunggu' THEN 1
+                                        WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' OR k.status3 = 'tidak sesuai'THEN 2
+                                        WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' AND k.status3 = 'sesuai' THEN 3
+                                        ELSE 4
+                                      END,
+                                      m.nim ASC";
+                          
                                     $stmt = sqlsrv_query($conn, $query, $params);
 
                                     while ($data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
@@ -303,7 +317,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                         // Ubah kondisi tombol pratinjau
                                         $status = strtolower(trim($data['status']?? 'Belum Mengisi')); // Normalisasi data status
                                         if (in_array($status, ['selesai', 'tidak sesuai', 'menunggu'])) {
-                                            echo "<a href='pratinjau.php?nim=" . htmlspecialchars($data['nim']) . "' class='btn btn-primary btn-sm'>Pratinjau</a>";
+                                            echo "<a href='pratinjau.php?nim=" . htmlspecialchars($data['nim']) . "' class='btn btn-primary'>Pratinjau</a>";
                                         } else {
                                             echo "-"; // Tampilkan tanda kosong untuk status lainnya
                                         }
@@ -325,10 +339,10 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
+            <footer class="sticky-footer bg-white " >
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Sibeta - Sistem Bebas Tanggungan 2024</span>
+                        <span>Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span>
                     </div>
                 </div>
             </footer>
