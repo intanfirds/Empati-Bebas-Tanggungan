@@ -212,6 +212,11 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                            <a href="edit-password.php" class="btn btn-success">Edit Password</a>
                         </div>
                     </div>
+                    <div class="card-footer">
+                      <button class="btn btn-outline-secondary" onclick="window.history.back();">
+                          <i class="fas fa-arrow-left"></i> Kembali
+                      </button>
+                    </div>
                 </div>
             </div>
           </div>
