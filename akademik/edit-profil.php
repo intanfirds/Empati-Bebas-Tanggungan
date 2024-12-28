@@ -93,6 +93,9 @@ session_start();
           <nav
             class="navbar navbar-expand navbar-dark bg-white topbar mb-4 static-top shadow"
           >
+            <button class="btn" onclick="window.history.back();">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </button>
             <!-- Sidebar Toggle (Topbar) -->
             <button
               id="sidebarToggleTop"
