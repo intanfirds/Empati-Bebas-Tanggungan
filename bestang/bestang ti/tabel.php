@@ -55,7 +55,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const table = $('#dataTable').DataTable({
-            pageLength: 25 // Mengatur panjang halaman default
+            pageLength: 25, // Mengatur panjang halaman default
+            order: [], // Mengosongkan pengurutan sorting default
         });
 
         document.getElementById('filterAngkatan').addEventListener('change', filterTable);
@@ -292,8 +293,15 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     LEFT JOIN konfirmasi_admin_prodi k ON p.id = k.id_pengajuan
                                     LEFT JOIN Angkatan a ON m.id_angkatan = a.id
                                     WHERE m.prodi = 'Teknik Informatika'  -- Correct the WHERE clause
-                                    ORDER BY m.nim ASC;
-                                    ";
+                                    ORDER BY 
+                                    CASE
+                                    WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' AND k.status3 = 'sesuai' AND k.status4 = 'sesuai' THEN 1
+                                            WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' OR k.status3 = 'tidak sesuai' OR k.status4 = 'tidak sesuai' THEN 2
+                                            WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' AND k.status3 = 'menunggu' AND k.status4 = 'menunggu' THEN 3
+                                            ELSE 4
+                                     END,
+                                      m.nim ASC";
+                          
 
                                     $stmt = sqlsrv_query($conn, $query, $params);
 
@@ -365,6 +373,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                     <a class="btn btn-primary" href="index-admin.html">Logout</a>
                     <a class="btn btn-primary" href="\Empati-Bebas-Tanggungan\index-admin.html">Logout</a>
                 </div>
             </div>

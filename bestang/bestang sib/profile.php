@@ -112,7 +112,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
       <li class="nav-item">
         <a class="nav-link" href="index.php">
         <i class="fas fa-fw fa-folder"></i>
-          <span>Rekapan Data</span></a
+          <span>Rekapan </span></a
         >
       </li>
       <!-- Divider -->
@@ -209,6 +209,11 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                             <a href="edit-profil.php" class="btn btn-primary mr-4">Edit Profile</a>
                             <a href="edit-password.php" class="btn btn-success">Edit Password</a>
                         </div>
+                    </div>
+                    <div class="card-footer">
+                      <button class="btn btn-outline-secondary" onclick="window.history.back();">
+                          <i class="fas fa-arrow-left"></i> Kembali
+                      </button>
                     </div>
                 </div>
             </div>

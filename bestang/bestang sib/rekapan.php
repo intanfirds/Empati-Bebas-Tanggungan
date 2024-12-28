@@ -49,42 +49,9 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <!-- Custom styles for this template -->
     <link href="sb-admin-2.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const table = $('#dataTable').DataTable({
-            pageLength: 25, // Mengatur panjang halaman default
-            order: [], // Mengosongkan pengurutan sorting default
-        });
-
-        document.getElementById('filterAngkatan').addEventListener('change', filterTable);
-        document.getElementById('filterStatus').addEventListener('change', filterTable);
-
-        function filterTable() {
-            const angkatanFilter = document.getElementById('filterAngkatan').value;
-            const statusFilter = document.getElementById('filterStatus').value.toLowerCase();
-
-            // Menggunakan DataTables API untuk filter
-            table.column(3).search(angkatanFilter, true, false); // Angkatan
-            table.column(4).search(statusFilter, true, false); // Status
-
-            table.draw(); // Memperbarui tabel
-        }
-    });
-    </script>
-    <script>
-    $(document).ready(function() {
-        $('#dataTable').DataTable(); // Inisialisasi DataTable
-    });
-    $(document).ready(function() {
-    var table = $('#dataTable').DataTable({
-        // Opsi tambahan jika diperlukan
-        // Misalnya, jika Anda ingin mengatur panjang halaman default
-        pageLength: 25
-        });
-    });
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+    
     </script>
 </head>
 
@@ -216,6 +183,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                 </a>
                             </div>
                         </li>
+                        
 
                     </ul>
 
@@ -282,25 +250,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                     $program = 'Sistem Informasi Bisnis'; // Can be changed in one place
 
                                     $query = "SELECT m.nim, m.nama, m.prodi, a.angkatan,
-                                        CASE 
-                                            WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' AND k.status3 = 'sesuai' AND k.status4 = 'sesuai' THEN 'selesai'
-                                            WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' OR k.status3 = 'tidak sesuai' OR k.status4 = 'tidak sesuai' THEN 'tidak sesuai'
-                                            WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' AND k.status3 = 'menunggu' AND k.status4 = 'menunggu' THEN 'menunggu'
-                                            ELSE 'belum mengisi'
-                                        END AS status
-                                    FROM Mahasiswa m 
-                                    LEFT JOIN pengajuan_prodi p ON m.id = p.id_mahasiswa
-                                    LEFT JOIN konfirmasi_admin_prodi k ON p.id = k.id_pengajuan
-                                    LEFT JOIN Angkatan a ON m.id_angkatan = a.id
-                                    WHERE m.prodi = 'Sistem Informasi Bisnis'  -- Correct the WHERE clause
-                                    ORDER BY 
-                                    CASE
-                                    WHEN k.status1 = 'sesuai' AND k.status2 = 'sesuai' AND k.status3 = 'sesuai' AND k.status4 = 'sesuai' THEN 1
-                                            WHEN k.status1 = 'tidak sesuai' OR k.status2 = 'tidak sesuai' OR k.status3 = 'tidak sesuai' OR k.status4 = 'tidak sesuai' THEN 2
-                                            WHEN k.status1 = 'menunggu' AND k.status2 = 'menunggu' AND k.status3 = 'menunggu' AND k.status4 = 'menunggu' THEN 3
-                                            ELSE 4
-                                     END,
-                                      m.nim ASC";
+                                     from rekapan_admin_prodi";
                           
 
                                     $stmt = sqlsrv_query($conn, $query, $params);
@@ -353,50 +303,120 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
     </div>
     <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+   <!-- Scroll to Top Button-->
+   <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
-    </a>
+      </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+      <!-- Logout Modal-->
+      <div
+        class="modal fade"
+        id="logoutModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                     <a class="btn btn-primary" href="index-admin.html">Logout</a>
-                    <a class="btn btn-primary" href="\Empati-Bebas-Tanggungan\index-admin.html">Logout</a>
-                </div>
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Ready to Leave?
+              </h5>
+              <button
+                class="close"
+                type="button"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
             </div>
+            <div class="modal-body">
+              Select "Logout" below if you are ready to end your current
+              session.
+            </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn-secondary"
+                type="button"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <a
+                class="btn btn-primary"
+                href="\Empati-Bebas-Tanggungan\index-admin.html"
+                >Logout</a
+              >
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+      <script>
+       function updateCardData() {
+          $.ajax({
+              url: 'get_data.php',
+              method: 'GET',
+              dataType: 'json',
+              success: function(data) {
+                  // Update jumlah di card
+                  console.log(data);
+                  $('.distribusi_laporan_skripsi').text(data.distribusi_laporan_skripsi);
+                  $('.distribusi_laporan_magang').text(data.distribusi_laporan_magang);
+                  $('.bebas_kompensasi').text(data.bebas_kompensasi);
+                  $('.nilai_toeic').text(data.nilai_toeic);
+                  $('.jumlah_selesai').text(data.jumlah_selesai);
+              },
+              error: function(xhr, status, error) {
+                  console.error('Error fetching data:', error);
+              }
+          });
+      }
 
+      // Panggil fungsi updateCardData setiap 5 detik
+      setInterval(updateCardData, 1000);
+      </script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+    
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
+    
+    <!-- DataTables JavaScript -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    
+    <!-- Script untuk DataTable dan Filtering -->
+    <script>
+    $(document).ready(function() {
+        const table = $('#dataTable').DataTable({
+            pageLength: 25,
+        });
 
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+        $('#filterProdi').change(function() {
+            filterTable();
+        });
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+        $('#filterAngkatan').change(function() {
+            filterTable();
+        });
 
-</body>
+        function filterTable() {
+            const prodiFilter = $('#filterProdi').val();
+            const angkatanFilter = $('#filterAngkatan').val();
 
+            table
+                .columns(3).search(prodiFilter ? `^${prodiFilter}$` : '', true, false)
+                .columns(4).search(angkatanFilter ? `^${angkatanFilter}$` : '', true, false)
+                .draw();
+        }
+    });
+    </script>
+  </body>
 </html>

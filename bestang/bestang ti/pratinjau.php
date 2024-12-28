@@ -146,6 +146,9 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 <nav
   class="navbar navbar-expand navbar-dark bg-white topbar mb-4 static-top shadow"
 >
+<button class="btn" onclick="window.history.back();">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </button>
   <!-- Sidebar Toggle (Topbar) -->
   <button
     id="sidebarToggleTop"
@@ -300,9 +303,6 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                          if ($ext === 'pdf') {
                              // Tampilkan PDF dalam iframe
                              echo '<iframe src="' . htmlspecialchars($file['url']) . '" width="100%" height="400px" class="mb-3"></iframe>';
-                         } elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'])) {
-                             // Gunakan Google Docs Viewer untuk file Office
-                             echo '<iframe src="https://docs.google.com/viewer?url=' . urlencode($file['url']) . '&embedded=true" width="100%" height="400px" class="mb-3"></iframe>';
                          } elseif (in_array($ext, ['png', 'jpg', 'jpeg', 'gif'])) {
                              // Tampilkan gambar langsung
                              echo '<img src="' . htmlspecialchars($file['url']) . '" class="img-fluid mb-3" alt="Preview">';
@@ -323,17 +323,11 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                              (($current_status === 'tidak sesuai') ? 'checked' : '') . '>';
                          echo '<label class="form-check-label" for="status_tidak_sesuai' . $index . '">Tidak Sesuai</label>';
                          echo '</div>';
-
-                         if ($index == 2) { // Kompensasi (file3)
-                           // Menambahkan keterangan jika file kompensasi tidak ada
-                           if (empty($file['url'])) {
-                               echo '<p class="text-muted"> <span style="color: red;">Mahasiswa tidak melampirkan file kompensasi. Mohon cek data mahasiswa terkait</p>';
-                           }
-                       }
                      
-                        echo '</div>'; // Close card-body
-                        echo '</div>'; // Close card
+                         echo '</div>'; // Close card-body
+                         echo '</div>'; // Close card
                      }
+
                       // Tambahkan area komentar tunggal di bawah semua file
                       echo '<div class="form-group mt-4">';
                       $sql_komentar = "select k.komentar
@@ -347,19 +341,25 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                       }
                       $data_komentar = sqlsrv_fetch_array($stmt_komentar, SQLSRV_FETCH_ASSOC);
                       echo '<label for="komentar">Komentar :</label>';
-                      echo '<textarea class="form-control" id="komentar" name="komentar" rows="4">' . htmlspecialchars($data_komentar['komentar'] ?? '') . '</textarea>';
+                      $komentar = htmlspecialchars($data_komentar['komentar'] ?? '');
+                      if ($komentar === 'Menunggu' || $komentar === ' ') {
+                        $komentar = ' ';
+                      }
+                      echo '<textarea class="form-control" id="komentar" name="komentar" rows="4">' . htmlspecialchars($komentar) . '</textarea>';
                       echo '</div>';
-
+                     
                       // Tambahkan tombol submit di bawah komentar
-                      echo '<div class="text-center mt-4">';
-                      echo '<button type="submit" class="btn btn-primary">Kirim</button>';
+                      echo '<div class="mt-4">';
+                      echo '<button class="btn btn-secondary mr-3" onclick="window.history.back();">';
+                          echo '<i class="fas fa-arrow-left"></i> Kembali';
+                      echo '</button>';
+                      echo '<button type="submit" class="btn btn-success">Kirim</button>';
+
                       echo '</div>';
 
                       echo '</form>';
 
-                      echo '<a href="tabel.php" class="btn btn-secondary back-button">Back</a>'; 
-                      echo '</div>'; // Close container
-                      echo '</div>'; // Close row
+                     
                   } else {
                       echo '<p class="text-center text-danger">Tidak ada file yang diunggah oleh mahasiswa ini.</p>';
                   }
@@ -368,19 +368,19 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </div>
           <!-- End of Main Content -->
 
-          
           <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
          <!-- Footer -->
-          <footer class="sticky-footer bg-white">
+          
+            </div>
+            <footer class="sticky-footer bg-white">
             <div class="container my-auto">
               <div class="copyright text-center my-auto">
                 <span
                   >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
                 >
               </div>
-            </div>
           </footer>
       </div>
       <!-- End of Page Wrapper -->
@@ -453,21 +453,13 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
       <script src="js/demo/chart-area-demo.js"></script>
       <script src="js/demo/chart-pie-demo.js"></script>
     </div>
-       
+
     <script>
     function showAlert() {
-        alert("Data sudah dikirimkan ke mahasiswa");
-        return true; // Mengizinkan form untuk disubmit
+      alert("Data sudah dikirimkan ke mahasiswa");
+      return true; // Mengizinkan form untuk disubmit
     }
-    </script>
+  </script>
 
-    <script>
-    $(document).ready(function() {
-        $('#sidebarToggle').on('click', function() {
-            $('body').toggleClass('sidebar-collapsed'); // Tambahkan atau hapus kelas saat sidebar toggle
-        });
-    });
-    </script>
-
-      </body>
+  </body>
 </html>
