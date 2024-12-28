@@ -55,8 +55,12 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
       rel="stylesheet"
     />
 
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+    
     <!-- Custom styles for this template-->
     <link href="sb-admin-2.min.css" rel="stylesheet" />
+
   </head>
 
   <body id="page-top">
@@ -64,7 +68,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <div id="wrapper">
       <!-- Sidebar -->
       <ul
-        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion bg-sidebar"
         id="accordionSidebar"
       >
         <!-- Sidebar - Brand -->
@@ -105,16 +109,21 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </a>
         </li>
 
-             <!-- Divider -->
-    <hr class="sidebar-divider my-0" />
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
 
-<!-- Nav Item - Beranda -->
-<li class="nav-item">
-  <a class="nav-link" href="rekapan.php">
-  <i class="fas fa-fw fa-folder"></i>
-    <span>Rekapan</span></a
-  >
-</li>
+        <!-- Nav Item - Pages Mahasiswa -->
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="rekapan.php"
+          >
+            <i class="fas fa-fw fa-folder"></i>
+            <span>
+              Rekapan
+            </span>
+          </a>
+        </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
@@ -134,6 +143,10 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           <nav
             class="navbar navbar-expand navbar-dark bg-white topbar mb-4 static-top shadow"
           >
+          <button class="btn" onclick="window.history.back();">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </button>
+            
             <!-- Sidebar Toggle (Topbar) -->
             <button
               id="sidebarToggleTop"
@@ -144,7 +157,6 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
-              
               <div class="topbar-divider d-none d-sm-block"></div>
 
               <!-- Nav Item - User Information -->
@@ -195,52 +207,99 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
           <!-- Begin Page Content -->
           <div class="container-fluid">
-            <!-- Page Heading -->
-            <div class="container">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Profil Admin</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="text-center">
-                            <img src="img/undraw_profile_3.svg" alt="Foto Profil" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
-                        </div>
-                        <h3 class="text-center"><?php echo htmlspecialchars($_SESSION['nama_admin']); ?></h3>
-                        <p class="text-center">NIP : <?php echo htmlspecialchars($_SESSION['nip_admin']); ?></p>
-                        <div class="text-center">
-                           <a href="edit-profil.php" class="btn btn-primary mr-4">Edit Profile</a>
-                           <a href="edit-password.php" class="btn btn-success">Edit Password</a>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                      <button class="btn btn-outline-secondary" onclick="window.history.back();">
-                          <i class="fas fa-arrow-left"></i> Kembali
-                      </button>
-                    </div>
-                </div>
-            </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa</h6>
+              </div>
+              <div class="card-body">
+              <div class="mb-3">
+                  <div class="row">
+                      <!-- Filter Prodi -->
+                      <div class="col-md-4">
+                          <div class="form-group">
+                              <label for="filterProdi" class="form-label">Filter Prodi</label>
+                              <select id="filterProdi" class="form-control">
+                                  <option value="">Semua Prodi</option>
+                                  <option value="Teknik Informatika">Teknik Informatika</option>
+                                  <option value="Sistem Informasi Bisnis">Sistem Informasi Bisnis</option>
+                              </select>
+                          </div>
+                      </div>
+
+                      <!-- Filter Angkatan -->
+                      <div class="col-md-4">
+                          <div class="form-group">
+                              <label for="filterAngkatan" class="form-label">Filter Angkatan</label>
+                              <select id="filterAngkatan" class="form-control">
+                                  <option value="">Semua Angkatan</option>
+                                  <?php
+                                  for ($year = date('Y'); $year >= 2000; $year--) {
+                                      echo "<option value='$year'>$year</option>";
+                                  }
+                                  ?>
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+                  <div class="table-responsive">
+                      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                              <tr>
+                                  <th>NIM</th>
+                                  <th>Nama</th>
+                                  <th>Jurusan</th>
+                                  <th>Prodi</th>
+                                  <th>Angkatan</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <?php
+                              include 'koneksi.php';
+
+                              $query = "SELECT nim, nama, jurusan, prodi, angkatan
+                              from rekapan_admin_perpus";
+                    
+                              $stmt = sqlsrv_query($conn, $query, $params);
+
+                              while ($data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+                                  echo "<tr>";
+                                  echo "<td>" . htmlspecialchars($data['nim']) . "</td>";
+                                  echo "<td>" . htmlspecialchars($data['nama']) . "</td>";
+                                  echo "<td>" . htmlspecialchars($data['jurusan']) . "</td>";
+                                  echo "<td>" . htmlspecialchars($data['prodi']) . "</td>";
+                                  echo "<td>" . htmlspecialchars($data['angkatan']) . "</td>";
+                                  echo "</td>";
+                                  echo "</tr>";
+                              }
+                              ?>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+
+          </div>
+          <!-- /.container-fluid -->
+
           </div>
           <!-- End of Main Content -->
-
-
-        </div>
+            
         <!-- End of Content Wrapper -->
-
-                   <!-- Footer -->
-                   <footer class="sticky-footer bg-white" >
-            <div class="container my-auto">
-              <div class="copyright text-center my-auto">
-                <span
-                  >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
-                >
-              </div>
-            </div>
-          </footer>
-          <!-- End of Footer -->
-           
+         <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                  <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                      <span
+                        >Copyright &copy; SiBeTa - Sistem Bebas Tanggungan 2024</span
+                      >
+                    </div>
+                  </div>
+                </footer>
       </div>
       <!-- End of Page Wrapper -->
-
       <!-- Scroll to Top Button-->
       <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -291,23 +350,68 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           </div>
         </div>
       </div>
+      <script>
+      function updateCardData() {
+          $.ajax({
+              url: 'get_data.php',
+              method: 'GET',
+              dataType: 'json',
+              success: function(data) {
+                  // Update jumlah di card
+                  console.log(data);
+                  $('.jumlah_bukti_pelunasan').text(data.jumlah_bukti_pelunasan);
+                  $('.jumlah_bukti_pengisian').text(data.jumlah_bukti_pengisian);
+                  $('.jumlah_selesai').text(data.jumlah_selesai);
+              },
+              error: function(xhr, status, error) {
+                  console.error('Error fetching data:', error);
+              }
+          });
+      }
 
-      <!-- Bootstrap core JavaScript-->
-      <script src="vendor/jquery/jquery.min.js"></script>
-      <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      // Panggil fungsi updateCardData setiap 5 detik
+      setInterval(updateCardData, 1000);
+      </script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    
+    <!-- DataTables JavaScript -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+    
+    <!-- Script untuk DataTable dan Filtering -->
+    <script>
+    $(document).ready(function() {
+        const table = $('#dataTable').DataTable({
+            pageLength: 25,
+        });
 
-      <!-- Core plugin JavaScript-->
-      <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        $('#filterProdi').change(function() {
+            filterTable();
+        });
 
-      <!-- Custom scripts for all pages-->
-      <script src="js/sb-admin-2.min.js"></script>
+        $('#filterAngkatan').change(function() {
+            filterTable();
+        });
 
-      <!-- Page level plugins -->
-      <script src="vendor/chart.js/Chart.min.js"></script>
+        function filterTable() {
+            const prodiFilter = $('#filterProdi').val();
+            const angkatanFilter = $('#filterAngkatan').val();
 
-      <!-- Page level custom scripts -->
-      <script src="js/demo/chart-area-demo.js"></script>
-      <script src="js/demo/chart-pie-demo.js"></script>
-    </div>
+            table
+                .columns(3).search(prodiFilter ? `^${prodiFilter}$` : '', true, false)
+                .columns(4).search(angkatanFilter ? `^${angkatanFilter}$` : '', true, false)
+                .draw();
+        }
+    });
+    </script>
   </body>
 </html>

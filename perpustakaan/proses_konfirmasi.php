@@ -7,13 +7,13 @@ if (!isset($_SESSION['role'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nim = $_POST['nim'];
+    $nim = $_GET['nim'];
     $status = $_POST['status']; // Array status dari setiap file
     $komentar = $_POST['komentar'];
     $last_modified = date('Y-m-d H:i:s'); // Waktu terakhir dimodifikasi
 
     // Query untuk mendapatkan ID pengajuan berdasarkan NIM
-    $query_pengajuan = "SELECT p.id FROM pengajuan_perpustakaan p JOIN Mahasiswa m ON m.id = p.id_mahasiswa WHERE m.nim = ?";
+    $query_pengajuan = "SELECT p.id FROM pengajuan_jurusan p JOIN Mahasiswa m ON m.id = p.id_mahasiswa WHERE m.nim = ?";
     $params_pengajuan = [$nim];
     $stmt_pengajuan = sqlsrv_query($conn, $query_pengajuan, $params_pengajuan);
 
@@ -29,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $id_pengajuan = $data_pengajuan['id'];
 
-    // Cek jika mahasiswa baru pertama kali mengirim file, buatkan ID di tabel konfirmasi_perpus
-    $query_cek_konfirmasi = "SELECT id FROM konfirmasi_perpus WHERE id_pengajuan = ?";
+    // Cek jika mahasiswa baru pertama kali mengirim file, buatkan ID di tabel konfirmasi_akademik
+    $query_cek_konfirmasi = "SELECT id FROM konfirmasi_admin_jurusan WHERE id_pengajuan = ?";
     $params_cek_konfirmasi = [$id_pengajuan];
     $stmt_cek_konfirmasi = sqlsrv_query($conn, $query_cek_konfirmasi, $params_cek_konfirmasi);
 
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($data_konfirmasi === null) {
         // Insert data baru ke tabel konfirmasi_akademik jika belum ada
-        $query_insert_konfirmasi = "INSERT INTO konfirmasi_perpus (id_pengajuan, status, komentar, terakhir_dirubah) VALUES (?, NULL, NULL ?)";
+        $query_insert_konfirmasi = "INSERT INTO konfirmasi_admin_jurusan (id_pengajuan, status1, status2, status3, komentar, last_modified) VALUES (?, NULL, NULL, NULL, NULL, ?)";
         $params_insert_konfirmasi = [$id_pengajuan, $last_modified];
         $stmt_insert_konfirmasi = sqlsrv_query($conn, $query_insert_konfirmasi, $params_insert_konfirmasi);
 
@@ -51,10 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Update data konfirmasi_akademik
-    $query_update = "UPDATE konfirmasi_perpus SET status = ?,  komentar = ?, terakhir_dirubah = ? WHERE id_pengajuan = ?";
+    // Update data konfirmasi_jurusan
+    $query_update = "UPDATE konfirmasi_admin_jurusan SET status1 = ?, status2 = ?, status3 = ?, komentar = ?, last_modified = ? WHERE id_pengajuan = ?";
     $params_update = [
-        $status,
+        isset($status[0]) ? $status[0] : null, // Status file pertama (bukti pelunasan UKT)
+        isset($status[1]) ? $status[1] : null, // Status file kedua (bukti pengisian data alumni)
+        isset($status[1]) ? $status[2] : null,
         $komentar,
         $last_modified,
         $id_pengajuan
@@ -68,7 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Redirect kembali ke halaman sebelumnya dengan pesan sukses
     $_SESSION['success_message'] = "Data konfirmasi berhasil diperbarui.";
-
+    header("Location: tabel.php");
+    exit();
 } else {
     die("Metode request tidak valid.");
 }

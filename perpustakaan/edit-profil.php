@@ -1,37 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <?php
 session_start();
-include 'koneksi.php';
-
-if (!isset($_SESSION['role'])) {
-    die("Anda tidak memiliki akses.");
-}
-
-$role = $_SESSION['role']; // Ambil role dari session (sesuaikan dengan session yang digunakan)
-$sql = "SELECT nama, nip FROM Admin WHERE role = ?";
-$params = [$role];
-$stmt = sqlsrv_query($conn, $sql, $params);
-
-// Periksa apakah query berhasil
-if ($stmt === false) {
-    die(print_r(sqlsrv_errors(), true));
-}
-
-// Ambil data admin
-$data_admin = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
-
-// Jika data tidak ditemukan
-if ($data_admin === null) {
-    die("Data admin tidak ditemukan.");
-}
-
-// Simpan data admin ke dalam session (jika diperlukan)
-$_SESSION['nama_admin'] = $data_admin['nama'];
-$_SESSION['nip_admin'] = $data_admin['nip'];
 ?>
-
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -92,8 +63,8 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 
-        <!-- Nav Item - Pages Mahasiswa -->
-        <li class="nav-item">
+         <!-- Nav Item - Pages Mahasiswa -->
+         <li class="nav-item">
           <a
             class="nav-link collapsed"
             href="tabel.php"
@@ -115,7 +86,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
     <span>Rekapan</span></a
   >
 </li>
-
+        
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 
@@ -144,7 +115,6 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
-              
               <div class="topbar-divider d-none d-sm-block"></div>
 
               <!-- Nav Item - User Information -->
@@ -196,30 +166,22 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           <!-- Begin Page Content -->
           <div class="container-fluid">
             <!-- Page Heading -->
-            <div class="container">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Profil Admin</h2>
+            <div class="container mt-5">
+                <h2 class="text-center mb-4">Edit Profil Admin</h2>
+                <form action="proses-ubah.php?aksi=update_admin" method="post" class="border p-4 rounded shadow">
+                    <input type="hidden" name="role" value="<?php echo htmlspecialchars($_SESSION['role']); ?>">
+                    <div class="form-group">
+                        <label for="nama_admin">Nama :</label>
+                        <input type="text" class="form-control" name="nama_admin" value="<?php echo htmlspecialchars($_SESSION['nama_admin']); ?>" required>
                     </div>
-                    <div class="card-body">
-                        <div class="text-center">
-                            <img src="img/undraw_profile_3.svg" alt="Foto Profil" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
-                        </div>
-                        <h3 class="text-center"><?php echo htmlspecialchars($_SESSION['nama_admin']); ?></h3>
-                        <p class="text-center">NIP : <?php echo htmlspecialchars($_SESSION['nip_admin']); ?></p>
-                        <div class="text-center">
-                           <a href="edit-profil.php" class="btn btn-primary mr-4">Edit Profile</a>
-                           <a href="edit-password.php" class="btn btn-success">Edit Password</a>
-                        </div>
+                    <div class="form-group">
+                        <label for="nip_admin">NIP :</label>
+                        <input type="text" class="form-control" name="nip_admin" value="<?php echo htmlspecialchars($_SESSION['nip_admin']); ?>" required>
                     </div>
-                    <div class="card-footer">
-                      <button class="btn btn-outline-secondary" onclick="window.history.back();">
-                          <i class="fas fa-arrow-left"></i> Kembali
-                      </button>
-                    </div>
-                </div>
+                    <button type="submit" class="btn btn-success btn-block">Simpan</button>
+                </form>
             </div>
-          </div>
+            </div>
           <!-- End of Main Content -->
 
 
@@ -227,7 +189,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
         <!-- End of Content Wrapper -->
 
                    <!-- Footer -->
-                   <footer class="sticky-footer bg-white" >
+                   <footer class="sticky-footer bg-white">
             <div class="container my-auto">
               <div class="copyright text-center my-auto">
                 <span

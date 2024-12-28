@@ -156,6 +156,10 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
+                <button class="btn" onclick="window.history.back();">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </button>
+
                     <!-- Sidebar Toggle (Topbar) -->
                     <form class="form-inline">
                         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
