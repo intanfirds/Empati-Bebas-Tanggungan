@@ -55,45 +55,12 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
       rel="stylesheet"
     />
 
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
-
-
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+    
     <!-- Custom styles for this template-->
     <link href="sb-admin-2.min.css" rel="stylesheet" />
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const table = $('#dataTable').DataTable({
-            pageLength: 25, // Mengatur panjang halaman default
-        });
-
-        document.getElementById('filterProdi').addEventListener('change', filterTable);
-        document.getElementById('filterAngkatan').addEventListener('change', filterTable);
-
-        function filterTable() {
-            const prodiFilter = $('#filterProdi').val(); // Ambil nilai filter Prodi
-            const angkatanFilter = $('#filterAngkatan').val(); // Ambil nilai filter Angkatan
-
-            // Gunakan DataTables API untuk melakukan pencarian pada kolom
-            table
-                .columns(3) // Kolom Prodi
-                .search(prodiFilter ? `^${prodiFilter}$` : '', true, false)
-                .columns(4) // Kolom Angkatan
-                .search(angkatanFilter ? `^${angkatanFilter}$` : '', true, false)
-                .draw(); // Memperbarui tabel
-        }
-    });
-    </script>
-    <script>
-    $(document).ready(function() {
-    var table = $('#dataTable').DataTable({
-        // Opsi tambahan jika diperlukan
-        // Misalnya, jika Anda ingin mengatur panjang halaman default
-        pageLength: 25
-        });
-    });
-    </script>
   </head>
 
   <body id="page-top">
@@ -176,6 +143,9 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
           <nav
             class="navbar navbar-expand navbar-dark bg-white topbar mb-4 static-top shadow"
           >
+            <button class="btn" onclick="window.history.back();">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </button>
             <!-- Sidebar Toggle (Topbar) -->
             <button
               id="sidebarToggleTop"
@@ -270,6 +240,10 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                                   ?>
                               </select>
                           </div>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">Export Rekapan</label>
+                        <button onclick="window.location.href='export_rekapan.php'" class="btn btn-primary form-control">Download Rekapan</button>
                       </div>
                   </div>
               </div>
@@ -401,22 +375,46 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
       // Panggil fungsi updateCardData setiap 5 detik
       setInterval(updateCardData, 1000);
       </script>
-      <!-- Bootstrap core JavaScript-->
-      <script src="vendor/jquery/jquery.min.js"></script>
-      <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    
+    <!-- DataTables JavaScript -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+    
+    <!-- Script untuk DataTable dan Filtering -->
+    <script>
+    $(document).ready(function() {
+        const table = $('#dataTable').DataTable({
+            pageLength: 25,
+        });
 
-      <!-- Core plugin JavaScript-->
-      <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        $('#filterProdi').change(function() {
+            filterTable();
+        });
 
-      <!-- Custom scripts for all pages-->
-      <script src="js/sb-admin-2.min.js"></script>
+        $('#filterAngkatan').change(function() {
+            filterTable();
+        });
 
-      <!-- Page level plugins -->
-      <script src="vendor/chart.js/Chart.min.js"></script>
+        function filterTable() {
+            const prodiFilter = $('#filterProdi').val();
+            const angkatanFilter = $('#filterAngkatan').val();
 
-      <!-- Page level custom scripts -->
-      <script src="js/demo/chart-area-demo.js"></script>
-      <script src="js/demo/chart-pie-demo.js"></script>
-    </div>
+            table
+                .columns(3).search(prodiFilter ? `^${prodiFilter}$` : '', true, false)
+                .columns(4).search(angkatanFilter ? `^${angkatanFilter}$` : '', true, false)
+                .draw();
+        }
+    });
+    </script>
   </body>
 </html>
