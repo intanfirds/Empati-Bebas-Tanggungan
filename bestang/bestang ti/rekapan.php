@@ -258,7 +258,7 @@ $_SESSION['nip_admin'] = $data_admin['nip'];
                               $query = "
                               SELECT nim, nama, jurusan, prodi, angkatan
                               FROM rekapan_admin_prodi
-                              WHERE prodi = 'Sistem Informasi Bisnis'
+                              WHERE prodi = 'Teknik Informatika'
                           ";
                     
                               $stmt = sqlsrv_query($conn, $query, $params);
